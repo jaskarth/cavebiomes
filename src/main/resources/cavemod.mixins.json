@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "supercoder79.cavemod.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "MixinCarver",
+    "MixinOverworldChunkGenerator",
+    "MixinChunkStatus"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
