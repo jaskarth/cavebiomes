@@ -18,6 +18,7 @@ public class LayerHolder {
         BASE_DECORATOR_LIST.add(CaveDecorators.LAVA);
         BASE_DECORATOR_LIST.add(CaveDecorators.VINES);
         BASE_DECORATOR_LIST.add(CaveDecorators.OBSIDIAN);
+        BASE_DECORATOR_LIST.add(CaveDecorators.MAGMA);
 
         MASTER_DECORATOR_LIST.addAll(BASE_DECORATOR_LIST);
 
