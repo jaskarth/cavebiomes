@@ -60,7 +60,7 @@ public abstract class MixinOverworldChunkGenerator extends SurfaceChunkGenerator
                 while(listIterator.hasNext()) {
                     int n = listIterator.nextIndex();
                     ConfiguredCarver<?> configuredCarver = (ConfiguredCarver)listIterator.next();
-                    chunkRandom.setCarverSeed(this.seed + (long)n, l, m);
+                    chunkRandom.setSeed(this.seed + (long)n, l, m);
 
                     if (configuredCarver.shouldCarve(chunkRandom, l, m)) {
                         if (configuredCarver.carver instanceof CaveAirAccess) {
