@@ -13,9 +13,14 @@ import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.carver.ConfiguredCarver;
 import net.minecraft.world.gen.chunk.ChunkGeneratorConfig;
 import net.minecraft.world.gen.chunk.OverworldChunkGenerator;
+import net.minecraft.world.gen.chunk.OverworldChunkGeneratorConfig;
 import net.minecraft.world.gen.chunk.SurfaceChunkGenerator;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import supercoder79.cavebiomes.BiomeHandler;
 import supercoder79.cavebiomes.CaveBiomes;
 import supercoder79.cavebiomes.cave.CaveDecorator;
 import supercoder79.cavebiomes.cave.CaveDecorators;
@@ -31,6 +36,11 @@ public abstract class MixinOverworldChunkGenerator extends SurfaceChunkGenerator
 
     public MixinOverworldChunkGenerator(IWorld world, BiomeSource biomeSource, int verticalNoiseResolution, int horizontalNoiseResolution, int worldHeight, ChunkGeneratorConfig config, boolean useSimplexNoise) {
         super(world, biomeSource, verticalNoiseResolution, horizontalNoiseResolution, worldHeight, config, useSimplexNoise);
+    }
+
+    @Inject(method = "<init>", at = @At("RETURN"))
+    public void hookConstructor(IWorld world, BiomeSource biomeSource, OverworldChunkGeneratorConfig config, CallbackInfo ci) {
+        BiomeHandler.attemptAddRemainingBiomes();
     }
 
     @Shadow protected abstract double[] computeNoiseRange(int x, int z);
