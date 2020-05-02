@@ -79,6 +79,10 @@ public class BiomeHandler {
         BIOME2CD.put(Biomes.MODIFIED_BADLANDS_PLATEAU, CaveDecorators.RED_SAND);
         BIOME2CD.put(Biomes.MODIFIED_WOODED_BADLANDS_PLATEAU, CaveDecorators.RED_SAND);
         BIOME2CD.put(Biomes.WOODED_BADLANDS_PLATEAU, CaveDecorators.RED_SAND);
+
+        //mushroom biomes
+        BIOME2CD.put(Biomes.MUSHROOM_FIELDS, CaveDecorators.MUSHROOM);
+        BIOME2CD.put(Biomes.MUSHROOM_FIELD_SHORE, CaveDecorators.MUSHROOM);
     }
 
     public static void attemptAddRemainingBiomes() {

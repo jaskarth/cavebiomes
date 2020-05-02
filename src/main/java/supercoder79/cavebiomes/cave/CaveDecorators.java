@@ -26,8 +26,9 @@ public class CaveDecorators {
     public static final CaveDecorator DIORITE = new SingleBlockStateCaveDecorator(Blocks.DIORITE.getDefaultState());
     public static final CaveDecorator GRANITE = new SingleBlockStateCaveDecorator(Blocks.GRANITE.getDefaultState());
     public static final CaveDecorator FULL_OBSIDIAN = new SingleBlockStateCaveDecorator(Blocks.OBSIDIAN.getDefaultState());
-    public static final CaveDecorator OBSIDIAN = new ObsidianCaveDecorator();
-    public static final CaveDecorator MAGMA = new MagmaCaveDecorator();
+    public static final CaveDecorator OBSIDIAN = new RandomBlockStateCaveDecorator(Blocks.OBSIDIAN.getDefaultState(), 8);
+    public static final CaveDecorator MAGMA = new RandomBlockStateCaveDecorator(Blocks.MAGMA_BLOCK.getDefaultState(), 12);
+    public static final CaveDecorator COBBLESTONE = new RandomBlockStateCaveDecorator(Blocks.COBBLESTONE.getDefaultState(), 6);
 
     //TODO: big mushrooms
     //TODO: honey cave

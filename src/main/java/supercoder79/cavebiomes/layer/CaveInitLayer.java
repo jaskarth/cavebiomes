@@ -4,7 +4,7 @@ import supercoder79.cavebiomes.magic.LayerRandom;
 
 public class CaveInitLayer extends CaveLayer {
     @Override
-    public int operate(LayerRandom random, int prior, int x, int z) {
+    public int operate(LayerRandom random, int parent, int x, int z) {
         random.setPosSeed(x, z, 1);
 
         //marker for stone caves
