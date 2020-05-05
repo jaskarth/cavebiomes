@@ -7,7 +7,7 @@ import net.minecraft.world.ChunkRegion;
 
 import java.util.Set;
 
-public class DummyCaveDecorator extends CaveDecorator {
+public class NoOpCaveDecorator extends CaveDecorator {
     @Override
     public void decorate(ChunkRegion world, Chunk chunk, Set<BlockPos> positions) {
     }

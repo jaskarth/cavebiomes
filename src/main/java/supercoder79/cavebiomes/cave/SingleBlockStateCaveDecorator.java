@@ -9,8 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class SingleBlockStateCaveDecorator extends CaveDecorator {
-    private BlockState state;
-    //TODO: make a second, less icy cave decorator
+    private final BlockState state;
     
     public SingleBlockStateCaveDecorator(BlockState state) {
         this.state = state;
