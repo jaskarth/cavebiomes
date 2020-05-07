@@ -11,10 +11,8 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.ChunkRandom;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.carver.ConfiguredCarver;
-import net.minecraft.world.gen.chunk.ChunkGeneratorConfig;
-import net.minecraft.world.gen.chunk.OverworldChunkGenerator;
-import net.minecraft.world.gen.chunk.OverworldChunkGeneratorConfig;
-import net.minecraft.world.gen.chunk.SurfaceChunkGenerator;
+import net.minecraft.world.gen.chunk.*;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -31,28 +29,28 @@ import supercoder79.cavebiomes.magic.SaneCarverAccess;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Mixin(OverworldChunkGenerator.class)
-public abstract class MixinOverworldChunkGenerator extends SurfaceChunkGenerator implements SaneCarverAccess {
+@Mixin(ChunkGenerator.class)
+public abstract class MixinChunkGenerator implements SaneCarverAccess {
 
-    public MixinOverworldChunkGenerator(IWorld world, BiomeSource biomeSource, int verticalNoiseResolution, int horizontalNoiseResolution, int worldHeight, ChunkGeneratorConfig config, boolean useSimplexNoise) {
-        super(world, biomeSource, verticalNoiseResolution, horizontalNoiseResolution, worldHeight, config, useSimplexNoise);
-    }
+    @Shadow @Final protected IWorld world;
+
+    @Shadow protected abstract Biome getDecorationBiome(BiomeAccess biomeAccess, BlockPos pos);
+
+    @Shadow @Final protected long seed;
+
+    @Shadow public abstract int getSeaLevel();
 
     @Inject(method = "<init>", at = @At("RETURN"))
-    public void hookConstructor(IWorld world, BiomeSource biomeSource, OverworldChunkGeneratorConfig config, CallbackInfo ci) {
+    public void hookConstructor(IWorld world, BiomeSource biomeSource, ChunkGeneratorConfig config, CallbackInfo ci) {
         BiomeHandler.attemptAddRemainingBiomes();
     }
 
-    @Shadow protected abstract double[] computeNoiseRange(int x, int z);
-
-    @Shadow protected abstract double computeNoiseFalloff(double depth, double scale, int y);
-
-    @Shadow public abstract int getSpawnHeight();
-
-    @Shadow public abstract void sampleNoiseColumn(double[] buffer, int x, int z) ;
-
+    //TODO: fix this to not essentially be an overwrite
     @Override
     public void carve(ChunkRegion world, BiomeAccess biomeAccess, Chunk chunk, GenerationStep.Carver carver) {
+        //only generate in the overworld by default
+        if (!CaveBiomes.CONFIG.whitelistedDimensions.contains(this.world.getDimension().getType().toString())) return;
+
         ChunkRandom chunkRandom = new ChunkRandom();
         ChunkPos chunkPos = chunk.getPos();
         int j = chunkPos.x;
@@ -95,6 +93,5 @@ public abstract class MixinOverworldChunkGenerator extends SurfaceChunkGenerator
                 LayerHolder.getDecorator(world.getSeed(), j, k).decorate(world, chunk, lowerPos);
             }
         }
-
     }
 }

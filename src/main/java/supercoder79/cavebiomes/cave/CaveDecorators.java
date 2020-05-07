@@ -32,12 +32,12 @@ public class CaveDecorators {
     public static final CaveDecorator GRAVEL = new GravelCaveDecorator();
 
     //ore caves (lower)
-    public static final CaveDecorator COAL = new RandomBlockStateCaveDecorator(Blocks.COAL_ORE.getDefaultState(), 14);
-    public static final CaveDecorator IRON = new RandomBlockStateCaveDecorator(Blocks.IRON_ORE.getDefaultState(), 16);
-    public static final CaveDecorator GOLD = new RandomBlockStateCaveDecorator(Blocks.GOLD_ORE.getDefaultState(), 24);
-    public static final CaveDecorator REDSTONE = new RandomBlockStateCaveDecorator(Blocks.REDSTONE_ORE.getDefaultState(), 12);
-    public static final CaveDecorator LAPIS = new RandomBlockStateCaveDecorator(Blocks.LAPIS_ORE.getDefaultState(), 16);
-    public static final CaveDecorator DIAMOND = new RandomBlockStateCaveDecorator(Blocks.DIAMOND_ORE.getDefaultState(), 128);
+    public static final CaveDecorator COAL = new RandomBlockStateCaveDecorator(Blocks.COAL_ORE.getDefaultState(), 16);
+    public static final CaveDecorator IRON = new RandomBlockStateCaveDecorator(Blocks.IRON_ORE.getDefaultState(), 32);
+    public static final CaveDecorator GOLD = new RandomBlockStateCaveDecorator(Blocks.GOLD_ORE.getDefaultState(), 96);
+    public static final CaveDecorator REDSTONE = new RandomBlockStateCaveDecorator(Blocks.REDSTONE_ORE.getDefaultState(), 24);
+    public static final CaveDecorator LAPIS = new RandomBlockStateCaveDecorator(Blocks.LAPIS_ORE.getDefaultState(), 40);
+    public static final CaveDecorator DIAMOND = new RandomBlockStateCaveDecorator(Blocks.DIAMOND_ORE.getDefaultState(), 192);
 
     //TODO: big mushrooms
     //TODO: honey cave
