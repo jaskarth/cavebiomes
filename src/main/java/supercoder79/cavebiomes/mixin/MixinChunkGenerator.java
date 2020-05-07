@@ -68,7 +68,7 @@ public abstract class MixinChunkGenerator implements SaneCarverAccess {
                 while(listIterator.hasNext()) {
                     int n = listIterator.nextIndex();
                     ConfiguredCarver<?> configuredCarver = (ConfiguredCarver)listIterator.next();
-                    chunkRandom.setSeed(this.seed + (long)n, l, m);
+                    chunkRandom.setCarverSeed(this.seed + (long)n, l, m);
 
                     if (configuredCarver.shouldCarve(chunkRandom, l, m)) {
                         if (configuredCarver.carver instanceof CaveAirAccess) {
