@@ -49,7 +49,8 @@ public abstract class MixinChunkGenerator implements SaneCarverAccess {
     @Override
     public void carve(ChunkRegion world, BiomeAccess biomeAccess, Chunk chunk, GenerationStep.Carver carver) {
         //only generate in the overworld by default
-        if (!CaveBiomes.CONFIG.whitelistedDimensions.contains(this.world.getDimension().getType().toString())) return;
+        boolean shouldGenerate = true;
+        if (!CaveBiomes.CONFIG.whitelistedDimensions.contains(this.world.getDimension().getType().toString())) shouldGenerate = false;
 
         ChunkRandom chunkRandom = new ChunkRandom();
         ChunkPos chunkPos = chunk.getPos();
@@ -83,14 +84,16 @@ public abstract class MixinChunkGenerator implements SaneCarverAccess {
                     }
                 }
 
-                //regular biome based decoration
-                Set<BlockPos> upperPos = positions.stream().filter(pos -> pos.getY() > 28).collect(Collectors.toSet());
-                CaveDecorator decorator = CaveBiomes.BIOME2CD.getOrDefault(biome, CaveDecorators.NONE);
-                decorator.decorate(world, chunk, upperPos);
+                if (shouldGenerate) {
+                    //regular biome based decoration
+                    Set<BlockPos> upperPos = positions.stream().filter(pos -> pos.getY() > 28).collect(Collectors.toSet());
+                    CaveDecorator decorator = CaveBiomes.BIOME2CD.getOrDefault(biome, CaveDecorators.NONE);
+                    decorator.decorate(world, chunk, upperPos);
 
-                //epic underground biome based decoration
-                Set<BlockPos> lowerPos = positions.stream().filter(pos -> pos.getY() <= 28).collect(Collectors.toSet());
-                LayerHolder.getDecorator(world.getSeed(), j, k).decorate(world, chunk, lowerPos);
+                    //epic underground biome based decoration
+                    Set<BlockPos> lowerPos = positions.stream().filter(pos -> pos.getY() <= 28).collect(Collectors.toSet());
+                    LayerHolder.getDecorator(world.getSeed(), j, k).decorate(world, chunk, lowerPos);
+                }
             }
         }
     }
