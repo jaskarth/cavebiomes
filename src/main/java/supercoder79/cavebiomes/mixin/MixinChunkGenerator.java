@@ -1,6 +1,5 @@
 package supercoder79.cavebiomes.mixin;
 
-import net.minecraft.class_5311;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.registry.Registry;
@@ -19,9 +18,6 @@ import net.minecraft.world.gen.chunk.*;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import supercoder79.cavebiomes.BiomeHandler;
 import supercoder79.cavebiomes.CaveBiomes;
 import supercoder79.cavebiomes.cave.CaveDecorator;
@@ -48,9 +44,8 @@ public abstract class MixinChunkGenerator implements SaneCarverAccess {
 
         //only generate in the overworld by default
         boolean shouldGenerate = true;
-        Optional<RegistryKey<DimensionType>> key = ((DimensionTypeAccessor)world.getDimension()).getField_24765();
-        if (!key.isPresent()) shouldGenerate = false;
-        if (!CaveBiomes.CONFIG.whitelistedDimensions.contains(key.get().getValue().toString())) shouldGenerate = false;
+        RegistryKey<DimensionType> key = world.getWorld().getDimensionRegistryKey();
+        if (!CaveBiomes.CONFIG.whitelistedDimensions.contains(key.getValue().toString())) shouldGenerate = false;
 
         biomeAccess = biomeAccess.withSource(this.biomeSource);
         ChunkRandom chunkRandom = new ChunkRandom();

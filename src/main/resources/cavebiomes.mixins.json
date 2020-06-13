@@ -3,7 +3,6 @@
   "package": "supercoder79.cavebiomes.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "DimensionTypeAccessor",
     "MixinCarver",
     "MixinChunkGenerator",
     "MixinChunkStatus"
