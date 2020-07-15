@@ -53,14 +53,14 @@ public abstract class MixinChunkGenerator implements SaneCarverAccess {
         int j = chunkPos.x;
         int k = chunkPos.z;
         Biome biome = this.biomeSource.getBiomeForNoiseGen(chunkPos.x << 2, 0, chunkPos.z << 2);
-        BitSet bitSet = ((ProtoChunk)chunk).method_28510(carver);
+        BitSet bitSet = ((ProtoChunk)chunk).getOrCreateCarvingMask(carver);
+
+        Set<BlockPos> positions = new HashSet<>();
 
         for(int l = j - 8; l <= j + 8; ++l) {
             for(int m = k - 8; m <= k + 8; ++m) {
                 List<ConfiguredCarver<?>> list = biome.getCarversForStep(carver);
                 ListIterator listIterator = list.listIterator();
-
-                Set<BlockPos> positions = new HashSet<>();
 
                 while(listIterator.hasNext()) {
                     int n = listIterator.nextIndex();
@@ -79,19 +79,18 @@ public abstract class MixinChunkGenerator implements SaneCarverAccess {
                         }
                     }
                 }
-
-                if (shouldGenerate) {
-
-                    //regular biome based decoration
-                    Set<BlockPos> upperPos = positions.stream().filter(pos -> pos.getY() > 28).collect(Collectors.toSet());
-                    CaveDecorator decorator = CaveBiomes.BIOME2CD.getOrDefault(biome, CaveDecorators.NONE);
-                    decorator.decorate(world, chunk, upperPos);
-
-                    //epic underground biome based decoration
-                    Set<BlockPos> lowerPos = positions.stream().filter(pos -> pos.getY() <= 28).collect(Collectors.toSet());
-                    LayerHolder.getDecorator(world.getSeed(), j, k).decorate(world, chunk, lowerPos);
-                }
             }
+        }
+
+        if (shouldGenerate) {
+            //regular biome based decoration
+            Set<BlockPos> upperPos = positions.stream().filter(pos -> pos.getY() > 28).collect(Collectors.toSet());
+            CaveDecorator decorator = CaveBiomes.BIOME2CD.getOrDefault(biome, CaveDecorators.NONE);
+            decorator.decorate(world, chunk, upperPos);
+
+            //epic underground biome based decoration
+            Set<BlockPos> lowerPos = positions.stream().filter(pos -> pos.getY() <= 28).collect(Collectors.toSet());
+            LayerHolder.getDecorator(world.getSeed(), j, k).decorate(world, chunk, lowerPos);
         }
     }
 }
