@@ -4,7 +4,6 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.Biomes;
 import supercoder79.cavebiomes.cave.CaveDecorator;
 import supercoder79.cavebiomes.cave.CaveDecorators;
 import supercoder79.cavebiomes.config.ConfigData;

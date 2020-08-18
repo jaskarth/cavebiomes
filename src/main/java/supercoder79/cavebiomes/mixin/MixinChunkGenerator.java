@@ -2,8 +2,7 @@ package supercoder79.cavebiomes.mixin;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.util.registry.*;
 import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.BiomeAccess;
@@ -24,9 +23,11 @@ import supercoder79.cavebiomes.cave.CaveDecorator;
 import supercoder79.cavebiomes.cave.CaveDecorators;
 import supercoder79.cavebiomes.layer.LayerHolder;
 import supercoder79.cavebiomes.magic.CaveAirAccess;
+import supercoder79.cavebiomes.magic.PublicCarverAccess;
 import supercoder79.cavebiomes.magic.SaneCarverAccess;
 
 import java.util.*;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 @Mixin(ChunkGenerator.class)
@@ -44,8 +45,12 @@ public abstract class MixinChunkGenerator implements SaneCarverAccess {
 
         //only generate in the overworld by default
         boolean shouldGenerate = true;
-        RegistryKey<DimensionType> key = world.getWorld().getDimensionRegistryKey();
-        if (!CaveBiomes.CONFIG.whitelistedDimensions.contains(key.getValue().toString())) shouldGenerate = false;
+
+        // Ensures dimension is present within the registry manager
+        if(world.getRegistryManager().getDimensionTypes().getKey(world.getDimension()).isPresent()) {
+            RegistryKey<DimensionType> key = world.getRegistryManager().getDimensionTypes().getKey(world.getDimension()).get();
+            if (!CaveBiomes.CONFIG.whitelistedDimensions.contains(key.getValue().toString())) shouldGenerate = false;
+        }
 
         biomeAccess = biomeAccess.withSource(this.biomeSource);
         ChunkRandom chunkRandom = new ChunkRandom();
@@ -59,23 +64,25 @@ public abstract class MixinChunkGenerator implements SaneCarverAccess {
 
         for(int l = j - 8; l <= j + 8; ++l) {
             for(int m = k - 8; m <= k + 8; ++m) {
-                List<ConfiguredCarver<?>> list = biome.getCarversForStep(carver);
+                List<Supplier<ConfiguredCarver<?>>> list = biome.getGenerationSettings().getCarversForStep(carver);
                 ListIterator listIterator = list.listIterator();
 
                 while(listIterator.hasNext()) {
                     int n = listIterator.nextIndex();
-                    ConfiguredCarver<?> configuredCarver = (ConfiguredCarver)listIterator.next();
+                    Supplier<ConfiguredCarver<?>> carverSupplier = (Supplier<ConfiguredCarver<?>>) listIterator.next();
+                    ConfiguredCarver<?> configuredCarver = carverSupplier.get();
                     chunkRandom.setCarverSeed(seed + (long)n, l, m);
 
                     if (configuredCarver.shouldCarve(chunkRandom, l, m)) {
-                        if (configuredCarver.carver instanceof CaveAirAccess) {
-                            ((CaveAirAccess)configuredCarver.carver).reset();
+                        PublicCarverAccess publicCarverAccess = (PublicCarverAccess)configuredCarver;
+                        if (publicCarverAccess.getCarver() instanceof CaveAirAccess) {
+                            ((CaveAirAccess)publicCarverAccess.getCarver()).reset();
                         }
 
                         configuredCarver.carve(chunk, biomeAccess::getBiome, chunkRandom, this.getSeaLevel(), l, m, j, k, bitSet);
 
-                        if (configuredCarver.carver instanceof CaveAirAccess) {
-                            positions.addAll(((CaveAirAccess)configuredCarver.carver).retrieve());
+                        if (publicCarverAccess.getCarver() instanceof CaveAirAccess) {
+                            positions.addAll(((CaveAirAccess)publicCarverAccess.getCarver()).retrieve());
                         }
                     }
                 }

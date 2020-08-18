@@ -5,7 +5,8 @@
   "mixins": [
     "MixinCarver",
     "MixinChunkGenerator",
-    "MixinChunkStatus"
+    "MixinChunkStatus",
+    "MixinConfiguredCarver"
   ],
   "client": [
   ],
