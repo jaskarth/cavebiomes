@@ -40,9 +40,6 @@ public abstract class MixinChunkGenerator implements SaneCarverAccess {
     //TODO: fix this to not essentially be an overwrite
     @Override
     public void carve(long seed, ChunkRegion world, BiomeAccess biomeAccess, Chunk chunk, GenerationStep.Carver carver) {
-        // try to register stuff for biomes registered after us
-        BiomeHandler.attemptAddRemainingBiomes();
-
         //only generate in the overworld by default
         boolean shouldGenerate = true;
 
@@ -69,7 +66,7 @@ public abstract class MixinChunkGenerator implements SaneCarverAccess {
 
                 while(listIterator.hasNext()) {
                     int n = listIterator.nextIndex();
-                    Supplier<ConfiguredCarver<?>> carverSupplier = (Supplier<ConfiguredCarver<?>>) listIterator.next();
+                    @SuppressWarnings("unchecked") Supplier<ConfiguredCarver<?>> carverSupplier = (Supplier<ConfiguredCarver<?>>) listIterator.next();
                     ConfiguredCarver<?> configuredCarver = carverSupplier.get();
                     chunkRandom.setCarverSeed(seed + (long)n, l, m);
 
@@ -92,7 +89,7 @@ public abstract class MixinChunkGenerator implements SaneCarverAccess {
         if (shouldGenerate) {
             //regular biome based decoration
             Set<BlockPos> upperPos = positions.stream().filter(pos -> pos.getY() > 28).collect(Collectors.toSet());
-            CaveDecorator decorator = CaveBiomes.BIOME2CD.getOrDefault(biome, CaveDecorators.NONE);
+            CaveDecorator decorator = CaveBiomes.BIOME_CATEGORY_2CD.getOrDefault(biome.getCategory(), CaveDecorators.NONE);
             decorator.decorate(world, chunk, upperPos);
 
             //epic underground biome based decoration

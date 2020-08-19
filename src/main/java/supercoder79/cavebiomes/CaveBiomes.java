@@ -17,7 +17,7 @@ public class CaveBiomes implements ModInitializer {
 
 	public static ConfigData CONFIG;
 
-	public static final Map<Biome, CaveDecorator> BIOME2CD = new HashMap<>();
+	public static final Map<Biome.Category, CaveDecorator> BIOME_CATEGORY_2CD = new HashMap<>();
 
 	@Override
 	public void onInitialize() {
