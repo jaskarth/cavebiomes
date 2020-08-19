@@ -7,7 +7,6 @@ import java.util.List;
 
 public class ConfigData {
     public String configVersion = CaveBiomes.VERSION;
-    public boolean guessCaveBiomeIfAbsent = true;
     public boolean generateOreCaves = true;
     public List<String> whitelistedDimensions = Arrays.asList("minecraft:overworld");
 }
