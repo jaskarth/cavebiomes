@@ -2,8 +2,14 @@
   "required": true,
   "package": "supercoder79.cavebiomes.mixin",
   "compatibilityLevel": "JAVA_8",
-  "mixins": ["ConfiguredCarverAccessor", "MixinCarver", "MixinChunkGenerator", "MixinChunkStatus"],
+  "mixins": [
+    "ConfiguredCarverAccessor",
+    "MixinCarver",
+    "MixinChunkGenerator",
+    "MixinChunkStatus"
+  ],
   "client": [
+    "MixinMinecraftClient"
   ],
   "injectors": {
     "defaultRequire": 1
