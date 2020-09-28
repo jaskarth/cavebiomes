@@ -2,9 +2,9 @@ package supercoder79.cavebiomes.cave.lower;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.chunk.Chunk;
 import supercoder79.cavebiomes.cave.CaveDecorator;
-import net.minecraft.world.ChunkRegion;
 
 import java.util.Set;
 

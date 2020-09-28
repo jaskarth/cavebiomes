@@ -5,6 +5,6 @@ import net.minecraft.world.biome.source.BiomeAccess;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.GenerationStep;
 
-public interface SaneCarverAccess {
+public interface WorldCarverAccess {
     void carve(long seed, ChunkRegion region, BiomeAccess access, Chunk chunk, GenerationStep.Carver carver);
 }

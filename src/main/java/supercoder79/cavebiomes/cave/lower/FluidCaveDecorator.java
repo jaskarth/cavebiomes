@@ -1,35 +1,43 @@
 package supercoder79.cavebiomes.cave.lower;
 
-import net.minecraft.block.Blocks;
+import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.chunk.Chunk;
 import supercoder79.cavebiomes.cave.CaveDecorator;
-import net.minecraft.world.ChunkRegion;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class LavaCaveDecorator extends CaveDecorator {
+public class FluidCaveDecorator extends CaveDecorator {
+    private final BlockState state;
+    private final int chance;
+
+    public FluidCaveDecorator(BlockState state, int chance) {
+        this.state = state;
+        this.chance = chance;
+    }
+
     @Override
     public void decorate(ChunkRegion world, Chunk chunk, Set<BlockPos> positions) {
-        List<BlockPos> lavaPositions = new ArrayList<>();
+        List<BlockPos> setPositions = new ArrayList<>();
 
         for (BlockPos pos : positions) {
-            if (world.getRandom().nextInt(3) == 0) {
+            if (world.getRandom().nextInt(chance) == 0) {
                 if (chunk.getBlockState(pos.down()).isOpaque() && chunk.getBlockState(pos).isAir()) {
                     if (chunk.getBlockState(pos.down().north()).isOpaque() &&
                             chunk.getBlockState(pos.down().south()).isOpaque() &&
                             chunk.getBlockState(pos.down().west()).isOpaque() &&
                             chunk.getBlockState(pos.down().east()).isOpaque()) {
-                        lavaPositions.add(pos.down());
+                        setPositions.add(pos.down());
                     }
                 }
             }
         }
 
-        for (BlockPos pos : lavaPositions) {
-            chunk.setBlockState(pos, Blocks.LAVA.getDefaultState(), false);
+        for (BlockPos pos : setPositions) {
+            chunk.setBlockState(pos, this.state, false);
         }
     }
 }

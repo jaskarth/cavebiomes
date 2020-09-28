@@ -24,9 +24,9 @@ dependencies {
 
     modCompile "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-//    modRuntime ("com.github.SuperCoder7979:databreaker:ae132ffd5534d3e4b10db9022f10fca3c5cee36c") {
-//        exclude module : "fabric-loader"
-//    }
+    modRuntime ("com.github.SuperCoder7979:databreaker:0.2.6") {
+        exclude module : "fabric-loader"
+    }
 //
 //    modRuntime ("com.github.mrmangohands:sodium-fabric:57f8a1013ba2a8661daf8a58ab6184eda3e4ac9e")
 //    modRuntime ("com.github.SuperCoder7979:phosphor-fabric:11d964bf07d44bdf6cbdbb7cce25ed9da81d9f78")

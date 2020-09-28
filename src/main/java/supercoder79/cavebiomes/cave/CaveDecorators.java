@@ -1,7 +1,9 @@
 package supercoder79.cavebiomes.cave;
 
 import net.minecraft.block.Blocks;
-import supercoder79.cavebiomes.cave.lower.*;
+import supercoder79.cavebiomes.cave.lower.CobwebCaveDecorator;
+import supercoder79.cavebiomes.cave.lower.FluidCaveDecorator;
+import supercoder79.cavebiomes.cave.lower.MushroomCaveDecorator;
 
 public class CaveDecorators {
     //global
@@ -11,15 +13,15 @@ public class CaveDecorators {
     public static final CaveDecorator ICE = new IceCaveDecorator();
     public static final CaveDecorator TAIGA = new TaigaCaveDecorator();
     public static final CaveDecorator DIRT_GRASS = new DirtGrassCaveDecorator();
-    public static final CaveDecorator SWAMP = new SwampCaveDecorator();
-    public static final CaveDecorator JUNGLE = new JungleCaveDecorator();
-    public static final CaveDecorator SAND = new SandCaveDecorator();
-    public static final CaveDecorator RED_SAND = new RedSandCaveDecorator();
+    public static final CaveDecorator SWAMP = new JungleCaveDecorator(true, true, true);
+    public static final CaveDecorator JUNGLE = new JungleCaveDecorator(true, false, true);
+    public static final CaveDecorator SAND = new FloorStateCaveDecorator(Blocks.SAND.getDefaultState(), 3);
+    public static final CaveDecorator RED_SAND = new FloorStateCaveDecorator(Blocks.RED_SAND.getDefaultState(), 3);
 
     //lower
-    public static final CaveDecorator LAVA = new LavaCaveDecorator();
-    public static final CaveDecorator WATER = new WaterCaveDecorator();
-    public static final CaveDecorator VINES = new VineCaveDecorator();
+    public static final CaveDecorator LAVA = new FluidCaveDecorator(Blocks.LAVA.getDefaultState(), 3);
+    public static final CaveDecorator WATER = new FluidCaveDecorator(Blocks.WATER.getDefaultState(), 2);
+    public static final CaveDecorator VINES = new JungleCaveDecorator(true, false, true);
     public static final CaveDecorator MUSHROOM = new MushroomCaveDecorator();
     public static final CaveDecorator COBWEB = new CobwebCaveDecorator();
     public static final CaveDecorator ANDESITE = new SingleBlockStateCaveDecorator(Blocks.ANDESITE.getDefaultState());
@@ -29,7 +31,7 @@ public class CaveDecorators {
     public static final CaveDecorator OBSIDIAN = new RandomBlockStateCaveDecorator(Blocks.OBSIDIAN.getDefaultState(), 8);
     public static final CaveDecorator MAGMA = new RandomBlockStateCaveDecorator(Blocks.MAGMA_BLOCK.getDefaultState(), 12);
     public static final CaveDecorator COBBLESTONE = new RandomBlockStateCaveDecorator(Blocks.COBBLESTONE.getDefaultState(), 6);
-    public static final CaveDecorator GRAVEL = new GravelCaveDecorator();
+    public static final CaveDecorator GRAVEL = new FloorStateCaveDecorator(Blocks.GRAVEL.getDefaultState(), 3);
 
     //ore caves (lower)
     public static final CaveDecorator COAL = new RandomBlockStateCaveDecorator(Blocks.COAL_ORE.getDefaultState(), 16);

@@ -2,6 +2,7 @@ package supercoder79.cavebiomes.mixin;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.World;
@@ -10,7 +11,6 @@ import net.minecraft.world.biome.source.BiomeAccess;
 import net.minecraft.world.biome.source.BiomeSource;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ProtoChunk;
-import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.ChunkRandom;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.carver.Carver;
@@ -19,19 +19,19 @@ import net.minecraft.world.gen.chunk.ChunkGenerator;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import supercoder79.cavebiomes.BiomeHandler;
 import supercoder79.cavebiomes.CaveBiomes;
+import supercoder79.cavebiomes.api.CaveBiomesAPI;
 import supercoder79.cavebiomes.cave.CaveDecorator;
-import supercoder79.cavebiomes.layer.LayerHolder;
+import supercoder79.cavebiomes.layer.LayerGenerator;
 import supercoder79.cavebiomes.magic.CaveAirAccess;
-import supercoder79.cavebiomes.magic.SaneCarverAccess;
+import supercoder79.cavebiomes.magic.WorldCarverAccess;
 
 import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 @Mixin(ChunkGenerator.class)
-public abstract class MixinChunkGenerator implements SaneCarverAccess {
+public abstract class MixinChunkGenerator implements WorldCarverAccess {
 
     @Shadow public abstract int getSeaLevel();
 
@@ -43,7 +43,9 @@ public abstract class MixinChunkGenerator implements SaneCarverAccess {
         //only generate in the overworld by default
         boolean shouldGenerate = true;
         RegistryKey<World> key = world.toServerWorld().getRegistryKey();
-        if (!CaveBiomes.CONFIG.whitelistedDimensions.contains(key.getValue().toString())) shouldGenerate = false;
+        if (!CaveBiomes.CONFIG.whitelistedDimensions.contains(key.getValue().toString())) {
+            shouldGenerate = false;
+        }
 
         biomeAccess = biomeAccess.withSource(this.biomeSource);
         ChunkRandom chunkRandom = new ChunkRandom();
@@ -84,12 +86,14 @@ public abstract class MixinChunkGenerator implements SaneCarverAccess {
         if (shouldGenerate) {
             //regular biome based decoration
             Set<BlockPos> upperPos = positions.stream().filter(pos -> pos.getY() > 28).collect(Collectors.toSet());
-            CaveDecorator decorator = CaveBiomes.getDecorator(world, biome);
+
+            Registry<Biome> biomes = world.toServerWorld().getServer().getRegistryManager().get(Registry.BIOME_KEY);
+            CaveDecorator decorator = CaveBiomesAPI.getCaveDecoratorForBiome(biomes, biome);
             decorator.decorate(world, chunk, upperPos);
 
             //epic underground biome based decoration
             Set<BlockPos> lowerPos = positions.stream().filter(pos -> pos.getY() <= 28).collect(Collectors.toSet());
-            LayerHolder.getDecorator(world.getSeed(), j, k).decorate(world, chunk, lowerPos);
+            LayerGenerator.getDecorator(world.getSeed(), j, k).decorate(world, chunk, lowerPos);
         }
     }
 }

@@ -1,8 +1,8 @@
 package supercoder79.cavebiomes.cave;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.chunk.Chunk;
 
@@ -20,40 +20,17 @@ public class RandomBlockStateCaveDecorator extends CaveDecorator {
     @Override
     public void decorate(ChunkRegion world, Chunk chunk, Set<BlockPos> positions) {
         for (BlockPos pos : positions) {
-            if (world.getRandom().nextInt(chance) == 0) {
-                if (chunk.getBlockState(pos.east()).isOpaque()) {
-                    chunk.setBlockState(pos.east(), state, false);
-                }
+            // Try to set a packed ice block in every direction
+            for (Direction direction : Direction.values()) {
+                trySet(world, chunk, pos.offset(direction));
             }
+        }
+    }
 
-            if (world.getRandom().nextInt(chance) == 0) {
-                if (chunk.getBlockState(pos.west()).isOpaque()) {
-                    chunk.setBlockState(pos.west(), state, false);
-                }
-            }
-
-            if (world.getRandom().nextInt(chance) == 0) {
-                if (chunk.getBlockState(pos.north()).isOpaque()) {
-                    chunk.setBlockState(pos.north(), state, false);
-                }
-            }
-
-            if (world.getRandom().nextInt(chance) == 0) {
-                if (chunk.getBlockState(pos.south()).isOpaque()) {
-                    chunk.setBlockState(pos.south(), state, false);
-                }
-            }
-
-            if (world.getRandom().nextInt(chance) == 0) {
-                if (chunk.getBlockState(pos.up()).isOpaque()) {
-                    chunk.setBlockState(pos.up(), state, false);
-                }
-            }
-
-            if (world.getRandom().nextInt(chance) == 0) {
-                if (chunk.getBlockState(pos.down()).isOpaque()) {
-                    chunk.setBlockState(pos.down(), state, false);
-                }
+    private void trySet(ChunkRegion world, Chunk chunk, BlockPos pos) {
+        if (world.getRandom().nextInt(this.chance) == 0) {
+            if (chunk.getBlockState(pos).isOpaque()) {
+                chunk.setBlockState(pos, this.state, false);
             }
         }
     }

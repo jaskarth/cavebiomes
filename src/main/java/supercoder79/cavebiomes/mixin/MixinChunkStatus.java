@@ -10,8 +10,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import net.minecraft.world.ChunkRegion;
-import supercoder79.cavebiomes.magic.SaneCarverAccess;
+import supercoder79.cavebiomes.magic.WorldCarverAccess;
 
 import java.util.List;
 
@@ -20,8 +19,8 @@ import java.util.List;
 public class MixinChunkStatus {
     @Inject(method = "method_16563", at = @At("HEAD"), remap = false, cancellable = true)
     private static void carveSanelyAir(ServerWorld world, ChunkGenerator generator, List<Chunk> list, Chunk chunk, CallbackInfo info) {
-        if (generator instanceof SaneCarverAccess) {
-            ((SaneCarverAccess)generator).carve(world.getSeed(), new ChunkRegion(world, list), world.getBiomeAccess().withSource(generator.getBiomeSource()), chunk, GenerationStep.Carver.AIR);
+        if (generator instanceof WorldCarverAccess) {
+            ((WorldCarverAccess)generator).carve(world.getSeed(), new ChunkRegion(world, list), world.getBiomeAccess().withSource(generator.getBiomeSource()), chunk, GenerationStep.Carver.AIR);
         }
         info.cancel();
     }
