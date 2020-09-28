@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "cavebiomes",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "name": "Cave Biomes",
   "description": "Cave biomes",
   "authors": [
@@ -13,6 +13,9 @@
   "entrypoints": {
     "main": [
       "supercoder79.cavebiomes.CaveBiomes"
+    ],
+    "client": [
+      "supercoder79.cavebiomes.CaveBiomesClient"
     ]
   },
   "mixins": [
