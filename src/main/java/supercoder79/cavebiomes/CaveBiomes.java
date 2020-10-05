@@ -6,6 +6,7 @@ import supercoder79.cavebiomes.cave.CaveDecorators;
 import supercoder79.cavebiomes.compat.VanillaCompat;
 import supercoder79.cavebiomes.config.ConfigData;
 import supercoder79.cavebiomes.config.ConfigIO;
+import supercoder79.cavebiomes.feature.CaveBiomesFeatures;
 import supercoder79.cavebiomes.layer.CaveInitLayer;
 import supercoder79.cavebiomes.layer.OreCaveLayer;
 import supercoder79.cavebiomes.layer.RandomStoneLayer;
@@ -55,5 +56,8 @@ public class CaveBiomes implements ModInitializer {
 		CaveBiomesAPI.registerCaveLayer(new RandomStoneLayer());
 		CaveBiomesAPI.registerCaveLayer(new RareCaveLayer());
 		CaveBiomesAPI.registerCaveLayer(new OreCaveLayer());
+
+		// Add enabled chests and spawners
+		CaveBiomesFeatures.addEnabledFeatures();
 	}
 }
