@@ -4,9 +4,11 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "ConfiguredCarverAccessor",
+    "GenerationSettingsAccessor",
     "MixinCarver",
     "MixinChunkGenerator",
-    "MixinChunkStatus"
+    "MixinChunkStatus",
+    "MixinMinecraftServer"
   ],
   "client": [
     "MixinMinecraftClient"
