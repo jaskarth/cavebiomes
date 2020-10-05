@@ -1,7 +1,11 @@
 package supercoder79.cavebiomes;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 import supercoder79.cavebiomes.api.CaveBiomesAPI;
+import supercoder79.cavebiomes.carver.CaveBiomeCarvers;
 import supercoder79.cavebiomes.cave.CaveDecorators;
 import supercoder79.cavebiomes.compat.VanillaCompat;
 import supercoder79.cavebiomes.config.ConfigData;
@@ -55,5 +59,12 @@ public class CaveBiomes implements ModInitializer {
 		CaveBiomesAPI.registerCaveLayer(new RandomStoneLayer());
 		CaveBiomesAPI.registerCaveLayer(new RareCaveLayer());
 		CaveBiomesAPI.registerCaveLayer(new OreCaveLayer());
+
+		// Carver stuff
+
+		Registry.register(Registry.CARVER, new Identifier("cave_biomes", "room_carver"), CaveBiomeCarvers.ROOM);
+		Registry.register(Registry.CARVER, new Identifier("cave_biomes", "vertical_carver"), CaveBiomeCarvers.VERTICAL);
+		Registry.register(Registry.CARVER, new Identifier("cave_biomes", "horizontal_carver"), CaveBiomeCarvers.HORIZONTAL);
+		Registry.register(Registry.CARVER, new Identifier("cave_biomes", "lava_room_carver"), CaveBiomeCarvers.LAVA_ROOM);
 	}
 }
