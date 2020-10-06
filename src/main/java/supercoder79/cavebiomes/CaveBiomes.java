@@ -1,7 +1,6 @@
 package supercoder79.cavebiomes;
 
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import supercoder79.cavebiomes.api.CaveBiomesAPI;
@@ -10,6 +9,7 @@ import supercoder79.cavebiomes.cave.CaveDecorators;
 import supercoder79.cavebiomes.compat.VanillaCompat;
 import supercoder79.cavebiomes.config.ConfigData;
 import supercoder79.cavebiomes.config.ConfigIO;
+import supercoder79.cavebiomes.feature.CaveBiomesFeatures;
 import supercoder79.cavebiomes.layer.CaveInitLayer;
 import supercoder79.cavebiomes.layer.OreCaveLayer;
 import supercoder79.cavebiomes.layer.RandomStoneLayer;
@@ -24,9 +24,9 @@ public class CaveBiomes implements ModInitializer {
 	public void onInitialize() {
 		CONFIG = ConfigIO.init();
 
-        VanillaCompat.addVanillaBiomes();
+		VanillaCompat.addVanillaBiomes();
 
-        // Base cave decorators
+		// Base cave decorators
 		CaveBiomesAPI.registerBaseCaveDecorator(CaveDecorators.NONE);
 		CaveBiomesAPI.registerBaseCaveDecorator(CaveDecorators.WATER);
 		CaveBiomesAPI.registerBaseCaveDecorator(CaveDecorators.LAVA);
@@ -61,10 +61,12 @@ public class CaveBiomes implements ModInitializer {
 		CaveBiomesAPI.registerCaveLayer(new OreCaveLayer());
 
 		// Carver stuff
-
 		Registry.register(Registry.CARVER, new Identifier("cave_biomes", "room_carver"), CaveBiomeCarvers.ROOM);
 		Registry.register(Registry.CARVER, new Identifier("cave_biomes", "vertical_carver"), CaveBiomeCarvers.VERTICAL);
 		Registry.register(Registry.CARVER, new Identifier("cave_biomes", "horizontal_carver"), CaveBiomeCarvers.HORIZONTAL);
 		Registry.register(Registry.CARVER, new Identifier("cave_biomes", "lava_room_carver"), CaveBiomeCarvers.LAVA_ROOM);
+
+		// Add enabled chests and spawners
+		CaveBiomesFeatures.addEnabledFeatures(CONFIG);
 	}
 }
