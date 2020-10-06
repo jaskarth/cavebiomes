@@ -63,12 +63,6 @@ public class Vec2f {
 
 	@Override
 	public String toString() {
-		return "Vec2f(" + this.x
-				+ ", " + this.y
-				+ ')';
-	}
-
-	public int id() {
-		return this.hashCode();
+		return "Vec2f[" + this.x + ", " + this.y + ']';
 	}
 }

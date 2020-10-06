@@ -14,5 +14,10 @@ public class ConfigData {
 	public boolean generateUndergroundLootChests = true;
 	public boolean generateNetherLootChests = true;
 	public boolean generateUndergroundSpawners = true;
-	public UndergroundFeatureData undergroundFeatures = new UndergroundFeatureData();
+
+	public int cavernChestRarity = 4;
+	public int spelunkersChestRarity = 8;
+	public int netherChestRarity = 8; // nether carvers don't allow as much chance for chests to generate
+	public int normalSpawnerRarity = 5;
+	public int rareSpawnerRarity = 7;
 }

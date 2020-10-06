@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import supercoder79.cavebiomes.magic.CaveAirAccess;
+import supercoder79.cavebiomes.util.CaveAirAccess;
 
 import java.util.HashSet;
 import java.util.Set;

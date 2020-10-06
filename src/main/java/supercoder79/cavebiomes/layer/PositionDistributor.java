@@ -2,7 +2,7 @@ package supercoder79.cavebiomes.layer;
 
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.biome.source.SeedMixer;
-import supercoder79.cavebiomes.magic.LayerRandom;
+import supercoder79.cavebiomes.util.LayerRandom;
 
 public class PositionDistributor {
     public static ChunkPos distribute(long seed, int x, int z) {

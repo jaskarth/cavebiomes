@@ -1,4 +1,4 @@
-package supercoder79.cavebiomes.loot;
+package supercoder79.cavebiomes.util;
 
 import java.util.Set;
 

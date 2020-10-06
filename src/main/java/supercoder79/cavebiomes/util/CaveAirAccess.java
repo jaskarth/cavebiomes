@@ -1,4 +1,4 @@
-package supercoder79.cavebiomes.magic;
+package supercoder79.cavebiomes.util;
 
 import net.minecraft.util.math.BlockPos;
 

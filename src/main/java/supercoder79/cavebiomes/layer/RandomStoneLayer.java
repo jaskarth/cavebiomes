@@ -2,7 +2,7 @@ package supercoder79.cavebiomes.layer;
 
 import supercoder79.cavebiomes.api.CaveBiomesAPI;
 import supercoder79.cavebiomes.cave.CaveDecorators;
-import supercoder79.cavebiomes.magic.LayerRandom;
+import supercoder79.cavebiomes.util.LayerRandom;
 
 public class RandomStoneLayer extends CaveLayer {
     @Override

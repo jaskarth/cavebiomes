@@ -23,8 +23,8 @@ import supercoder79.cavebiomes.CaveBiomes;
 import supercoder79.cavebiomes.api.CaveBiomesAPI;
 import supercoder79.cavebiomes.cave.CaveDecorator;
 import supercoder79.cavebiomes.layer.LayerGenerator;
-import supercoder79.cavebiomes.magic.CaveAirAccess;
-import supercoder79.cavebiomes.magic.WorldCarverAccess;
+import supercoder79.cavebiomes.util.CaveAirAccess;
+import supercoder79.cavebiomes.util.WorldCarverAccess;
 
 import java.util.*;
 import java.util.function.Supplier;

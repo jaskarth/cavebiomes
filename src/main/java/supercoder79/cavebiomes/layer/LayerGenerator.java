@@ -3,7 +3,7 @@ package supercoder79.cavebiomes.layer;
 import net.minecraft.util.math.ChunkPos;
 import supercoder79.cavebiomes.api.CaveBiomesAPI;
 import supercoder79.cavebiomes.cave.CaveDecorator;
-import supercoder79.cavebiomes.magic.LayerRandom;
+import supercoder79.cavebiomes.util.LayerRandom;
 
 import java.util.List;
 

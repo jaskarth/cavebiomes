@@ -42,24 +42,24 @@ public final class CaveBiomesFeatures {
 		if (config.generateUndergroundLootChests) {
 			addFeatureTo(
 					GenerationStep.Feature.VEGETAL_DECORATION,
-					CAVERN_CHEST.configure(FeatureConfig.DEFAULT).decorate(Decorator.CHANCE.configure(new ChanceDecoratorConfig(config.undergroundFeatures.cavernChestRarity))),
+					CAVERN_CHEST.configure(FeatureConfig.DEFAULT).decorate(Decorator.CHANCE.configure(new ChanceDecoratorConfig(config.cavernChestRarity))),
 					OVERWORLD);
 
 			addFeatureTo(
 					GenerationStep.Feature.VEGETAL_DECORATION,
-					SPELUNKERS_CHEST.configure(FeatureConfig.DEFAULT).decorate(Decorator.CHANCE.configure(new ChanceDecoratorConfig(config.undergroundFeatures.spelunkersChestRarity))),
+					SPELUNKERS_CHEST.configure(FeatureConfig.DEFAULT).decorate(Decorator.CHANCE.configure(new ChanceDecoratorConfig(config.spelunkersChestRarity))),
 					OVERWORLD);
 		}
 
 		if (config.generateUndergroundSpawners) {
 			addFeatureTo(
 					GenerationStep.Feature.VEGETAL_DECORATION,
-					CAVE_SPAWNER.configure(FeatureConfig.DEFAULT).decorate(Decorator.CHANCE.configure(new ChanceDecoratorConfig(config.undergroundFeatures.normalSpawnerRarity))),
+					CAVE_SPAWNER.configure(FeatureConfig.DEFAULT).decorate(Decorator.CHANCE.configure(new ChanceDecoratorConfig(config.normalSpawnerRarity))),
 					OVERWORLD);
 
 			addFeatureTo(
 					GenerationStep.Feature.VEGETAL_DECORATION,
-					RARE_CAVE_SPAWNER.configure(FeatureConfig.DEFAULT).decorate(Decorator.CHANCE.configure(new ChanceDecoratorConfig(config.undergroundFeatures.rareSpawnerRarity))),
+					RARE_CAVE_SPAWNER.configure(FeatureConfig.DEFAULT).decorate(Decorator.CHANCE.configure(new ChanceDecoratorConfig(config.rareSpawnerRarity))),
 					OVERWORLD);
 		}
 
@@ -70,7 +70,7 @@ public final class CaveBiomesFeatures {
 		if (config.generateNetherLootChests) {
 			addFeatureTo(
 					GenerationStep.Feature.UNDERGROUND_DECORATION,
-					NETHER_CHEST.configure(FeatureConfig.DEFAULT).decorate(Decorator.CHANCE.configure(new ChanceDecoratorConfig(config.undergroundFeatures.netherChestRarity))),
+					NETHER_CHEST.configure(FeatureConfig.DEFAULT).decorate(Decorator.CHANCE.configure(new ChanceDecoratorConfig(config.netherChestRarity))),
 					NETHER);
 		}
 	}
@@ -101,8 +101,10 @@ public final class CaveBiomesFeatures {
 			// create a mutable list
 			List<Supplier<ConfiguredFeature<?, ?>>> features = index < featureSteps.size() ? new ArrayList<>(featureSteps.get(index)) : new ArrayList<>();
 
-			// Add our feature
-			features.add(() -> feature);
+			if (step == featureStep) {
+				// Add our feature if we're in the correct step
+				features.add(() -> feature);
+			}
 
 			// Add entry
 			newFeatures.add(features);
@@ -128,5 +130,5 @@ public final class CaveBiomesFeatures {
 	public static final TreasureChestFeature NETHER_CHEST = new TreasureChestFeature(2, TreasureChestFeature.Type.NETHER);
 
 	public static final MobSpawnerFeature CAVE_SPAWNER = new MobSpawnerFeature(3, 50, EntityType.ZOMBIE, EntityType.SPIDER);
-	public static final MobSpawnerFeature RARE_CAVE_SPAWNER = new MobSpawnerFeature(4, 35, EntityType.SKELETON, EntityType.SKELETON, EntityType.SKELETON, EntityType.CAVE_SPIDER, EntityType.CREEPER);
+	public static final MobSpawnerFeature RARE_CAVE_SPAWNER = new MobSpawnerFeature(4, 35, EntityType.SKELETON, EntityType.SKELETON, EntityType.CAVE_SPIDER, EntityType.SPIDER, EntityType.SILVERFISH);
 }
