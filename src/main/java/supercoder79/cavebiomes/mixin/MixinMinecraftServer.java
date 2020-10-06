@@ -35,7 +35,7 @@ public class MixinMinecraftServer {
                 CarverHelper.addTo(biome, CaveBiomeCarvers.ROOM.method_28614(new ProbabilityConfig(1 / 6.0f)));
                 CarverHelper.addTo(biome, CaveBiomeCarvers.VERTICAL.method_28614(new ProbabilityConfig(1 / 6.0f)));
                 CarverHelper.addTo(biome, CaveBiomeCarvers.HORIZONTAL.method_28614(new ProbabilityConfig(1 / 8.0f)));
-                CarverHelper.addTo(biome, CaveBiomeCarvers.LAVA_ROOM.method_28614(new ProbabilityConfig(1 / 20.0f)));
+                CarverHelper.addTo(biome, CaveBiomeCarvers.LAVA_ROOM.method_28614(new ProbabilityConfig(1 / 32.0f)));
             }
         }
     }
