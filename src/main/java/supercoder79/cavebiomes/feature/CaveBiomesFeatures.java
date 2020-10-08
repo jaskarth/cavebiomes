@@ -35,44 +35,13 @@ public final class CaveBiomesFeatures {
 
 		// add generation
 
-		// ================
-		//    OVERWORLD
-		// ================
-
 		if (config.generateUndergroundLootChests) {
-			addFeatureTo(
-					GenerationStep.Feature.VEGETAL_DECORATION,
-					CAVERN_CHEST.configure(FeatureConfig.DEFAULT).decorate(Decorator.CHANCE.configure(new ChanceDecoratorConfig(config.cavernChestRarity))),
-					OVERWORLD);
 
-			addFeatureTo(
-					GenerationStep.Feature.VEGETAL_DECORATION,
-					SPELUNKERS_CHEST.configure(FeatureConfig.DEFAULT).decorate(Decorator.CHANCE.configure(new ChanceDecoratorConfig(config.spelunkersChestRarity))),
-					OVERWORLD);
 		}
 
-		if (config.generateUndergroundSpawners) {
-			addFeatureTo(
-					GenerationStep.Feature.VEGETAL_DECORATION,
-					CAVE_SPAWNER.configure(FeatureConfig.DEFAULT).decorate(Decorator.CHANCE.configure(new ChanceDecoratorConfig(config.normalSpawnerRarity))),
-					OVERWORLD);
 
-			addFeatureTo(
-					GenerationStep.Feature.VEGETAL_DECORATION,
-					RARE_CAVE_SPAWNER.configure(FeatureConfig.DEFAULT).decorate(Decorator.CHANCE.configure(new ChanceDecoratorConfig(config.rareSpawnerRarity))),
-					OVERWORLD);
-		}
 
-		// ================
-		//      NETHER
-		// ================
 
-		if (config.generateNetherLootChests) {
-			addFeatureTo(
-					GenerationStep.Feature.UNDERGROUND_DECORATION,
-					NETHER_CHEST.configure(FeatureConfig.DEFAULT).decorate(Decorator.CHANCE.configure(new ChanceDecoratorConfig(config.netherChestRarity))),
-					NETHER);
-		}
 	}
 
 	private static <C extends FeatureConfig, F extends Feature<C>, T extends ConfiguredFeature<C, F>> void addFeatureTo(final GenerationStep.Feature step, final T feature, final Predicate<Biome> predicate) {
@@ -89,7 +58,7 @@ public final class CaveBiomesFeatures {
 		Registry.register(Registry.FEATURE, new Identifier("cavebiomes", id), feature);
 	}
 
-	private static void addFeature(Biome biome, GenerationStep.Feature step, ConfiguredFeature<?, ?> feature) {
+	public static void addFeature(Biome biome, GenerationStep.Feature step, ConfiguredFeature<?, ?> feature) {
 		List<List<Supplier<ConfiguredFeature<?, ?>>>> featureSteps = biome.getGenerationSettings().getFeatures();
 
 		// Mutable List

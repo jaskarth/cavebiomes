@@ -30,6 +30,7 @@ public class TreasureChestFeature extends Feature<DefaultFeatureConfig> {
 		this.consumption = consumption;
 	}
 
+	//TODO: use block tags instead of block checks
 	public enum Type {
 		// overworld
 		CAVERN(63, bs -> bs.getMaterial() == Material.STONE || bs.getBlock() == Blocks.DIRT, TreasureLootTables.CAVERN_CHEST),

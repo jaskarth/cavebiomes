@@ -18,10 +18,10 @@ import java.util.List;
 @Mixin(ChunkStatus.class)
 public class MixinChunkStatus {
     @Inject(method = "method_16563", at = @At("HEAD"), remap = false, cancellable = true)
-    private static void carveSanelyAir(ServerWorld world, ChunkGenerator generator, List<Chunk> list, Chunk chunk, CallbackInfo info) {
+    private static void handleCaveBiomesCarving(ServerWorld world, ChunkGenerator generator, List<Chunk> list, Chunk chunk, CallbackInfo info) {
         if (generator instanceof WorldCarverAccess) {
             ((WorldCarverAccess)generator).carve(world.getSeed(), new ChunkRegion(world, list), world.getBiomeAccess().withSource(generator.getBiomeSource()), chunk, GenerationStep.Carver.AIR);
+            info.cancel();
         }
-        info.cancel();
     }
 }
