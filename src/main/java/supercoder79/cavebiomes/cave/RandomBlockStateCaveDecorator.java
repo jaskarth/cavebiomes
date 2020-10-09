@@ -20,7 +20,7 @@ public class RandomBlockStateCaveDecorator extends CaveDecorator {
     @Override
     public void decorate(ChunkRegion world, Chunk chunk, Set<BlockPos> positions) {
         for (BlockPos pos : positions) {
-            // Try to set a packed ice block in every direction
+            // Try to set a block in every direction
             for (Direction direction : Direction.values()) {
                 trySet(world, chunk, pos.offset(direction));
             }

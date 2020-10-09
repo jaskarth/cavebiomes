@@ -16,7 +16,7 @@ import supercoder79.cavebiomes.layer.RandomStoneLayer;
 import supercoder79.cavebiomes.layer.RareCaveLayer;
 
 public class CaveBiomes implements ModInitializer {
-	public static final String VERSION = "0.4.0";
+	public static final String VERSION = "0.5.0";
 
 	public static ConfigData CONFIG;
 
@@ -35,6 +35,7 @@ public class CaveBiomes implements ModInitializer {
 		CaveBiomesAPI.registerBaseCaveDecorator(CaveDecorators.MAGMA);
 		CaveBiomesAPI.registerBaseCaveDecorator(CaveDecorators.COBBLESTONE);
 		CaveBiomesAPI.registerBaseCaveDecorator(CaveDecorators.GRAVEL);
+		CaveBiomesAPI.registerBaseCaveDecorator(CaveDecorators.SANDSTONE);
 
 		// Stone cave decorators
 		CaveBiomesAPI.registerCaveDecorator(CaveDecorators.ANDESITE);

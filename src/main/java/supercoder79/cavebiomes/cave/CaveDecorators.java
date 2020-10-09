@@ -32,6 +32,7 @@ public class CaveDecorators {
     public static final CaveDecorator MAGMA = new RandomBlockStateCaveDecorator(Blocks.MAGMA_BLOCK.getDefaultState(), 12);
     public static final CaveDecorator COBBLESTONE = new RandomBlockStateCaveDecorator(Blocks.COBBLESTONE.getDefaultState(), 6);
     public static final CaveDecorator GRAVEL = new FloorStateCaveDecorator(Blocks.GRAVEL.getDefaultState(), 3);
+    public static final CaveDecorator SANDSTONE = new SandstoneCaveDecorator();
 
     //ore caves (lower)
     public static final CaveDecorator COAL = new RandomBlockStateCaveDecorator(Blocks.COAL_ORE.getDefaultState(), 16);
