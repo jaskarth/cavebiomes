@@ -30,7 +30,7 @@ public class CaveBiomes implements ModInitializer {
 		CaveBiomesAPI.registerBaseCaveDecorator(CaveDecorators.NONE);
 		CaveBiomesAPI.registerBaseCaveDecorator(CaveDecorators.WATER);
 		CaveBiomesAPI.registerBaseCaveDecorator(CaveDecorators.LAVA);
-		CaveBiomesAPI.registerBaseCaveDecorator(CaveDecorators.VINES);
+		CaveBiomesAPI.registerBaseCaveDecorator(CaveDecorators.LUSH);
 		CaveBiomesAPI.registerBaseCaveDecorator(CaveDecorators.OBSIDIAN);
 		CaveBiomesAPI.registerBaseCaveDecorator(CaveDecorators.MAGMA);
 		CaveBiomesAPI.registerBaseCaveDecorator(CaveDecorators.COBBLESTONE);
