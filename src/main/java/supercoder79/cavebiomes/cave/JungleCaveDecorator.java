@@ -61,7 +61,7 @@ public class JungleCaveDecorator extends CaveDecorator {
         if (this.vines) {
             //vine generation (yeah this is even more cursed)
             for (BlockPos pos : positions) {
-                if (world.getRandom().nextInt(4) == 0 && (pos.getX() & 15) != 15 && (pos.getZ() & 15) != 15 && (pos.getX() & 15) != 0 && (pos.getZ() & 15) != 0) {
+                if (world.getRandom().nextInt(2) == 0 && (pos.getX() & 15) != 15 && (pos.getZ() & 15) != 15 && (pos.getX() & 15) != 0 && (pos.getZ() & 15) != 0) {
                     int num = world.getRandom().nextInt(4);
                     if (num == 0) {
                         if (chunk.getBlockState(pos.north()).isOpaque()) {
