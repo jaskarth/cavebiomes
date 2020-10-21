@@ -56,8 +56,8 @@ public class FloodFill {
 
             // An assortment of debug features
 //            System.out.println("Flooded filled at " + pos + " with " + filled.size() + " blocks in " + (System.currentTimeMillis() - start) + " ms");
-            world.setBlockState(pos, Blocks.DIAMOND_BLOCK.getDefaultState(), 3);
-            world.setBlockState(startPos, Blocks.EMERALD_BLOCK.getDefaultState(), 3);
+//            world.setBlockState(pos, Blocks.DIAMOND_BLOCK.getDefaultState(), 3);
+//            world.setBlockState(startPos, Blocks.EMERALD_BLOCK.getDefaultState(), 3);
         }
     }
 
