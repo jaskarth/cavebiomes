@@ -33,15 +33,10 @@ public final class CaveBiomesFeatures {
 		registerFeature("cave_spawner", CAVE_SPAWNER);
 		registerFeature("rare_cave_spawner", RARE_CAVE_SPAWNER);
 
+		registerFeature("cave_biomes", CAVE_BIOMES);
+		registerFeature("local_water_levels", LOCAL_WATER_LEVELS);
+
 		// add generation
-
-		if (config.generateUndergroundLootChests) {
-
-		}
-
-
-
-
 	}
 
 	private static <C extends FeatureConfig, F extends Feature<C>, T extends ConfiguredFeature<C, F>> void addFeatureTo(final GenerationStep.Feature step, final T feature, final Predicate<Biome> predicate) {
@@ -92,6 +87,9 @@ public final class CaveBiomesFeatures {
 		Biome.Category category = biome.getCategory();
 		return category == Biome.Category.NETHER;
 	};
+
+	public static final AddCaveBiomesFeature CAVE_BIOMES = new AddCaveBiomesFeature();
+	public static final LocalWaterLevelsFeature LOCAL_WATER_LEVELS = new LocalWaterLevelsFeature();
 
 	public static final TreasureChestFeature CAVERN_CHEST = new TreasureChestFeature(0, TreasureChestFeature.Type.CAVERN);
 	public static final TreasureChestFeature SPELUNKERS_CHEST = new TreasureChestFeature(1, TreasureChestFeature.Type.SPELUNKERS);

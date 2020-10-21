@@ -16,7 +16,7 @@ import supercoder79.cavebiomes.layer.RandomStoneLayer;
 import supercoder79.cavebiomes.layer.RareCaveLayer;
 
 public class CaveBiomes implements ModInitializer {
-	public static final String VERSION = "0.5.0";
+	public static final String VERSION = "0.6.0";
 
 	public static ConfigData CONFIG;
 
@@ -62,10 +62,10 @@ public class CaveBiomes implements ModInitializer {
 		CaveBiomesAPI.registerCaveLayer(new OreCaveLayer());
 
 		// Carver stuff
-		Registry.register(Registry.CARVER, new Identifier("cave_biomes", "room_carver"), CaveBiomeCarvers.ROOM);
-		Registry.register(Registry.CARVER, new Identifier("cave_biomes", "vertical_carver"), CaveBiomeCarvers.VERTICAL);
-		Registry.register(Registry.CARVER, new Identifier("cave_biomes", "horizontal_carver"), CaveBiomeCarvers.HORIZONTAL);
-		Registry.register(Registry.CARVER, new Identifier("cave_biomes", "lava_room_carver"), CaveBiomeCarvers.LAVA_ROOM);
+		Registry.register(Registry.CARVER, new Identifier("cavebiomes", "room_carver"), CaveBiomeCarvers.ROOM);
+		Registry.register(Registry.CARVER, new Identifier("cavebiomes", "vertical_carver"), CaveBiomeCarvers.VERTICAL);
+		Registry.register(Registry.CARVER, new Identifier("cavebiomes", "horizontal_carver"), CaveBiomeCarvers.HORIZONTAL);
+		Registry.register(Registry.CARVER, new Identifier("cavebiomes", "lava_room_carver"), CaveBiomeCarvers.LAVA_ROOM);
 
 		// Add enabled chests and spawners
 		CaveBiomesFeatures.addEnabledFeatures(CONFIG);

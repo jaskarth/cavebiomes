@@ -96,9 +96,6 @@ public class VanillaCompat {
     }
 
     public static CaveDecorator guessCaveDecorator(Biome biome) {
-        if (!CaveBiomes.CONFIG.guessCaveBiomeIfAbsent) {
-            return CaveDecorators.NONE;
-        }
         //attempt to add biome heuristically
 
         //if it's icy, or has snow, register snowy cave

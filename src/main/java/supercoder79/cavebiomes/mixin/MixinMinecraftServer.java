@@ -16,6 +16,7 @@ import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.ProbabilityConfig;
 import net.minecraft.world.gen.decorator.ChanceDecoratorConfig;
 import net.minecraft.world.gen.decorator.Decorator;
+import net.minecraft.world.gen.decorator.NopeDecoratorConfig;
 import net.minecraft.world.gen.feature.FeatureConfig;
 import net.minecraft.world.level.storage.LevelStorage;
 import org.spongepowered.asm.mixin.Mixin;
@@ -40,6 +41,17 @@ public class MixinMinecraftServer {
 
         //TODO: write an api for this
         for (Biome biome : biomes) {
+            if (config.generateLocalWaterLevels) {
+                CaveBiomesFeatures.addFeature(biome,
+                        GenerationStep.Feature.LAKES,
+                        CaveBiomesFeatures.LOCAL_WATER_LEVELS.configure(FeatureConfig.DEFAULT).decorate(Decorator.NOPE.configure(NopeDecoratorConfig.INSTANCE)));
+            }
+
+            // Use step 2- better caves uses step 1
+            CaveBiomesFeatures.addFeature(biome,
+                    GenerationStep.Feature.LAKES,
+                    CaveBiomesFeatures.CAVE_BIOMES.configure(FeatureConfig.DEFAULT).decorate(Decorator.NOPE.configure(NopeDecoratorConfig.INSTANCE)));
+
             if (config.generateNewCaves && CarverHelper.shouldAdd(biome)) {
                 CarverHelper.addTo(biome, CaveBiomeCarvers.ROOM.method_28614(new ProbabilityConfig(1 / 6.0f)));
                 CarverHelper.addTo(biome, CaveBiomeCarvers.VERTICAL.method_28614(new ProbabilityConfig(1 / 6.0f)));
