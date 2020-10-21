@@ -25,7 +25,7 @@ public class FloodFill {
         // Begin a flood fill, using a depth first search (in order to quickly eliminate locations due to invalid boundary conditions)
         Set<BlockPos> filled = new HashSet<>();
         BlockPos.Mutable mutablePos = new BlockPos.Mutable();
-        BlockPos startPos = pos.up();
+        BlockPos startPos = findStart(world, pos, box);
 
         // Initial placement is surface level, so start filling one block above
         boolean bounded = tryFloodFill(world, startPos, box, filled, mutablePos);
@@ -33,10 +33,10 @@ public class FloodFill {
             Set<BlockPos> lowestFilled = new HashSet<>(filled);
 
             // Iterate upwards, but only add the found blocks if the flood fill was bounded. Iterate upwards until the fill is unbounded
-            int y = 2;
-            int max = random.nextInt(4) + 2;
+            int y = 1;
+            int max = random.nextInt(6) + random.nextInt(6) + 2;
             Set<BlockPos> possibleFilled = new HashSet<>();
-            while (tryFloodFill(world, pos.up(y), box, possibleFilled, mutablePos)) {
+            while (tryFloodFill(world, startPos.up(y), box, possibleFilled, mutablePos)) {
                 y++;
                 filled.addAll(possibleFilled);
                 possibleFilled.clear();
@@ -53,7 +53,11 @@ public class FloodFill {
                 world.setBlockState(filledPos, Blocks.WATER.getDefaultState(), 2);
                 world.getFluidTickScheduler().schedule(filledPos, Fluids.WATER, 0);
             }
+
+            // An assortment of debug features
 //            System.out.println("Flooded filled at " + pos + " with " + filled.size() + " blocks in " + (System.currentTimeMillis() - start) + " ms");
+//            world.setBlockState(pos, Blocks.DIAMOND_BLOCK.getDefaultState(), 3);
+//            world.setBlockState(startPos, Blocks.EMERALD_BLOCK.getDefaultState(), 3);
         }
     }
 
@@ -104,6 +108,70 @@ public class FloodFill {
     }
 
     private static boolean isFloodFillable(BlockState state) {
-        return state.isAir() || state.getMaterial().isReplaceable();
+        return state.isAir() || (state.getMaterial().isReplaceable() && state.getBlock() != Blocks.LAVA);
+    }
+
+    private static BlockPos findStart(ChunkRegion world, BlockPos base, BlockBox box) {
+        if (world.getBlockState(base).isOpaque()) {
+            return base; // can't spawn- let the other code deal with it
+        }
+
+        BlockPos.Mutable mutable = base.mutableCopy();
+        while (mutable.getY() > 11) {
+            if (world.getBlockState(mutable.down()).isOpaque()) {
+                break;
+            }
+
+            mutable.move(Direction.DOWN);
+        }
+
+        Set<BlockPos> positions = new HashSet<>();
+        lower(world, mutable.toImmutable(), box, 0, positions);
+
+        BlockPos ret = base.toImmutable();
+        for (BlockPos position : positions) {
+
+            if (position.getY() < ret.getY()) {
+                ret = position.toImmutable();
+            }
+        }
+
+        return ret;
+    }
+
+    // TODO: this is awful, needs to optimized
+    private static void lower(ChunkRegion world, BlockPos pos, BlockBox box, int depth, Set<BlockPos> visited) {
+        int newDepth = depth + 1;
+
+        // We're out of bounds, return.
+        if (!box.contains(pos)) {
+            return;
+        }
+
+        visited.add(pos);
+
+        // Don't recurse too much
+        if (newDepth == 512) {
+            return;
+        }
+
+        // We've reached lava level- this is as low as it can go.
+        if (pos.getY() <= 10) {
+            return;
+        }
+
+        // Search downwards first
+        BlockPos down = pos.down();
+        if (world.getBlockState(down).isAir() && !visited.contains(down)) {
+            lower(world, down, box, newDepth, visited);
+        } else {
+            // Search all directions
+            for (Direction direction : Direction.Type.HORIZONTAL) {
+                BlockPos local = pos.offset(direction);
+                if (world.getBlockState(local).isAir() && !visited.contains(local)) {
+                    lower(world, local, box, newDepth, visited);
+                }
+            }
+        }
     }
 }

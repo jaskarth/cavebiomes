@@ -115,7 +115,7 @@ public abstract class MixinChunkGenerator implements WorldCarverAccess {
 
         int x = (chunkX << 4) + random.nextInt(16);
         int z = (chunkZ << 4) + random.nextInt(16);
-        int y = random.nextInt(52) + 8;
+        int y = random.nextInt(50) + 12;
         FloodFill.floodFill(world, random, new BlockPos(x, y, z), ImmutableSet.of());
     }
 }

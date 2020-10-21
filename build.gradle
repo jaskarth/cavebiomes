@@ -28,7 +28,7 @@ dependencies {
         exclude module : "fabric-loader"
     }
 //
-    modRuntime ("com.github.jellysquid3:sodium-fabric:2af6510d167f99f2dd68b2b5c46df01415c6169d")
+//    modRuntime ("com.github.jellysquid3:sodium-fabric:2af6510d167f99f2dd68b2b5c46df01415c6169d")
 //    modRuntime ("com.github.jellysquid3:phosphor-fabric:685f1fa60800bbbbe4784ed1906c5f66e130c584")
 //	modRuntime ("com.github.jellysquid3:lithium-fabric:f11bf948620d023e7df7b92ed8963c0f8f40d1f8")
 }
