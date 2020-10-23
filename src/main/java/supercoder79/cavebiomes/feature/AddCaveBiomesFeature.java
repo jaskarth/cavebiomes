@@ -67,7 +67,7 @@ public class AddCaveBiomesFeature extends Feature<DefaultFeatureConfig> {
 
         int threshold = CaveBiomes.CONFIG.caveLayerThreshold;
 
-        Biome biome = world.getBiomeAccess().getBiomeForNoiseGen(chunkPos.x << 2, 0, chunkPos.z << 2);
+        Biome biome = chunkGenerator.getBiomeSource().getBiomeForNoiseGen(chunkPos.x << 2, 0, chunkPos.z << 2);
 
         //regular biome based decoration
         Set<BlockPos> upperPos = positions.stream().filter(p -> p.getY() > threshold).collect(Collectors.toSet());
