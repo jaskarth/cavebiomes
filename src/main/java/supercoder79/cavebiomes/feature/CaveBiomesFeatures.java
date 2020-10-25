@@ -90,6 +90,7 @@ public final class CaveBiomesFeatures {
 
 	public static final AddCaveBiomesFeature CAVE_BIOMES = new AddCaveBiomesFeature();
 	public static final LocalWaterLevelsFeature LOCAL_WATER_LEVELS = new LocalWaterLevelsFeature();
+	public static final OreNoduleFeature ORE_NODULE = new OreNoduleFeature();
 
 	public static final TreasureChestFeature CAVERN_CHEST = new TreasureChestFeature(0, TreasureChestFeature.Type.CAVERN);
 	public static final TreasureChestFeature SPELUNKERS_CHEST = new TreasureChestFeature(1, TreasureChestFeature.Type.SPELUNKERS);

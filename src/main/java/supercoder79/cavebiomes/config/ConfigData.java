@@ -13,6 +13,7 @@ public class ConfigData {
 	public int caveLayerThreshold = 28;
 	public boolean generateNewCaves = true;
 	public boolean generateLocalWaterLevels = true;
+	public boolean generateOreNodules = true;
 	public boolean generateUndergroundLootChests = true;
 	public boolean generateNetherLootChests = true;
 	public boolean generateUndergroundSpawners = true;

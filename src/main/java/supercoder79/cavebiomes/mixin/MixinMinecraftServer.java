@@ -41,6 +41,12 @@ public class MixinMinecraftServer {
 
         //TODO: write an api for this
         for (Biome biome : biomes) {
+            if (config.generateOreNodules) {
+                CaveBiomesFeatures.addFeature(biome,
+                        GenerationStep.Feature.LAKES,
+                        CaveBiomesFeatures.ORE_NODULE.configure(FeatureConfig.DEFAULT).decorate(Decorator.NOPE.configure(NopeDecoratorConfig.INSTANCE)));
+            }
+
             if (config.generateLocalWaterLevels) {
                 CaveBiomesFeatures.addFeature(biome,
                         GenerationStep.Feature.LAKES,
