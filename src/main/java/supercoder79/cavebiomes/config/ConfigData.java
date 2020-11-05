@@ -12,6 +12,7 @@ public class ConfigData {
 	public List<String> whitelistedDimensions = Arrays.asList("minecraft:overworld");
 	public int caveLayerThreshold = 28;
 	public boolean generateNewCaves = true;
+	public boolean generateCaverns = true;
 	public boolean generateLocalWaterLevels = true;
 	public boolean generateOreNodules = true;
 	public boolean generateUndergroundLootChests = true;

@@ -66,6 +66,7 @@ public class CaveBiomes implements ModInitializer {
 		Registry.register(Registry.CARVER, new Identifier("cavebiomes", "vertical_carver"), CaveBiomeCarvers.VERTICAL);
 		Registry.register(Registry.CARVER, new Identifier("cavebiomes", "horizontal_carver"), CaveBiomeCarvers.HORIZONTAL);
 		Registry.register(Registry.CARVER, new Identifier("cavebiomes", "lava_room_carver"), CaveBiomeCarvers.LAVA_ROOM);
+		Registry.register(Registry.CARVER, new Identifier("cavebiomes", "perlerp_carver"), CaveBiomeCarvers.PERLERP);
 
 		// Add enabled chests and spawners
 		CaveBiomesFeatures.addEnabledFeatures(CONFIG);

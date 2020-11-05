@@ -58,6 +58,10 @@ public class MixinMinecraftServer {
                     GenerationStep.Feature.LAKES,
                     CaveBiomesFeatures.CAVE_BIOMES.configure(FeatureConfig.DEFAULT).decorate(Decorator.NOPE.configure(NopeDecoratorConfig.INSTANCE)));
 
+            if (config.generateCaverns) {
+                CarverHelper.addTo(biome, CaveBiomeCarvers.PERLERP.method_28614(new ProbabilityConfig(1)));
+            }
+
             if (config.generateNewCaves && CarverHelper.shouldAdd(biome)) {
                 CarverHelper.addTo(biome, CaveBiomeCarvers.ROOM.method_28614(new ProbabilityConfig(1 / 6.0f)));
                 CarverHelper.addTo(biome, CaveBiomeCarvers.VERTICAL.method_28614(new ProbabilityConfig(1 / 6.0f)));
