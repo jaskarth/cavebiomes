@@ -59,14 +59,14 @@ public class MixinMinecraftServer {
                     CaveBiomesFeatures.CAVE_BIOMES.configure(FeatureConfig.DEFAULT).decorate(Decorator.NOPE.configure(NopeDecoratorConfig.INSTANCE)));
 
             if (config.generateCaverns) {
-                CarverHelper.addTo(biome, CaveBiomeCarvers.PERLERP.method_28614(new ProbabilityConfig(1)));
+                CarverHelper.addTo(biome, CaveBiomeCarvers.PERLERP.configure(new ProbabilityConfig(1)));
             }
 
             if (config.generateNewCaves && CarverHelper.shouldAdd(biome)) {
-                CarverHelper.addTo(biome, CaveBiomeCarvers.ROOM.method_28614(new ProbabilityConfig(1 / 6.0f)));
-                CarverHelper.addTo(biome, CaveBiomeCarvers.VERTICAL.method_28614(new ProbabilityConfig(1 / 6.0f)));
-                CarverHelper.addTo(biome, CaveBiomeCarvers.HORIZONTAL.method_28614(new ProbabilityConfig(1 / 8.0f)));
-                CarverHelper.addTo(biome, CaveBiomeCarvers.LAVA_ROOM.method_28614(new ProbabilityConfig(1 / 32.0f)));
+                CarverHelper.addTo(biome, CaveBiomeCarvers.ROOM.configure(new ProbabilityConfig(1 / 6.0f)));
+                CarverHelper.addTo(biome, CaveBiomeCarvers.VERTICAL.configure(new ProbabilityConfig(1 / 6.0f)));
+                CarverHelper.addTo(biome, CaveBiomeCarvers.HORIZONTAL.configure(new ProbabilityConfig(1 / 8.0f)));
+                CarverHelper.addTo(biome, CaveBiomeCarvers.LAVA_ROOM.configure(new ProbabilityConfig(1 / 32.0f)));
             }
 
             if (config.generateUndergroundLootChests) {

@@ -20,7 +20,7 @@ public class FloodFill {
     public static void floodFill(ChunkRegion world, Random random, BlockPos pos, Set<BlockPos> carvedPositions) {
         long start = System.currentTimeMillis();
         ChunkPos chunkPos = new ChunkPos(pos);
-        BlockBox box = new BlockBox(chunkPos.getStartX() - 14, chunkPos.getStartZ() - 14, chunkPos.getEndX() + 14, chunkPos.getEndZ() + 14); // Leeway so we can check outside this box
+        BlockBox box = new BlockBox(chunkPos.getStartX() - 14, 1, chunkPos.getStartZ() - 14, chunkPos.getEndX() + 14, 512, chunkPos.getEndZ() + 14); // Leeway so we can check outside this box
 
         // Begin a flood fill, using a depth first search (in order to quickly eliminate locations due to invalid boundary conditions)
         Set<BlockPos> filled = new HashSet<>();
