@@ -1,8 +1,10 @@
 package supercoder79.cavebiomes.mixin;
 
+import com.google.common.collect.ImmutableList;
 import com.mojang.authlib.GameProfileRepository;
 import com.mojang.authlib.minecraft.MinecraftSessionService;
 import com.mojang.datafixers.DataFixer;
+import net.minecraft.block.Blocks;
 import net.minecraft.resource.ResourcePackManager;
 import net.minecraft.resource.ServerResourceManager;
 import net.minecraft.server.MinecraftServer;
@@ -14,20 +16,22 @@ import net.minecraft.world.SaveProperties;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.ProbabilityConfig;
-import net.minecraft.world.gen.decorator.ChanceDecoratorConfig;
 import net.minecraft.world.gen.decorator.Decorator;
 import net.minecraft.world.gen.decorator.NopeDecoratorConfig;
-import net.minecraft.world.gen.feature.FeatureConfig;
+import net.minecraft.world.gen.decorator.RangeDecoratorConfig;
+import net.minecraft.world.gen.feature.*;
+import net.minecraft.world.gen.stateprovider.SimpleBlockStateProvider;
 import net.minecraft.world.level.storage.LevelStorage;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import supercoder79.cavebiomes.CaveBiomes;
-import supercoder79.cavebiomes.carver.CarverHelper;
-import supercoder79.cavebiomes.carver.CaveBiomeCarvers;
+import supercoder79.cavebiomes.api.CaveBiomesAPI;
+import supercoder79.cavebiomes.world.carver.CarverHelper;
+import supercoder79.cavebiomes.world.carver.CaveBiomeCarvers;
 import supercoder79.cavebiomes.config.ConfigData;
-import supercoder79.cavebiomes.feature.CaveBiomesFeatures;
+import supercoder79.cavebiomes.world.feature.CaveBiomesFeatures;
 
 import java.net.Proxy;
 
@@ -41,10 +45,31 @@ public class MixinMinecraftServer {
 
         //TODO: write an api for this
         for (Biome biome : biomes) {
+//            System.out.println(biomes.getId(biome) + " -> " + CaveBiomesAPI.getCaveDecoratorForBiome(biomes, biome));
+
             if (config.generateOreNodules) {
                 CaveBiomesFeatures.addFeature(biome,
                         GenerationStep.Feature.LAKES,
                         CaveBiomesFeatures.ORE_NODULE.configure(FeatureConfig.DEFAULT).decorate(Decorator.NOPE.configure(NopeDecoratorConfig.INSTANCE)));
+
+                // TODO: add this
+//                CaveBiomesFeatures.addFeature(biome,
+//                        GenerationStep.Feature.LAKES,
+//                        Feature.GEODE.configure(
+//                                new GeodeFeatureConfig(
+//                                        new GeodeLayerConfig(
+//                                                new SimpleBlockStateProvider(Blocks.AIR.getDefaultState()),
+//                                                new SimpleBlockStateProvider(Blocks.CALCITE.getDefaultState()),
+//                                                new SimpleBlockStateProvider(Blocks.EMERALD_ORE.getDefaultState()),
+//                                                new SimpleBlockStateProvider(Blocks.CALCITE.getDefaultState()),
+//                                                new SimpleBlockStateProvider(Blocks.CALCITE.getDefaultState()),
+//                                                ImmutableList.of(Blocks.EMERALD_ORE.getDefaultState())),
+//                                        new GeodeLayerThicknessConfig(2.1D, 3.2D, 4.4D, 5.2D),
+//                                        new GeodeCrackConfig(0.8D, 2.75D, 2),
+//                                        0.125D, 0.2D, true,
+//                                        6, 8, 4, 5,
+//                                        1, 5, -24, 24, 0.0725D))
+//                                .decorate(Decorator.RANGE.configure(new RangeDecoratorConfig(6, 0, 47))).spreadHorizontally().applyChance(48));
             }
 
             if (config.generateLocalWaterLevels) {
@@ -73,11 +98,11 @@ public class MixinMinecraftServer {
                 if (CaveBiomesFeatures.OVERWORLD.test(biome)) {
                     CaveBiomesFeatures.addFeature(biome,
                             GenerationStep.Feature.VEGETAL_DECORATION,
-                            CaveBiomesFeatures.CAVERN_CHEST.configure(FeatureConfig.DEFAULT).decorate(Decorator.CHANCE.configure(new ChanceDecoratorConfig(config.cavernChestRarity))));
+                            CaveBiomesFeatures.CAVERN_CHEST.configure(FeatureConfig.DEFAULT).spreadHorizontally().applyChance(config.cavernChestRarity));
 
                     CaveBiomesFeatures.addFeature(biome,
                             GenerationStep.Feature.VEGETAL_DECORATION,
-                            CaveBiomesFeatures.SPELUNKERS_CHEST.configure(FeatureConfig.DEFAULT).decorate(Decorator.CHANCE.configure(new ChanceDecoratorConfig(config.spelunkersChestRarity))));
+                            CaveBiomesFeatures.SPELUNKERS_CHEST.configure(FeatureConfig.DEFAULT).spreadHorizontally().applyChance(config.spelunkersChestRarity));
                 }
             }
 
@@ -85,11 +110,11 @@ public class MixinMinecraftServer {
                 if (CaveBiomesFeatures.OVERWORLD.test(biome)) {
                     CaveBiomesFeatures.addFeature(biome,
                             GenerationStep.Feature.VEGETAL_DECORATION,
-                            CaveBiomesFeatures.CAVE_SPAWNER.configure(FeatureConfig.DEFAULT).decorate(Decorator.CHANCE.configure(new ChanceDecoratorConfig(config.normalSpawnerRarity))));
+                            CaveBiomesFeatures.CAVE_SPAWNER.configure(FeatureConfig.DEFAULT).spreadHorizontally().applyChance(config.normalSpawnerRarity));
 
                     CaveBiomesFeatures.addFeature(biome,
                             GenerationStep.Feature.VEGETAL_DECORATION,
-                            CaveBiomesFeatures.RARE_CAVE_SPAWNER.configure(FeatureConfig.DEFAULT).decorate(Decorator.CHANCE.configure(new ChanceDecoratorConfig(config.rareSpawnerRarity))));
+                            CaveBiomesFeatures.RARE_CAVE_SPAWNER.configure(FeatureConfig.DEFAULT).spreadHorizontally().applyChance(config.rareSpawnerRarity));
                 }
             }
 
@@ -97,7 +122,7 @@ public class MixinMinecraftServer {
                 if (CaveBiomesFeatures.NETHER.test(biome)) {
                     CaveBiomesFeatures.addFeature(biome,
                             GenerationStep.Feature.UNDERGROUND_DECORATION,
-                            CaveBiomesFeatures.NETHER_CHEST.configure(FeatureConfig.DEFAULT).decorate(Decorator.CHANCE.configure(new ChanceDecoratorConfig(config.netherChestRarity))));
+                            CaveBiomesFeatures.NETHER_CHEST.configure(FeatureConfig.DEFAULT).spreadHorizontally().applyChance(config.netherChestRarity));
                 }
             }
         }

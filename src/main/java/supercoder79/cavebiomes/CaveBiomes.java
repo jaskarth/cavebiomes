@@ -1,19 +1,20 @@
 package supercoder79.cavebiomes;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import supercoder79.cavebiomes.api.CaveBiomesAPI;
-import supercoder79.cavebiomes.carver.CaveBiomeCarvers;
-import supercoder79.cavebiomes.cave.CaveDecorators;
-import supercoder79.cavebiomes.compat.VanillaCompat;
+import supercoder79.cavebiomes.world.carver.CaveBiomeCarvers;
+import supercoder79.cavebiomes.world.decorator.CaveDecorators;
+import supercoder79.cavebiomes.command.MapCaveBiomesCommand;
+import supercoder79.cavebiomes.command.NightVisionCommand;
+import supercoder79.cavebiomes.world.compat.VanillaCompat;
 import supercoder79.cavebiomes.config.ConfigData;
 import supercoder79.cavebiomes.config.ConfigIO;
-import supercoder79.cavebiomes.feature.CaveBiomesFeatures;
-import supercoder79.cavebiomes.layer.CaveInitLayer;
-import supercoder79.cavebiomes.layer.OreCaveLayer;
-import supercoder79.cavebiomes.layer.RandomStoneLayer;
-import supercoder79.cavebiomes.layer.RareCaveLayer;
+import supercoder79.cavebiomes.world.feature.CaveBiomesFeatures;
+import supercoder79.cavebiomes.world.layer.CaveInitLayer;
+import supercoder79.cavebiomes.world.layer.RandomStoneLayer;
 
 public class CaveBiomes implements ModInitializer {
 	public static final String VERSION = "0.6.0";
@@ -27,7 +28,6 @@ public class CaveBiomes implements ModInitializer {
 		VanillaCompat.addVanillaBiomes();
 
 		// Base cave decorators
-		CaveBiomesAPI.registerBaseCaveDecorator(CaveDecorators.NONE);
 		CaveBiomesAPI.registerBaseCaveDecorator(CaveDecorators.WATER);
 		CaveBiomesAPI.registerBaseCaveDecorator(CaveDecorators.LAVA);
 		CaveBiomesAPI.registerBaseCaveDecorator(CaveDecorators.LUSH);
@@ -58,8 +58,6 @@ public class CaveBiomes implements ModInitializer {
 		// Register cave layers
 		CaveBiomesAPI.registerCaveLayer(new CaveInitLayer());
 		CaveBiomesAPI.registerCaveLayer(new RandomStoneLayer());
-		CaveBiomesAPI.registerCaveLayer(new RareCaveLayer());
-		CaveBiomesAPI.registerCaveLayer(new OreCaveLayer());
 
 		// Carver stuff
 		Registry.register(Registry.CARVER, new Identifier("cavebiomes", "room_carver"), CaveBiomeCarvers.ROOM);
@@ -70,5 +68,11 @@ public class CaveBiomes implements ModInitializer {
 
 		// Add enabled chests and spawners
 		CaveBiomesFeatures.addEnabledFeatures(CONFIG);
+
+		// Development-only commands
+		if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
+			MapCaveBiomesCommand.init();
+			NightVisionCommand.init();
+		}
 	}
 }

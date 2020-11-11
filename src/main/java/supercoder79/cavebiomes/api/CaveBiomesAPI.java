@@ -3,9 +3,9 @@ package supercoder79.cavebiomes.api;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.biome.Biome;
-import supercoder79.cavebiomes.cave.CaveDecorator;
+import supercoder79.cavebiomes.world.decorator.CaveDecorator;
 import supercoder79.cavebiomes.impl.CaveBiomesImpl;
-import supercoder79.cavebiomes.layer.CaveLayer;
+import supercoder79.cavebiomes.world.layer.CaveLayer;
 
 import java.util.List;
 

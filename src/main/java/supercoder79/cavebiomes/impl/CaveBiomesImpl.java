@@ -4,10 +4,10 @@ import com.google.common.collect.ImmutableList;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.biome.Biome;
-import supercoder79.cavebiomes.cave.CaveDecorator;
-import supercoder79.cavebiomes.cave.CaveDecorators;
-import supercoder79.cavebiomes.compat.VanillaCompat;
-import supercoder79.cavebiomes.layer.CaveLayer;
+import supercoder79.cavebiomes.world.decorator.CaveDecorator;
+import supercoder79.cavebiomes.world.decorator.CaveDecorators;
+import supercoder79.cavebiomes.world.compat.VanillaCompat;
+import supercoder79.cavebiomes.world.layer.CaveLayer;
 
 import java.util.*;
 
