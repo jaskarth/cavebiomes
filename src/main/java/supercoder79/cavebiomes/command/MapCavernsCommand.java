@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.LiteralText;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.noise.OctavePerlinNoiseSampler;
 import net.minecraft.world.gen.ChunkRandom;
 import supercoder79.cavebiomes.world.carver.PerlerpCarver;
@@ -46,15 +47,17 @@ public class MapCavernsCommand {
                 PerlerpCarver.sampleNoiseColumn(buffer, x, z, caveNoise, offsetNoise);
 
                 boolean isAir = false;
+                int sections = 0;
 
                 for (double density : buffer) {
                     if (density < 0) {
                         isAir = true;
-                        break;
+                        sections++;
                     }
                 }
 
-                img.setRGB(x + 512, z + 512, isAir ? 0xe09fd9 : 0xadadad);
+                double lerp = (sections / 9.0);
+                img.setRGB(x + 512, z + 512, isAir ? getIntFromColor((int)MathHelper.lerp(lerp, 242, 235), (int)MathHelper.lerp(lerp, 160, 35), (int)MathHelper.lerp(lerp, 233, 213)) : 0xadadad);
             }
         }
 
@@ -69,5 +72,13 @@ public class MapCavernsCommand {
         source.sendFeedback(new LiteralText("Mapped caverns!"), false);
 
         return 0;
+    }
+
+    private static int getIntFromColor(int red, int green, int blue) {
+        red = (red << 16) & 0x00FF0000; //Shift red 16-bits and mask out other stuff
+        green = (green << 8) & 0x0000FF00; //Shift green 8-bits and mask out other stuff
+        blue = blue & 0x000000FF; //Mask out anything not blue.
+
+        return 0xFF000000 | red | green | blue; //0xFF000000 for 100% Alpha. Bitwise OR everything together.
     }
 }

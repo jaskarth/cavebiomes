@@ -4,9 +4,9 @@ import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.ChunkRegion;
-import net.minecraft.world.chunk.Chunk;
+import supercoder79.cavebiomes.api.CaveDecorator;
 
-import java.util.Set;
+import java.util.Random;
 
 public class RandomBlockStateCaveDecorator extends CaveDecorator {
     private final BlockState state;
@@ -18,19 +18,17 @@ public class RandomBlockStateCaveDecorator extends CaveDecorator {
     }
 
     @Override
-    public void decorate(ChunkRegion world, Chunk chunk, Set<BlockPos> positions) {
-        for (BlockPos pos : positions) {
-            // Try to set a block in every direction
-            for (Direction direction : Direction.values()) {
-                trySet(world, chunk, pos.offset(direction));
-            }
+    public void decorate(ChunkRegion world, Random random, BlockPos pos) {
+        // Try to set a block in every direction
+        for (Direction direction : Direction.values()) {
+            trySet(world, random, pos.offset(direction));
         }
     }
 
-    private void trySet(ChunkRegion world, Chunk chunk, BlockPos pos) {
-        if (world.getRandom().nextInt(this.chance) == 0) {
-            if (chunk.getBlockState(pos).isOpaque()) {
-                chunk.setBlockState(pos, this.state, false);
+    private void trySet(ChunkRegion world, Random random, BlockPos pos) {
+        if (random.nextInt(this.chance) == 0) {
+            if (world.getBlockState(pos).isOpaque()) {
+                world.setBlockState(pos, this.state, 3);
             }
         }
     }

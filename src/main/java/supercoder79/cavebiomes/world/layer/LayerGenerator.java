@@ -2,9 +2,8 @@ package supercoder79.cavebiomes.world.layer;
 
 import supercoder79.cavebiomes.CaveBiomes;
 import supercoder79.cavebiomes.api.CaveBiomesAPI;
-import supercoder79.cavebiomes.world.decorator.CaveDecorator;
-import supercoder79.cavebiomes.world.layer.newlayers.*;
-import supercoder79.cavebiomes.world.layer.newlayers.CaveLayer;
+import supercoder79.cavebiomes.api.CaveDecorator;
+import supercoder79.cavebiomes.world.layer.cave.*;
 
 import java.util.List;
 
@@ -33,6 +32,10 @@ public class LayerGenerator {
 
             if (i == 1) {
                 factory = new OreCaveLayer(worldSeed, 50, factory);
+            }
+
+            if (i == 0) {
+                factory = new SubBiomeCaveLayer(worldSeed, 25, factory);
             }
         }
 

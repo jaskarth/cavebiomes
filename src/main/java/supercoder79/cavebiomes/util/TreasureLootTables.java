@@ -1,10 +1,9 @@
 package supercoder79.cavebiomes.util;
 
-import java.util.Set;
-
 import com.google.common.collect.Sets;
-
 import net.minecraft.util.Identifier;
+
+import java.util.Set;
 
 public class TreasureLootTables {
 	private TreasureLootTables() {

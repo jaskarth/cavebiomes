@@ -5,34 +5,32 @@ import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.ChunkRegion;
-import net.minecraft.world.chunk.Chunk;
+import supercoder79.cavebiomes.api.CaveDecorator;
 
-import java.util.Set;
+import java.util.Random;
 
 public class IceCaveDecorator extends CaveDecorator {
     @Override
-    public void decorate(ChunkRegion world, Chunk chunk, Set<BlockPos> positions) {
-        for (BlockPos pos : positions) {
-            // Try to set a packed ice block in every direction
-            for (Direction direction : Direction.values()) {
-                trySet(world, chunk, pos.offset(direction));
-            }
+    public void decorate(ChunkRegion world, Random random, BlockPos pos) {
+        // Try to set a packed ice block in every direction
+        for (Direction direction : Direction.values()) {
+            trySet(world, random, pos.offset(direction));
+        }
 
-            // Set snow on top of solid blocks
-            BlockState state = chunk.getBlockState(pos.down());
-            if (state.isOpaque() && state.isOf(Blocks.SNOW)) {
-                if (world.getRandom().nextInt(6) == 0) {
-                    chunk.setBlockState(pos, Blocks.SNOW.getDefaultState(), false);
-                }
+        // Set snow on top of solid blocks
+        BlockState state = world.getBlockState(pos.down());
+        if (state.isOpaque() && state.isOf(Blocks.SNOW)) {
+            if (random.nextInt(6) == 0) {
+                world.setBlockState(pos, Blocks.SNOW.getDefaultState(), 3);
             }
         }
     }
 
-    private static void trySet(ChunkRegion world, Chunk chunk, BlockPos pos) {
-        if (world.getRandom().nextInt(16) == 0) {
-            BlockState state = chunk.getBlockState(pos);
+    private static void trySet(ChunkRegion world, Random random, BlockPos pos) {
+        if (random.nextInt(16) == 0) {
+            BlockState state = world.getBlockState(pos);
             if (state.isOpaque() && state.isOf(Blocks.SNOW)) {
-                chunk.setBlockState(pos, Blocks.PACKED_ICE.getDefaultState(), false);
+                world.setBlockState(pos, Blocks.PACKED_ICE.getDefaultState(), 3);
             }
         }
     }

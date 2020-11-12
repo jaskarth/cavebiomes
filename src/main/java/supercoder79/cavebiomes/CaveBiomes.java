@@ -5,20 +5,18 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import supercoder79.cavebiomes.api.CaveBiomesAPI;
-import supercoder79.cavebiomes.command.MapCavernsCommand;
-import supercoder79.cavebiomes.world.carver.CaveBiomeCarvers;
-import supercoder79.cavebiomes.world.decorator.CaveDecorators;
 import supercoder79.cavebiomes.command.MapCaveBiomesCommand;
+import supercoder79.cavebiomes.command.MapCavernsCommand;
 import supercoder79.cavebiomes.command.NightVisionCommand;
-import supercoder79.cavebiomes.world.compat.VanillaCompat;
 import supercoder79.cavebiomes.config.ConfigData;
 import supercoder79.cavebiomes.config.ConfigIO;
+import supercoder79.cavebiomes.world.carver.CaveBiomeCarvers;
+import supercoder79.cavebiomes.world.compat.VanillaCompat;
+import supercoder79.cavebiomes.world.decorator.CaveDecorators;
 import supercoder79.cavebiomes.world.feature.CaveBiomesFeatures;
-import supercoder79.cavebiomes.world.layer.CaveInitLayer;
-import supercoder79.cavebiomes.world.layer.RandomStoneLayer;
 
 public class CaveBiomes implements ModInitializer {
-	public static final String VERSION = "0.6.0";
+	public static final String VERSION = "0.7.0";
 
 	public static ConfigData CONFIG;
 
@@ -57,8 +55,6 @@ public class CaveBiomes implements ModInitializer {
 		CaveBiomesAPI.registerCaveDecorator(CaveDecorators.DIAMOND);
 
 		// Register cave layers
-		CaveBiomesAPI.registerCaveLayer(new CaveInitLayer());
-		CaveBiomesAPI.registerCaveLayer(new RandomStoneLayer());
 
 		// Carver stuff
 		Registry.register(Registry.CARVER, new Identifier("cavebiomes", "room_carver"), CaveBiomeCarvers.ROOM);

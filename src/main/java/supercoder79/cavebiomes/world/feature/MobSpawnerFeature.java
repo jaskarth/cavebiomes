@@ -1,7 +1,5 @@
 package supercoder79.cavebiomes.world.feature;
 
-import java.util.Random;
-
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.MobSpawnerBlockEntity;
@@ -13,6 +11,8 @@ import net.minecraft.world.gen.ChunkRandom;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
+
+import java.util.Random;
 
 public class MobSpawnerFeature extends Feature<DefaultFeatureConfig> {
 	private final EntityType<?>[] types;

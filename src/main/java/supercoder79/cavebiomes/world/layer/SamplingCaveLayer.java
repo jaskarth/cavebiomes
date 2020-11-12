@@ -1,4 +1,4 @@
-package supercoder79.cavebiomes.world.layer.newlayers;
+package supercoder79.cavebiomes.world.layer;
 
 import supercoder79.cavebiomes.util.LayerRandom;
 
@@ -12,7 +12,7 @@ public abstract class SamplingCaveLayer extends CaveLayer {
 
     @Override
     protected int operate(LayerRandom random, int x, int z) {
-        return -1; // No-op: use abstract method
+        throw new UnsupportedOperationException("Call the correct operate method!");
     }
 
     @Override

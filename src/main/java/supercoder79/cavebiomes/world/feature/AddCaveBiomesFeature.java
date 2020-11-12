@@ -1,7 +1,6 @@
 package supercoder79.cavebiomes.world.feature;
 
 
-import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -19,7 +18,7 @@ import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
 import supercoder79.cavebiomes.CaveBiomes;
 import supercoder79.cavebiomes.api.CaveBiomesAPI;
-import supercoder79.cavebiomes.world.decorator.CaveDecorator;
+import supercoder79.cavebiomes.api.CaveDecorator;
 import supercoder79.cavebiomes.world.layer.LayerGenerator;
 
 import java.util.BitSet;
@@ -74,7 +73,12 @@ public class AddCaveBiomesFeature extends Feature<DefaultFeatureConfig> {
 
         Registry<Biome> biomes = world.toServerWorld().getServer().getRegistryManager().get(Registry.BIOME_KEY);
         CaveDecorator decorator = CaveBiomesAPI.getCaveDecoratorForBiome(biomes, biome);
-        decorator.decorate((ChunkRegion) world, chunk, upperPos);
+
+        // TODO: block based generation instead of chunk based
+        for (BlockPos biomePos : upperPos) {
+            random.setSeed((long)biomePos.getX() * 341873128712L + (long)biomePos.getZ() * 132897987541L + (long)biomePos.getY() * 3153265741L);
+            decorator.decorate((ChunkRegion) world, random, biomePos);
+        }
 
         //epic underground biome based decoration
         Set<BlockPos> lowerPositions = positions.stream().filter(p -> p.getY() <= threshold).collect(Collectors.toSet());
@@ -87,7 +91,9 @@ public class AddCaveBiomesFeature extends Feature<DefaultFeatureConfig> {
         }
 
         for (BlockPos layerPos : lowerPositions) {
-            caveBiomes[(layerPos.getX() & 15) * 16 + (layerPos.getZ() & 15)].decorate((ChunkRegion) world, chunk, ImmutableSet.of(layerPos));
+            random.setSeed((long)layerPos.getX() * 341873128712L + (long)layerPos.getZ() * 132897987541L + (long)layerPos.getY() * 3153265741L);
+
+            caveBiomes[(layerPos.getX() & 15) * 16 + (layerPos.getZ() & 15)].decorate((ChunkRegion) world, random, layerPos);
         }
 
         return false;

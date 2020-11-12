@@ -1,8 +1,5 @@
 package supercoder79.cavebiomes.world.feature;
 
-import java.util.Random;
-import java.util.function.Predicate;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -18,6 +15,9 @@ import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
 import supercoder79.cavebiomes.util.TreasureLootTables;
+
+import java.util.Random;
+import java.util.function.Predicate;
 
 public class TreasureChestFeature extends Feature<DefaultFeatureConfig> {
 	private final Type type;

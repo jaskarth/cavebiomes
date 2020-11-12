@@ -5,7 +5,7 @@ import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.LiteralText;
-import supercoder79.cavebiomes.world.decorator.CaveDecorator;
+import supercoder79.cavebiomes.api.CaveDecorator;
 import supercoder79.cavebiomes.world.decorator.CaveDecorators;
 import supercoder79.cavebiomes.world.layer.LayerGenerator;
 

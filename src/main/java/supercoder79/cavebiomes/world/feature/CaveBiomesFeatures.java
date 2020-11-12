@@ -1,10 +1,5 @@
 package supercoder79.cavebiomes.world.feature;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
-
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.Identifier;
@@ -16,6 +11,11 @@ import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.FeatureConfig;
 import supercoder79.cavebiomes.config.ConfigData;
 import supercoder79.cavebiomes.mixin.GenerationSettingsAccessor;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 public final class CaveBiomesFeatures {
 	private CaveBiomesFeatures() {

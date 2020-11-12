@@ -7,13 +7,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.noise.OctavePerlinNoiseSampler;
 import net.minecraft.world.Heightmap;
-import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkSection;
 import net.minecraft.world.chunk.ProtoChunk;
 import net.minecraft.world.gen.ChunkRandom;
-import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.ProbabilityConfig;
 import supercoder79.cavebiomes.mixin.ProtoChunkAccessor;
 
@@ -36,8 +34,6 @@ public class PerlerpCarver extends BaseCarver {
         if (!(mainChunkX == chunkX && mainChunkZ == chunkZ)) {
             return false;
         }
-
-        String preString = carvingMask.toString();
 
         Heightmap floor = chunk.getHeightmap(Heightmap.Type.OCEAN_FLOOR_WG);
 
@@ -134,7 +130,7 @@ public class PerlerpCarver extends BaseCarver {
                                 int heightAt = heights[localX * 16 + localZ];
 
                                 // We're above the height, so we're in the ocean most likely
-                                if (realY > heightAt - 8) {
+                                if (realY > heightAt - 12) {
                                     // Add to the density to prevent us from carving into the ocean
                                     // The 4.8 is a magic value but it seems to work well
                                     density += 4.8;

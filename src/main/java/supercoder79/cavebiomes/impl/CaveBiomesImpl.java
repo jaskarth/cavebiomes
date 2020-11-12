@@ -4,10 +4,9 @@ import com.google.common.collect.ImmutableList;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.biome.Biome;
-import supercoder79.cavebiomes.world.decorator.CaveDecorator;
-import supercoder79.cavebiomes.world.decorator.CaveDecorators;
+import supercoder79.cavebiomes.api.CaveDecorator;
 import supercoder79.cavebiomes.world.compat.VanillaCompat;
-import supercoder79.cavebiomes.world.layer.CaveLayer;
+import supercoder79.cavebiomes.world.decorator.CaveDecorators;
 
 import java.util.*;
 
@@ -15,7 +14,6 @@ public final class CaveBiomesImpl {
     private static final Map<RegistryKey<Biome>, CaveDecorator> BIOME_DECORATORS = new HashMap<>();
     private static final List<CaveDecorator> DECORATORS = new ArrayList<>();
     private static final List<CaveDecorator> BASE_DECORATORS = new ArrayList<>();
-    private static final List<CaveLayer> LAYERS = new ArrayList<>();
 
     private CaveBiomesImpl() {
 
@@ -37,20 +35,12 @@ public final class CaveBiomesImpl {
         }
     }
 
-    public static void registerCaveLayer(CaveLayer layer) {
-        LAYERS.add(layer);
-    }
-
     public static List<CaveDecorator> getCaveDecorators() {
         return ImmutableList.copyOf(DECORATORS);
     }
 
     public static List<CaveDecorator> getBaseCaveDecorators() {
         return ImmutableList.copyOf(BASE_DECORATORS);
-    }
-
-    public static List<CaveLayer> getCaveLayers() {
-        return ImmutableList.copyOf(LAYERS);
     }
 
     public static int indexOf(CaveDecorator decorator) {

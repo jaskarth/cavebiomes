@@ -1,4 +1,4 @@
-package supercoder79.cavebiomes.world.layer.newlayers;
+package supercoder79.cavebiomes.world.layer;
 
 import supercoder79.cavebiomes.util.LayerRandom;
 

@@ -1,10 +1,8 @@
 package supercoder79.cavebiomes.mixin;
 
-import com.google.common.collect.ImmutableList;
 import com.mojang.authlib.GameProfileRepository;
 import com.mojang.authlib.minecraft.MinecraftSessionService;
 import com.mojang.datafixers.DataFixer;
-import net.minecraft.block.Blocks;
 import net.minecraft.resource.ResourcePackManager;
 import net.minecraft.resource.ServerResourceManager;
 import net.minecraft.server.MinecraftServer;
@@ -18,19 +16,16 @@ import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.ProbabilityConfig;
 import net.minecraft.world.gen.decorator.Decorator;
 import net.minecraft.world.gen.decorator.NopeDecoratorConfig;
-import net.minecraft.world.gen.decorator.RangeDecoratorConfig;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.stateprovider.SimpleBlockStateProvider;
+import net.minecraft.world.gen.feature.FeatureConfig;
 import net.minecraft.world.level.storage.LevelStorage;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import supercoder79.cavebiomes.CaveBiomes;
-import supercoder79.cavebiomes.api.CaveBiomesAPI;
+import supercoder79.cavebiomes.config.ConfigData;
 import supercoder79.cavebiomes.world.carver.CarverHelper;
 import supercoder79.cavebiomes.world.carver.CaveBiomeCarvers;
-import supercoder79.cavebiomes.config.ConfigData;
 import supercoder79.cavebiomes.world.feature.CaveBiomesFeatures;
 
 import java.net.Proxy;

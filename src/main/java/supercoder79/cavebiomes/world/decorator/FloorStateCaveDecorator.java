@@ -3,9 +3,9 @@ package supercoder79.cavebiomes.world.decorator;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ChunkRegion;
-import net.minecraft.world.chunk.Chunk;
+import supercoder79.cavebiomes.api.CaveDecorator;
 
-import java.util.Set;
+import java.util.Random;
 
 public class FloorStateCaveDecorator extends CaveDecorator {
     private final BlockState state;
@@ -17,12 +17,10 @@ public class FloorStateCaveDecorator extends CaveDecorator {
     }
 
     @Override
-    public void decorate(ChunkRegion world, Chunk chunk, Set<BlockPos> positions) {
-        for (BlockPos pos : positions) {
-            if (chunk.getBlockState(pos.down()).isOpaque()) {
-                if (world.getRandom().nextInt(this.chance) == 0) {
-                    chunk.setBlockState(pos.down(), this.state, false);
-                }
+    public void decorate(ChunkRegion world, Random random, BlockPos pos) {
+        if (world.getBlockState(pos.down()).isOpaque()) {
+            if (random.nextInt(this.chance) == 0) {
+                world.setBlockState(pos.down(), this.state, 3);
             }
         }
     }

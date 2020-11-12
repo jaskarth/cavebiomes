@@ -1,8 +1,9 @@
-package supercoder79.cavebiomes.world.layer.newlayers;
+package supercoder79.cavebiomes.world.layer.cave;
 
 import supercoder79.cavebiomes.api.CaveBiomesAPI;
-import supercoder79.cavebiomes.world.decorator.CaveDecorator;
+import supercoder79.cavebiomes.api.CaveDecorator;
 import supercoder79.cavebiomes.util.LayerRandom;
+import supercoder79.cavebiomes.world.layer.CaveLayer;
 
 import java.util.List;
 

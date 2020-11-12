@@ -4,11 +4,9 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.VineBlock;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ChunkRegion;
-import net.minecraft.world.chunk.Chunk;
+import supercoder79.cavebiomes.api.CaveDecorator;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.Random;
 
 public class JungleCaveDecorator extends CaveDecorator {
 
@@ -23,68 +21,64 @@ public class JungleCaveDecorator extends CaveDecorator {
     }
 
     @Override
-    public void decorate(ChunkRegion world, Chunk chunk, Set<BlockPos> positions) {
-        List<BlockPos> waterPositions = new ArrayList<>();
-
-        for (BlockPos pos : positions) {
-            if (this.grass) {
-                //grass generation
-                if (chunk.getBlockState(pos.down()).isOpaque()) {
-                    if (world.getRandom().nextInt(3) == 0) {
-                        chunk.setBlockState(pos.down(), Blocks.DIRT.getDefaultState(), false);
-                        if (world.getRandom().nextInt(2) == 0) {
-                            chunk.setBlockState(pos, Blocks.GRASS.getDefaultState(), false);
-                        }
-                    }
-                }
-            }
-
-            if (this.water) {
-                //water generation (yes i know this is cursed)
-                if (world.getRandom().nextInt(4) == 0) {
-                    if (chunk.getBlockState(pos.down()).isOpaque() && chunk.getBlockState(pos).isAir()) {
-                        if (chunk.getBlockState(pos.down().north()).isOpaque() &&
-                                chunk.getBlockState(pos.down().south()).isOpaque() &&
-                                chunk.getBlockState(pos.down().west()).isOpaque() &&
-                                chunk.getBlockState(pos.down().east()).isOpaque()) {
-                            waterPositions.add(pos.down());
-                        }
+    public void decorate(ChunkRegion world, Random random, BlockPos pos) {
+        if (this.grass) {
+            //grass generation
+            if (world.getBlockState(pos.down()).isOpaque()) {
+                if (random.nextInt(3) == 0) {
+                    world.setBlockState(pos.down(), Blocks.DIRT.getDefaultState(), 3);
+                    if (random.nextInt(2) == 0) {
+                        world.setBlockState(pos, Blocks.GRASS.getDefaultState(), 3);
                     }
                 }
             }
         }
 
-        for (BlockPos pos : waterPositions) {
-            chunk.setBlockState(pos, Blocks.WATER.getDefaultState(), false);
+        if (this.water) {
+            //water generation (yes i know this is cursed)
+            if (random.nextInt(4) == 0) {
+                if (world.getBlockState(pos.down()).isOpaque() && world.getBlockState(pos).isAir()) {
+                    if (shouldSpawnWater(world, pos)) {
+                        world.setBlockState(pos.down(), Blocks.WATER.getDefaultState(), 3);
+                    }
+                }
+            }
         }
 
         if (this.vines) {
             //vine generation (yeah this is even more cursed)
-            for (BlockPos pos : positions) {
-                if (world.getRandom().nextInt(2) == 0 && (pos.getX() & 15) != 15 && (pos.getZ() & 15) != 15 && (pos.getX() & 15) != 0 && (pos.getZ() & 15) != 0) {
-                    int num = world.getRandom().nextInt(4);
-                    if (num == 0) {
-                        if (chunk.getBlockState(pos.north()).isOpaque()) {
-                            chunk.setBlockState(pos, Blocks.VINE.getDefaultState().with(VineBlock.NORTH, true), false);
-                        }
-                    }
-                    if (num == 1) {
-                        if (chunk.getBlockState(pos.south()).isOpaque()) {
-                            chunk.setBlockState(pos, Blocks.VINE.getDefaultState().with(VineBlock.SOUTH, true), false);
-                        }
-                    }
-                    if (num == 2) {
-                        if (chunk.getBlockState(pos.west()).isOpaque()) {
-                            chunk.setBlockState(pos, Blocks.VINE.getDefaultState().with(VineBlock.WEST, true), false);
-                        }
-                    }
-                    if (num == 3) {
-                        if (chunk.getBlockState(pos.east()).isOpaque()) {
-                            chunk.setBlockState(pos, Blocks.VINE.getDefaultState().with(VineBlock.EAST, true), false);
-                        }
-                    }
+            int num = random.nextInt(4);
+            if (num == 0) {
+                if (world.getBlockState(pos.north()).isOpaque()) {
+                    world.setBlockState(pos, Blocks.VINE.getDefaultState().with(VineBlock.NORTH, true), 3);
+                }
+            }
+            if (num == 1) {
+                if (world.getBlockState(pos.south()).isOpaque()) {
+                    world.setBlockState(pos, Blocks.VINE.getDefaultState().with(VineBlock.SOUTH, true), 3);
+                }
+            }
+            if (num == 2) {
+                if (world.getBlockState(pos.west()).isOpaque()) {
+                    world.setBlockState(pos, Blocks.VINE.getDefaultState().with(VineBlock.WEST, true), 3);
+                }
+            }
+            if (num == 3) {
+                if (world.getBlockState(pos.east()).isOpaque()) {
+                    world.setBlockState(pos, Blocks.VINE.getDefaultState().with(VineBlock.EAST, true), 3);
                 }
             }
         }
+    }
+
+    private static boolean shouldSpawnWater(ChunkRegion world, BlockPos pos) {
+        return  isValidForWater(world, pos.down().north()) &&
+                isValidForWater(world, pos.down().south()) &&
+                isValidForWater(world, pos.down().west()) &&
+                isValidForWater(world, pos.down().east());
+    }
+
+    private static boolean isValidForWater(ChunkRegion world, BlockPos pos) {
+        return world.getBlockState(pos).isOpaque() || world.getBlockState(pos).isOf(Blocks.WATER);
     }
 }

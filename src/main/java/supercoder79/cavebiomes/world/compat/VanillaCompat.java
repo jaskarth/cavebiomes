@@ -5,7 +5,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeKeys;
 import net.minecraft.world.gen.surfacebuilder.SurfaceConfig;
 import supercoder79.cavebiomes.api.CaveBiomesAPI;
-import supercoder79.cavebiomes.world.decorator.CaveDecorator;
+import supercoder79.cavebiomes.api.CaveDecorator;
 import supercoder79.cavebiomes.world.decorator.CaveDecorators;
 
 public class VanillaCompat {

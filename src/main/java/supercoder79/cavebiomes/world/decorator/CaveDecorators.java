@@ -1,10 +1,7 @@
 package supercoder79.cavebiomes.world.decorator;
 
 import net.minecraft.block.Blocks;
-import supercoder79.cavebiomes.world.decorator.lower.CobwebCaveDecorator;
-import supercoder79.cavebiomes.world.decorator.lower.FluidCaveDecorator;
-import supercoder79.cavebiomes.world.decorator.lower.LushCaveDecorator;
-import supercoder79.cavebiomes.world.decorator.lower.MushroomCaveDecorator;
+import supercoder79.cavebiomes.api.CaveDecorator;
 
 public class CaveDecorators {
     //global
