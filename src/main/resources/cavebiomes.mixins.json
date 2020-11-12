@@ -5,7 +5,8 @@
   "mixins": [
     "ConfiguredCarverAccessor",
     "GenerationSettingsAccessor",
-    "MixinMinecraftServer"
+    "MixinMinecraftServer",
+    "ProtoChunkAccessor"
   ],
   "client": [
     "MixinMinecraftClient"

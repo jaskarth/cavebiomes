@@ -25,18 +25,20 @@ public class CarverHelper {
         map = new HashMap<>(map);
 
         for (Map.Entry<GenerationStep.Carver, List<Supplier<ConfiguredCarver<?>>>> entry : map.entrySet()) {
-            List<Supplier<ConfiguredCarver<?>>> carvers = entry.getValue();
+            if (entry.getKey() == GenerationStep.Carver.AIR) {
+                List<Supplier<ConfiguredCarver<?>>> carvers = entry.getValue();
 
-            // Make list mutable
-            if (carvers instanceof ImmutableList) {
-                carvers = new ArrayList<>(carvers);
+                // Make list mutable
+                if (carvers instanceof ImmutableList) {
+                    carvers = new ArrayList<>(carvers);
+                }
+
+                // Add our carver
+                carvers.add(() -> carver);
+
+                // Replace entry
+                map.put(entry.getKey(), carvers);
             }
-
-            // Add our carver
-            carvers.add(() -> carver);
-
-            // Replace entry
-            map.put(entry.getKey(), carvers);
         }
 
         // Replace map

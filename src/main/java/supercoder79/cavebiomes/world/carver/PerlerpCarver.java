@@ -2,9 +2,12 @@ package supercoder79.cavebiomes.world.carver;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.block.Blocks;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.noise.OctavePerlinNoiseSampler;
+import net.minecraft.world.Heightmap;
+import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkSection;
@@ -12,6 +15,7 @@ import net.minecraft.world.chunk.ProtoChunk;
 import net.minecraft.world.gen.ChunkRandom;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.ProbabilityConfig;
+import supercoder79.cavebiomes.mixin.ProtoChunkAccessor;
 
 import java.util.BitSet;
 import java.util.Random;
@@ -19,8 +23,9 @@ import java.util.function.Function;
 import java.util.stream.IntStream;
 
 public class PerlerpCarver extends BaseCarver {
-    private OctavePerlinNoiseSampler caveNoise = new OctavePerlinNoiseSampler(new ChunkRandom(System.currentTimeMillis()), IntStream.rangeClosed(-5, 0));
-    private OctavePerlinNoiseSampler offsetNoise = new OctavePerlinNoiseSampler(new ChunkRandom(System.currentTimeMillis() - 576), IntStream.rangeClosed(-2, 0));
+    private long seed;
+    private OctavePerlinNoiseSampler caveNoise;
+    private OctavePerlinNoiseSampler offsetNoise;
 
     public PerlerpCarver(Codec<ProbabilityConfig> configCodec) {
         super(configCodec);
@@ -32,6 +37,26 @@ public class PerlerpCarver extends BaseCarver {
             return false;
         }
 
+        String preString = carvingMask.toString();
+
+        Heightmap floor = chunk.getHeightmap(Heightmap.Type.OCEAN_FLOOR_WG);
+
+        // Get all heights in this chunk for thresholding
+        int[] heights = new int[256];
+        for (int x = 0; x < 16; x++) {
+            for (int z = 0; z < 16; z++) {
+                heights[(x * 16) + z] = floor.get(x, z);
+            }
+        }
+
+        long seed = ((ServerWorld)((ProtoChunkAccessor)(chunk)).getField_27229()).getSeed();
+
+        if (this.caveNoise == null || this.seed == seed) {
+            this.caveNoise = new OctavePerlinNoiseSampler(new ChunkRandom(seed), IntStream.rangeClosed(-5, 0));
+            this.offsetNoise = new OctavePerlinNoiseSampler(new ChunkRandom(seed - 576), IntStream.rangeClosed(-2, 0));
+            this.seed = seed;
+        }
+
         int chunkStartX = chunkX << 4;
         int chunkStartZ = chunkZ << 4;
 
@@ -39,7 +64,7 @@ public class PerlerpCarver extends BaseCarver {
 
         for(int noiseZ = 0; noiseZ < 5; ++noiseZ) {
             noiseData[0][noiseZ] = new double[9];
-            sampleNoiseColumn(noiseData[0][noiseZ], chunkX * 4, chunkZ * 4 + noiseZ);
+            sampleNoiseColumn(noiseData[0][noiseZ], chunkX * 4, chunkZ * 4 + noiseZ, this.caveNoise, this.offsetNoise);
             noiseData[1][noiseZ] = new double[9];
         }
 
@@ -48,7 +73,7 @@ public class PerlerpCarver extends BaseCarver {
             // Initialize noise data on the x1 column
             int noiseZ;
             for (noiseZ = 0; noiseZ < 5; ++noiseZ) {
-                sampleNoiseColumn(noiseData[1][noiseZ], chunkX * 4 + noiseX + 1, chunkZ * 4 + noiseZ);
+                sampleNoiseColumn(noiseData[1][noiseZ], chunkX * 4 + noiseX + 1, chunkZ * 4 + noiseZ, this.caveNoise, this.offsetNoise);
             }
 
             // [0, 4] -> z noise chunks
@@ -106,15 +131,26 @@ public class PerlerpCarver extends BaseCarver {
                                 // Get the real noise here by interpolating the last 2 noises together
                                 double density = MathHelper.lerp(zLerp, z0, z1);
 
+                                int heightAt = heights[localX * 16 + localZ];
+
+                                // We're above the height, so we're in the ocean most likely
+                                if (realY > heightAt - 8) {
+                                    // Add to the density to prevent us from carving into the ocean
+                                    // The 4.8 is a magic value but it seems to work well
+                                    density += 4.8;
+                                }
+
+                                // skip if it's above the real height
+                                if (realY > heightAt) {
+                                    continue;
+                                }
+
                                 if (density < 0.0) {
                                     // TODO no new
-                                    chunk.setBlockState(new BlockPos(localX, realY, localZ), Blocks.AIR.getDefaultState(), false);
+                                    chunk.setBlockState(new BlockPos(localX, realY, localZ), Blocks.CAVE_AIR.getDefaultState(), false);
 
-                                    // TODO: wat
                                     int i = localX | localZ << 4 | realY << 8;
                                     carvingMask.set(i);
-
-                                    ((ProtoChunk) chunk).setCarvingMask(GenerationStep.Carver.AIR, carvingMask);
                                 }
                             }
                         }
@@ -131,15 +167,15 @@ public class PerlerpCarver extends BaseCarver {
         return true;
     }
 
-    protected void sampleNoiseColumn(double[] buffer, int x, int z) {
+    public static void sampleNoiseColumn(double[] buffer, int x, int z, OctavePerlinNoiseSampler caveNoise, OctavePerlinNoiseSampler offsetNoise) {
         double offset = offsetNoise.sample(x / 128.0, 5423.434, z / 128.0) * 5.45;
 
         for (int y = 0; y < buffer.length; y++) {
-            buffer[y] = sampleNoise(x, y, z) + getFalloff(offset, y);
+            buffer[y] = sampleNoise(caveNoise, x, y, z) + getFalloff(offset, y);
         }
     }
 
-    private double sampleNoise(int x, int y, int z) {
+    private static double sampleNoise(OctavePerlinNoiseSampler caveNoise, int x, int y, int z) {
         double noise = 0;
         double amplitude = 1;
         for (int i = 0; i < 6; i++) {
@@ -153,8 +189,8 @@ public class PerlerpCarver extends BaseCarver {
         return noise;
     }
 
-    private double getFalloff(double offset, int y) {
-        double falloffScale = 23.0 + offset;
+    private static double getFalloff(double offset, int y) {
+        double falloffScale = 21.5 + offset;
 
         double falloff = Math.max((falloffScale / y), 0); // lower bound
         falloff += Math.max((falloffScale / ((8) - y)), 0); // upper bound

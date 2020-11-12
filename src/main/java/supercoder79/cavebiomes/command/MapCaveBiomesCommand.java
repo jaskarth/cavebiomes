@@ -32,7 +32,7 @@ public class MapCaveBiomesCommand {
         });
 
         COLORS.put(CaveDecorators.NONE, 0xeeeeee);
-        COLORS.put(CaveDecorators.WATER, 0x0033ee);
+        COLORS.put(CaveDecorators.WATER, 0x0033bb);
         COLORS.put(CaveDecorators.LAVA, 0xdd6600);
         COLORS.put(CaveDecorators.LUSH, 0x00ff33);
         COLORS.put(CaveDecorators.OBSIDIAN, 0x333333);
@@ -63,6 +63,10 @@ public class MapCaveBiomesCommand {
         long seed = source.getWorld().getSeed();
 
         for (int x = -1024; x < 1024; x++) {
+            if (x % 256 == 0) {
+                source.sendFeedback(new LiteralText(((x + 1024) / 2048.0) * 100 + "%"), false);
+            }
+
             for (int z = -1024; z < 1024; z++) {
                 CaveDecorator decorator = LayerGenerator.getDecorator(seed, x, z);
                 int color = COLORS.getOrDefault(decorator, 0xFFFFFF);

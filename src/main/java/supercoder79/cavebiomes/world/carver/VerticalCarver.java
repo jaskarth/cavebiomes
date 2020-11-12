@@ -1,11 +1,15 @@
 package supercoder79.cavebiomes.world.carver;
 
 import com.mojang.serialization.Codec;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.ProbabilityConfig;
+import org.apache.commons.lang3.mutable.MutableBoolean;
 
 import java.util.BitSet;
 import java.util.Random;
@@ -42,4 +46,38 @@ public class VerticalCarver extends BaseCarver {
     protected boolean isPositionExcluded(double scaledRelativeX, double scaledRelativeY, double scaledRelativeZ, int y) {
         return scaledRelativeX * scaledRelativeX + scaledRelativeY * scaledRelativeY + scaledRelativeZ * scaledRelativeZ >= 0.8D;
     }
+
+//    protected boolean carveAtPoint(Chunk chunk, Function<BlockPos, Biome> posToBiome, BitSet carvingMask, Random random, BlockPos.Mutable mutable, BlockPos.Mutable mutable2, BlockPos.Mutable mutable3, int seaLevel, int mainChunkX, int mainChunkZ, int x, int z, int relativeX, int y, int relativeZ, MutableBoolean mutableBoolean) {
+//        int i = relativeX | relativeZ << 4 | y << 8;
+//        System.out.println("rX: " + relativeX + " x: " + x + " rZ: " + relativeZ + " z: " + z + " y: " + y + " -> " + i);
+//        if (carvingMask.get(i)) {
+//            return false;
+//        } else {
+//            carvingMask.set(i);
+//            mutable.set(x, y, z);
+//            BlockState blockState = chunk.getBlockState(mutable);
+//            BlockState blockState2 = chunk.getBlockState(mutable2.set(mutable, Direction.UP));
+//            if (blockState.isOf(Blocks.GRASS_BLOCK) || blockState.isOf(Blocks.MYCELIUM)) {
+//                mutableBoolean.setTrue();
+//            }
+//
+//            if (!this.canCarveBlock(blockState, blockState2)) {
+//                return false;
+//            } else {
+//                if (y < 11) {
+//                    chunk.setBlockState(mutable, LAVA.getBlockState(), false);
+//                } else {
+//                    chunk.setBlockState(mutable, CAVE_AIR, false);
+//                    if (mutableBoolean.isTrue()) {
+//                        mutable3.set(mutable, Direction.DOWN);
+//                        if (chunk.getBlockState(mutable3).isOf(Blocks.DIRT)) {
+//                            chunk.setBlockState(mutable3, ((Biome)posToBiome.apply(mutable)).getGenerationSettings().getSurfaceConfig().getTopMaterial(), false);
+//                        }
+//                    }
+//                }
+//
+//                return true;
+//            }
+//        }
+//    }
 }
