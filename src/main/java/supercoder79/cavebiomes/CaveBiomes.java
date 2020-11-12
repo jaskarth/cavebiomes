@@ -7,6 +7,7 @@ import net.minecraft.util.registry.Registry;
 import supercoder79.cavebiomes.api.CaveBiomesAPI;
 import supercoder79.cavebiomes.command.MapCaveBiomesCommand;
 import supercoder79.cavebiomes.command.MapCavernsCommand;
+import supercoder79.cavebiomes.command.MapOreNodulesCommand;
 import supercoder79.cavebiomes.command.NightVisionCommand;
 import supercoder79.cavebiomes.config.ConfigData;
 import supercoder79.cavebiomes.config.ConfigIO;
@@ -70,6 +71,7 @@ public class CaveBiomes implements ModInitializer {
 		if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
 			MapCaveBiomesCommand.init();
 			MapCavernsCommand.init();
+			MapOreNodulesCommand.init();
 			NightVisionCommand.init();
 		}
 	}
