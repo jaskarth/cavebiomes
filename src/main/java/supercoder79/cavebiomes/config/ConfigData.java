@@ -17,6 +17,7 @@ public class ConfigData {
 	public boolean generateCaverns = true;
 	public boolean generateLocalWaterLevels = true;
 	public boolean generateOreNodules = true;
+	public boolean generateEmeraldGeodes = true;
 	public boolean generateUndergroundLootChests = true;
 	public boolean generateNetherLootChests = true;
 	public boolean generateUndergroundSpawners = true;

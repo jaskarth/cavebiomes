@@ -59,7 +59,7 @@ public class OreNoduleFeature extends Feature<DefaultFeatureConfig> {
                         for (Direction direction : Direction.values()) {
                             BlockPos local = mutable.offset(direction);
 
-                            if (random.nextInt(16) == 0) {
+                            if (random.nextInt(Math.max(y / 2, 12)) == 0) {
                                 if (world.getBlockState(local).isOpaque()) {
                                     double oreSelector = this.oreNoise.sample(local.getX() / 140.0, local.getZ() / 140.0);
                                     BlockState state = oreSelector > 0 ? Blocks.DIAMOND_ORE.getDefaultState() : Blocks.EMERALD_ORE.getDefaultState();

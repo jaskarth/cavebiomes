@@ -1,8 +1,10 @@
 package supercoder79.cavebiomes.mixin;
 
+import com.google.common.collect.ImmutableList;
 import com.mojang.authlib.GameProfileRepository;
 import com.mojang.authlib.minecraft.MinecraftSessionService;
 import com.mojang.datafixers.DataFixer;
+import net.minecraft.block.Blocks;
 import net.minecraft.resource.ResourcePackManager;
 import net.minecraft.resource.ServerResourceManager;
 import net.minecraft.server.MinecraftServer;
@@ -16,7 +18,9 @@ import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.ProbabilityConfig;
 import net.minecraft.world.gen.decorator.Decorator;
 import net.minecraft.world.gen.decorator.NopeDecoratorConfig;
-import net.minecraft.world.gen.feature.FeatureConfig;
+import net.minecraft.world.gen.decorator.RangeDecoratorConfig;
+import net.minecraft.world.gen.feature.*;
+import net.minecraft.world.gen.stateprovider.SimpleBlockStateProvider;
 import net.minecraft.world.level.storage.LevelStorage;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -47,24 +51,25 @@ public class MixinMinecraftServer {
                         GenerationStep.Feature.LAKES,
                         CaveBiomesFeatures.ORE_NODULE.configure(FeatureConfig.DEFAULT).decorate(Decorator.NOPE.configure(NopeDecoratorConfig.INSTANCE)));
 
-                // TODO: add this
-//                CaveBiomesFeatures.addFeature(biome,
-//                        GenerationStep.Feature.LAKES,
-//                        Feature.GEODE.configure(
-//                                new GeodeFeatureConfig(
-//                                        new GeodeLayerConfig(
-//                                                new SimpleBlockStateProvider(Blocks.AIR.getDefaultState()),
-//                                                new SimpleBlockStateProvider(Blocks.CALCITE.getDefaultState()),
-//                                                new SimpleBlockStateProvider(Blocks.EMERALD_ORE.getDefaultState()),
-//                                                new SimpleBlockStateProvider(Blocks.CALCITE.getDefaultState()),
-//                                                new SimpleBlockStateProvider(Blocks.CALCITE.getDefaultState()),
-//                                                ImmutableList.of(Blocks.EMERALD_ORE.getDefaultState())),
-//                                        new GeodeLayerThicknessConfig(2.1D, 3.2D, 4.4D, 5.2D),
-//                                        new GeodeCrackConfig(0.8D, 2.75D, 2),
-//                                        0.125D, 0.2D, true,
-//                                        6, 8, 4, 5,
-//                                        1, 5, -24, 24, 0.0725D))
-//                                .decorate(Decorator.RANGE.configure(new RangeDecoratorConfig(6, 0, 47))).spreadHorizontally().applyChance(48));
+                if (config.generateEmeraldGeodes) {
+                    CaveBiomesFeatures.addFeature(biome,
+                            GenerationStep.Feature.LAKES,
+                            Feature.GEODE.configure(
+                                    new GeodeFeatureConfig(
+                                            new GeodeLayerConfig(
+                                                    new SimpleBlockStateProvider(Blocks.AIR.getDefaultState()),
+                                                    new SimpleBlockStateProvider(Blocks.CALCITE.getDefaultState()),
+                                                    new SimpleBlockStateProvider(Blocks.EMERALD_ORE.getDefaultState()),
+                                                    new SimpleBlockStateProvider(Blocks.CALCITE.getDefaultState()),
+                                                    new SimpleBlockStateProvider(Blocks.CALCITE.getDefaultState()),
+                                                    ImmutableList.of(Blocks.EMERALD_ORE.getDefaultState())),
+                                            new GeodeLayerThicknessConfig(1.7D, 2.2D, 3.2D, 4.2D),
+                                            new GeodeCrackConfig(0.8D, 2.75D, 2),
+                                            0.125D, 0.2D, true,
+                                            6, 8, 4, 6,
+                                            2, 5, -24, 24, 0.045D))
+                                    .decorate(Decorator.RANGE.configure(new RangeDecoratorConfig(6, 0, 31))).spreadHorizontally().applyChance(96));
+                }
             }
 
             if (config.generateLocalWaterLevels) {

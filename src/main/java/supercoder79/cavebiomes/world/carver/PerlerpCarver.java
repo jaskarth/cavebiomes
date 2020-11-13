@@ -15,6 +15,7 @@ import net.minecraft.world.gen.ChunkRandom;
 import net.minecraft.world.gen.ProbabilityConfig;
 import supercoder79.cavebiomes.mixin.ProtoChunkAccessor;
 
+import java.util.Arrays;
 import java.util.BitSet;
 import java.util.Random;
 import java.util.function.Function;
@@ -165,6 +166,13 @@ public class PerlerpCarver extends BaseCarver {
 
     public static void sampleNoiseColumn(double[] buffer, int x, int z, OctavePerlinNoiseSampler caveNoise, OctavePerlinNoiseSampler offsetNoise) {
         double offset = offsetNoise.sample(x / 128.0, 5423.434, z / 128.0) * 5.45;
+        Random random = new Random((long)(x << 1) * 341873128712L + (long)(z << 1) * 132897987541L);
+
+        // generate pillar
+        if (random.nextInt(24) == 0) {
+            // density: 4 is a stalactite/stalagmite, 7 is pillar
+            offset += 4.0 + random.nextDouble() * 3;
+        }
 
         for (int y = 0; y < buffer.length; y++) {
             buffer[y] = sampleNoise(caveNoise, x, y, z) + getFalloff(offset, y);
