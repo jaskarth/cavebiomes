@@ -44,14 +44,13 @@ public class MixinMinecraftServer {
 
         //TODO: write an api for this
         for (Biome biome : biomes) {
-//            System.out.println(biomes.getId(biome) + " -> " + CaveBiomesAPI.getCaveDecoratorForBiome(biomes, biome));
 
             if (config.generateOreNodules) {
                 CaveBiomesFeatures.addFeature(biome,
                         GenerationStep.Feature.LAKES,
                         CaveBiomesFeatures.ORE_NODULE.configure(FeatureConfig.DEFAULT).decorate(Decorator.NOPE.configure(NopeDecoratorConfig.INSTANCE)));
 
-                if (config.generateEmeraldGeodes) {
+                if (config.generateEmeraldGeodes && CaveBiomesFeatures.OVERWORLD.test(biome)) {
                     CaveBiomesFeatures.addFeature(biome,
                             GenerationStep.Feature.LAKES,
                             Feature.GEODE.configure(

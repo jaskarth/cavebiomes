@@ -19,7 +19,7 @@ public class IceCaveDecorator extends CaveDecorator {
 
         // Set snow on top of solid blocks
         BlockState state = world.getBlockState(pos.down());
-        if (state.isOpaque() && state.isOf(Blocks.SNOW)) {
+        if (state.isOpaque() && !state.isOf(Blocks.SNOW)) {
             if (random.nextInt(6) == 0) {
                 world.setBlockState(pos, Blocks.SNOW.getDefaultState(), 3);
             }
@@ -29,7 +29,7 @@ public class IceCaveDecorator extends CaveDecorator {
     private static void trySet(ChunkRegion world, Random random, BlockPos pos) {
         if (random.nextInt(16) == 0) {
             BlockState state = world.getBlockState(pos);
-            if (state.isOpaque() && state.isOf(Blocks.SNOW)) {
+            if (state.isOpaque() && !state.isOf(Blocks.SNOW)) {
                 world.setBlockState(pos, Blocks.PACKED_ICE.getDefaultState(), 3);
             }
         }
