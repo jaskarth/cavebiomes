@@ -8,8 +8,8 @@ import supercoder79.cavebiomes.world.layer.CaveLayer;
 import supercoder79.cavebiomes.world.layer.SamplingCaveLayer;
 
 public class RareCaveLayer extends SamplingCaveLayer {
-    public RareCaveLayer(long worldSeed, int salt, CaveLayer parent) {
-        super(worldSeed, salt, parent);
+    public RareCaveLayer(long worldSeed, int salt) {
+        super(worldSeed, salt);
     }
 
     @Override

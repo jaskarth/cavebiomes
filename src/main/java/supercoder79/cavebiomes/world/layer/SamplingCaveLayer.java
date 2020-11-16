@@ -3,11 +3,19 @@ package supercoder79.cavebiomes.world.layer;
 import supercoder79.cavebiomes.util.LayerRandom;
 
 public abstract class SamplingCaveLayer extends CaveLayer {
-    protected final CaveLayer parent;
+    protected CaveLayer parent;
 
-    public SamplingCaveLayer(long worldSeed, int salt, CaveLayer parent) {
+    public SamplingCaveLayer(long worldSeed, int salt) {
         super(worldSeed, salt);
-        this.parent = parent;
+        this.parent = null;
+    }
+
+    public void setParent(CaveLayer parent) {
+        if (this.parent == null) {
+            this.parent = parent;
+        } else {
+            throw new IllegalStateException("Cannot modify existing parent!");
+        }
     }
 
     @Override

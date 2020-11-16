@@ -15,6 +15,10 @@ import supercoder79.cavebiomes.world.carver.CaveBiomeCarvers;
 import supercoder79.cavebiomes.world.compat.VanillaCompat;
 import supercoder79.cavebiomes.world.decorator.CaveDecorators;
 import supercoder79.cavebiomes.world.feature.CaveBiomesFeatures;
+import supercoder79.cavebiomes.world.layer.cave.OreCaveLayer;
+import supercoder79.cavebiomes.world.layer.cave.RareCaveLayer;
+import supercoder79.cavebiomes.world.layer.cave.StoneCaveLayer;
+import supercoder79.cavebiomes.world.layer.cave.SubBiomeCaveLayer;
 
 public class CaveBiomes implements ModInitializer {
 	public static final String VERSION = "0.6.0";
@@ -56,6 +60,13 @@ public class CaveBiomes implements ModInitializer {
 		CaveBiomesAPI.registerCaveDecorator(CaveDecorators.DIAMOND);
 
 		// Register cave layers
+		CaveBiomesAPI.registerLayerDispatcher(((dispatcher, seed) -> {
+			dispatcher.addBaseLayer(new StoneCaveLayer(seed, 200));
+			dispatcher.addBaseLayer(new RareCaveLayer(seed, 300));
+
+			dispatcher.addLayer(0, new SubBiomeCaveLayer(seed, 25));
+			dispatcher.addLayer(1, new OreCaveLayer(seed, 50));
+		}));
 
 		// Carver stuff
 		Registry.register(Registry.CARVER, new Identifier("cavebiomes", "room_carver"), CaveBiomeCarvers.ROOM);

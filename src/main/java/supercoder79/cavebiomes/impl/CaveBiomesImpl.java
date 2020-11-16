@@ -7,6 +7,7 @@ import net.minecraft.world.biome.Biome;
 import supercoder79.cavebiomes.api.CaveDecorator;
 import supercoder79.cavebiomes.world.compat.VanillaCompat;
 import supercoder79.cavebiomes.world.decorator.CaveDecorators;
+import supercoder79.cavebiomes.world.layer.LayerDispatcher;
 
 import java.util.*;
 
@@ -14,6 +15,7 @@ public final class CaveBiomesImpl {
     private static final Map<RegistryKey<Biome>, CaveDecorator> BIOME_DECORATORS = new HashMap<>();
     private static final List<CaveDecorator> DECORATORS = new ArrayList<>();
     private static final List<CaveDecorator> BASE_DECORATORS = new ArrayList<>();
+    private static final List<LayerDispatcher.DispatchFunction> DISPATCH_FUNCTIONS = new ArrayList<>();
 
     private CaveBiomesImpl() {
 
@@ -35,12 +37,21 @@ public final class CaveBiomesImpl {
         }
     }
 
+    // Might need to use a string id here
+    public static void registerLayerDispatcher(LayerDispatcher.DispatchFunction function) {
+        DISPATCH_FUNCTIONS.add(function);
+    }
+
     public static List<CaveDecorator> getCaveDecorators() {
         return ImmutableList.copyOf(DECORATORS);
     }
 
     public static List<CaveDecorator> getBaseCaveDecorators() {
         return ImmutableList.copyOf(BASE_DECORATORS);
+    }
+
+    public static List<LayerDispatcher.DispatchFunction> getDispatchFunctions() {
+        return ImmutableList.copyOf(DISPATCH_FUNCTIONS);
     }
 
     public static int indexOf(CaveDecorator decorator) {

@@ -65,7 +65,7 @@ public class MixinMinecraftServer {
                                                     ImmutableList.of(Blocks.EMERALD_ORE.getDefaultState())),
                                             new GeodeLayerThicknessConfig(1.7D, 2.2D, 3.2D, 4.2D),
                                             new GeodeCrackConfig(0.8D, 2.75D, 2),
-                                            0.125D, 0.2D, true,
+                                            0.125D, 0.1D, true,
                                             6, 8, 4, 6,
                                             2, 5, -24, 24, 0.045D))
                                     .decorate(Decorator.RANGE.configure(new RangeDecoratorConfig(6, 0, 31))).spreadHorizontally().applyChance(96));

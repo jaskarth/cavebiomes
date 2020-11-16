@@ -8,7 +8,6 @@ import supercoder79.cavebiomes.util.LayerRandom;
 import java.util.Arrays;
 
 public abstract class CaveLayer {
-
     protected final long worldSeed;
     protected final int salt;
     private final ThreadLocal<Cache> cache;

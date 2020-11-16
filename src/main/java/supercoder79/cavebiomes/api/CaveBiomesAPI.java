@@ -4,6 +4,7 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.biome.Biome;
 import supercoder79.cavebiomes.impl.CaveBiomesImpl;
+import supercoder79.cavebiomes.world.layer.LayerDispatcher;
 
 import java.util.List;
 
@@ -26,6 +27,10 @@ public final class CaveBiomesAPI {
 
         // Register it as a base decorator next
         CaveBiomesImpl.registerBaseCaveDecorator(decorator);
+    }
+
+    public static void registerLayerDispatcher(LayerDispatcher.DispatchFunction function) {
+        CaveBiomesImpl.registerLayerDispatcher(function);
     }
 
     public static List<CaveDecorator> getCaveDecorators() {
