@@ -35,8 +35,6 @@ public class LayerGenerator {
         Map<Integer, List<SamplingCaveLayer>> layers = dispatcher.getLayers();
 
         CaveLayer factory =  new BaseCavesLayer(worldSeed, 100);
-//        factory = new StoneCaveLayer(worldSeed, 200, factory);
-//        factory = new RareCaveLayer(worldSeed, 300, factory);
 
         // -1 is the marker for base cave layers. I am good at coding
         for (SamplingCaveLayer layer : layers.getOrDefault(-1, new ArrayList<>())) {
@@ -54,14 +52,6 @@ public class LayerGenerator {
 
                 factory = layer;
             }
-
-//            if (i == 1) {
-//                factory = new OreCaveLayer(worldSeed, 50, factory);
-//            }
-//
-//            if (i == 0) {
-//                factory = new SubBiomeCaveLayer(worldSeed, 25, factory);
-//            }
         }
 
         return factory;

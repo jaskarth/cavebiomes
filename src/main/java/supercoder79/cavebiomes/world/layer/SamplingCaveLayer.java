@@ -10,12 +10,14 @@ public abstract class SamplingCaveLayer extends CaveLayer {
         this.parent = null;
     }
 
-    public void setParent(CaveLayer parent) {
+    public SamplingCaveLayer setParent(CaveLayer parent) {
         if (this.parent == null) {
             this.parent = parent;
         } else {
             throw new IllegalStateException("Cannot modify existing parent!");
         }
+
+        return this;
     }
 
     @Override
