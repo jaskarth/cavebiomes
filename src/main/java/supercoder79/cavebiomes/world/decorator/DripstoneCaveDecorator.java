@@ -4,6 +4,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.class_5691;
 import net.minecraft.state.property.Properties;
+import net.minecraft.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.ChunkRegion;
@@ -39,6 +40,7 @@ public class DripstoneCaveDecorator extends CaveDecorator {
 
             for (int i = 0; i < height; i++) {
                 BlockPos local = pos.up(i);
+                boolean isWater = world.getFluidState(local).isIn(FluidTags.WATER);
 
                 class_5691 dripstoneType = class_5691.field_28067;
                 if (i == baseHeight) {
@@ -53,7 +55,7 @@ public class DripstoneCaveDecorator extends CaveDecorator {
                     dripstoneType = class_5691.field_28064;
                 }
 
-                world.setBlockState(local, Blocks.POINTED_DRIPSTONE.getDefaultState().with(Properties.field_28062, Direction.UP).with(Properties.field_28063, dripstoneType), 3);
+                world.setBlockState(local, Blocks.POINTED_DRIPSTONE.getDefaultState().with(Properties.field_28062, Direction.UP).with(Properties.field_28063, dripstoneType).with(Properties.WATERLOGGED, isWater), 3);
 
             }
         }
@@ -78,6 +80,7 @@ public class DripstoneCaveDecorator extends CaveDecorator {
 
             for (int i = 0; i < depth; i++) {
                 BlockPos local = pos.down(i);
+                boolean isWater = world.getFluidState(local).isIn(FluidTags.WATER);
 
                 class_5691 dripstoneType = class_5691.field_28067;
                 if (i == baseDepth) {
@@ -92,7 +95,7 @@ public class DripstoneCaveDecorator extends CaveDecorator {
                     dripstoneType = class_5691.field_28064;
                 }
 
-                world.setBlockState(local, Blocks.POINTED_DRIPSTONE.getDefaultState().with(Properties.field_28062, Direction.DOWN).with(Properties.field_28063, dripstoneType), 3);
+                world.setBlockState(local, Blocks.POINTED_DRIPSTONE.getDefaultState().with(Properties.field_28062, Direction.DOWN).with(Properties.field_28063, dripstoneType).with(Properties.WATERLOGGED, isWater), 3);
 
             }
         }
