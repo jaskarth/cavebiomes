@@ -55,6 +55,8 @@ public class MapCaveBiomesCommand {
         COLORS.put(CaveDecorators.REDSTONE, 0xe60058);
         COLORS.put(CaveDecorators.LAPIS, 0x2d02d9);
         COLORS.put(CaveDecorators.DIAMOND, 0x00ffff);
+
+        COLORS.put(CaveDecorators.DRIPSTONE, 0x9c7a5d);
     }
 
     private static int execute(ServerCommandSource source) {

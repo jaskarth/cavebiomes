@@ -40,6 +40,9 @@ public class CaveDecorators {
     public static final CaveDecorator LAPIS = new RandomBlockStateCaveDecorator(Blocks.LAPIS_ORE.getDefaultState(), 72);
     public static final CaveDecorator DIAMOND = new RandomBlockStateCaveDecorator(Blocks.DIAMOND_ORE.getDefaultState(), 512);
 
+    // Temp minecraft stuff
+    public static final CaveDecorator DRIPSTONE = new DripstoneCaveDecorator();
+
     //TODO: big mushrooms
     //TODO: honey cave
     //TODO: emerald

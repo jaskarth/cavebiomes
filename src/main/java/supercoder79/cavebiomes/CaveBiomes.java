@@ -12,10 +12,7 @@ import supercoder79.cavebiomes.world.carver.CaveBiomeCarvers;
 import supercoder79.cavebiomes.world.compat.VanillaCompat;
 import supercoder79.cavebiomes.world.decorator.CaveDecorators;
 import supercoder79.cavebiomes.world.feature.CaveBiomesFeatures;
-import supercoder79.cavebiomes.world.layer.cave.OreCaveLayer;
-import supercoder79.cavebiomes.world.layer.cave.RareCaveLayer;
-import supercoder79.cavebiomes.world.layer.cave.StoneCaveLayer;
-import supercoder79.cavebiomes.world.layer.cave.SubBiomeCaveLayer;
+import supercoder79.cavebiomes.world.layer.cave.*;
 
 public class CaveBiomes implements ModInitializer {
 	public static final String VERSION = "0.6.0";
@@ -56,10 +53,14 @@ public class CaveBiomes implements ModInitializer {
 		CaveBiomesAPI.registerCaveDecorator(CaveDecorators.LAPIS);
 		CaveBiomesAPI.registerCaveDecorator(CaveDecorators.DIAMOND);
 
+		// Temp minecraft cave decorators
+		CaveBiomesAPI.registerCaveDecorator(CaveDecorators.DRIPSTONE);
+
 		// Register cave layers
 		CaveBiomesAPI.registerLayerDispatcher(((dispatcher, seed) -> {
 			dispatcher.addBaseLayer(new StoneCaveLayer(seed, 200));
 			dispatcher.addBaseLayer(new RareCaveLayer(seed, 300));
+			dispatcher.addBaseLayer(new DripstoneCaveLayer(seed, 500));
 
 			dispatcher.addLayer(0, new SubBiomeCaveLayer(seed, 25));
 			dispatcher.addLayer(1, new OreCaveLayer(seed, 50));
