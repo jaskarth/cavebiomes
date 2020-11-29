@@ -45,12 +45,14 @@ public class MixinMinecraftServer {
         //TODO: write an api for this
         for (Biome biome : biomes) {
 
-            if (config.generateOreNodules) {
-                CaveBiomesFeatures.addFeature(biome,
-                        GenerationStep.Feature.LAKES,
-                        CaveBiomesFeatures.ORE_NODULE.configure(FeatureConfig.DEFAULT).decorate(Decorator.NOPE.configure(NopeDecoratorConfig.INSTANCE)));
+            if (CaveBiomesFeatures.OVERWORLD.test(biome)) {
+                if (config.generateOreNodules) {
+                    CaveBiomesFeatures.addFeature(biome,
+                            GenerationStep.Feature.LAKES,
+                            CaveBiomesFeatures.ORE_NODULE.configure(FeatureConfig.DEFAULT).decorate(Decorator.NOPE.configure(NopeDecoratorConfig.INSTANCE)));
+                }
 
-                if (config.generateEmeraldGeodes && CaveBiomesFeatures.OVERWORLD.test(biome)) {
+                if (config.generateEmeraldGeodes) {
                     CaveBiomesFeatures.addFeature(biome,
                             GenerationStep.Feature.LAKES,
                             Feature.GEODE.configure(
@@ -69,28 +71,28 @@ public class MixinMinecraftServer {
                                             2, 5, -24, 24, 0.045D))
                                     .decorate(Decorator.RANGE.configure(new RangeDecoratorConfig(6, 0, 31))).spreadHorizontally().applyChance(96));
                 }
-            }
 
-            if (config.generateLocalWaterLevels) {
+                if (config.generateLocalWaterLevels) {
+                    CaveBiomesFeatures.addFeature(biome,
+                            GenerationStep.Feature.LAKES,
+                            CaveBiomesFeatures.LOCAL_WATER_LEVELS.configure(FeatureConfig.DEFAULT).decorate(Decorator.NOPE.configure(NopeDecoratorConfig.INSTANCE)));
+                }
+
+                // Use step 2- better caves uses step 1
                 CaveBiomesFeatures.addFeature(biome,
                         GenerationStep.Feature.LAKES,
-                        CaveBiomesFeatures.LOCAL_WATER_LEVELS.configure(FeatureConfig.DEFAULT).decorate(Decorator.NOPE.configure(NopeDecoratorConfig.INSTANCE)));
-            }
+                        CaveBiomesFeatures.CAVE_BIOMES.configure(FeatureConfig.DEFAULT).decorate(Decorator.NOPE.configure(NopeDecoratorConfig.INSTANCE)));
 
-            // Use step 2- better caves uses step 1
-            CaveBiomesFeatures.addFeature(biome,
-                    GenerationStep.Feature.LAKES,
-                    CaveBiomesFeatures.CAVE_BIOMES.configure(FeatureConfig.DEFAULT).decorate(Decorator.NOPE.configure(NopeDecoratorConfig.INSTANCE)));
+                if (config.generateCaverns) {
+                    CarverHelper.addTo(biome, CaveBiomeCarvers.PERLERP.configure(new ProbabilityConfig(1)));
+                }
 
-            if (config.generateCaverns) {
-                CarverHelper.addTo(biome, CaveBiomeCarvers.PERLERP.configure(new ProbabilityConfig(1)));
-            }
-
-            if (config.generateNewCaves && CarverHelper.shouldAdd(biome)) {
-                CarverHelper.addTo(biome, CaveBiomeCarvers.ROOM.configure(new ProbabilityConfig(1 / 6.0f)));
-                CarverHelper.addTo(biome, CaveBiomeCarvers.VERTICAL.configure(new ProbabilityConfig(1 / 6.0f)));
-                CarverHelper.addTo(biome, CaveBiomeCarvers.HORIZONTAL.configure(new ProbabilityConfig(1 / 8.0f)));
-                CarverHelper.addTo(biome, CaveBiomeCarvers.LAVA_ROOM.configure(new ProbabilityConfig(1 / 32.0f)));
+                if (config.generateNewCaves && CarverHelper.shouldAdd(biome)) {
+                    CarverHelper.addTo(biome, CaveBiomeCarvers.ROOM.configure(new ProbabilityConfig(1 / 6.0f)));
+                    CarverHelper.addTo(biome, CaveBiomeCarvers.VERTICAL.configure(new ProbabilityConfig(1 / 6.0f)));
+                    CarverHelper.addTo(biome, CaveBiomeCarvers.HORIZONTAL.configure(new ProbabilityConfig(1 / 8.0f)));
+                    CarverHelper.addTo(biome, CaveBiomeCarvers.LAVA_ROOM.configure(new ProbabilityConfig(1 / 32.0f)));
+                }
             }
 
             if (config.generateUndergroundLootChests) {
