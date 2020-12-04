@@ -2,7 +2,7 @@ package supercoder79.cavebiomes.world.decorator;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.class_5691;
+import net.minecraft.block.enums.Thickness;
 import net.minecraft.state.property.Properties;
 import net.minecraft.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
@@ -27,7 +27,7 @@ public class DripstoneCaveDecorator extends CaveDecorator {
             // Test height upwards
             for (int i = 0; i <= random.nextInt(6); i++) {
                 BlockPos local = pos.up(i);
-                if (world.getBlockState(local).isOpaque()) {
+                if (isBlocking(world.getBlockState(local))) {
                     break;
                 }
 
@@ -42,20 +42,20 @@ public class DripstoneCaveDecorator extends CaveDecorator {
                 BlockPos local = pos.up(i);
                 boolean isWater = world.getFluidState(local).isIn(FluidTags.WATER);
 
-                class_5691 dripstoneType = class_5691.field_28067;
+                Thickness dripstoneType = Thickness.MIDDLE;
                 if (i == baseHeight) {
-                    dripstoneType = class_5691.field_28068;
+                    dripstoneType = Thickness.BASE;
                 }
 
                 if (i == frustumHeight) {
-                    dripstoneType = class_5691.field_28066;
+                    dripstoneType = Thickness.FRUSTUM;
                 }
 
                 if (i == tipHeight) {
-                    dripstoneType = class_5691.field_28064;
+                    dripstoneType = Thickness.TIP;
                 }
 
-                world.setBlockState(local, Blocks.POINTED_DRIPSTONE.getDefaultState().with(Properties.field_28062, Direction.UP).with(Properties.field_28063, dripstoneType).with(Properties.WATERLOGGED, isWater), 3);
+                world.setBlockState(local, Blocks.POINTED_DRIPSTONE.getDefaultState().with(Properties.VERTICAL_DIRECTION, Direction.UP).with(Properties.THICKNESS, dripstoneType).with(Properties.WATERLOGGED, isWater), 3);
 
             }
         }
@@ -67,7 +67,7 @@ public class DripstoneCaveDecorator extends CaveDecorator {
             // Test height upwards
             for (int i = 0; i <= random.nextInt(6); i++) {
                 BlockPos local = pos.down(i);
-                if (world.getBlockState(local).isOpaque()) {
+                if (isBlocking(world.getBlockState(local))) {
                     break;
                 }
 
@@ -82,21 +82,20 @@ public class DripstoneCaveDecorator extends CaveDecorator {
                 BlockPos local = pos.down(i);
                 boolean isWater = world.getFluidState(local).isIn(FluidTags.WATER);
 
-                class_5691 dripstoneType = class_5691.field_28067;
+                Thickness dripstoneType = Thickness.MIDDLE;
                 if (i == baseDepth) {
-                    dripstoneType = class_5691.field_28068;
+                    dripstoneType = Thickness.BASE;
                 }
 
                 if (i == frustumDepth) {
-                    dripstoneType = class_5691.field_28066;
+                    dripstoneType = Thickness.FRUSTUM;
                 }
 
                 if (i == tipDepth) {
-                    dripstoneType = class_5691.field_28064;
+                    dripstoneType = Thickness.TIP;
                 }
 
-                world.setBlockState(local, Blocks.POINTED_DRIPSTONE.getDefaultState().with(Properties.field_28062, Direction.DOWN).with(Properties.field_28063, dripstoneType).with(Properties.WATERLOGGED, isWater), 3);
-
+                world.setBlockState(local, Blocks.POINTED_DRIPSTONE.getDefaultState().with(Properties.VERTICAL_DIRECTION, Direction.DOWN).with(Properties.THICKNESS, dripstoneType).with(Properties.WATERLOGGED, isWater), 3);
             }
         }
 
@@ -112,6 +111,6 @@ public class DripstoneCaveDecorator extends CaveDecorator {
     }
 
     private static boolean isBlocking(BlockState state) {
-        return state.isOpaque() || state.isOf(Blocks.POINTED_DRIPSTONE);
+        return state.isOpaque() || state.isOf(Blocks.POINTED_DRIPSTONE) || state.getFluidState().isIn(FluidTags.LAVA);
     }
 }

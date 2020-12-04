@@ -28,10 +28,12 @@ public class FluidCaveDecorator extends CaveDecorator {
     }
 
     private boolean shouldSpawn(ChunkRegion world, BlockPos pos) {
+        // Check 4 sides and bottom
         return  isValid(world, pos.down().north()) &&
                 isValid(world, pos.down().south()) &&
                 isValid(world, pos.down().west()) &&
-                isValid(world, pos.down().east());
+                isValid(world, pos.down().east()) &&
+                isValid(world, pos.down(2));
     }
 
     private boolean isValid(ChunkRegion world, BlockPos pos) {

@@ -69,7 +69,7 @@ public class MixinMinecraftServer {
                                             0.125D, 0.1D, true,
                                             6, 8, 4, 6,
                                             2, 5, -24, 24, 0.045D))
-                                    .decorate(Decorator.RANGE.configure(new RangeDecoratorConfig(6, 0, 31))).spreadHorizontally().applyChance(96));
+                                    .decorate(Decorator.RANGE.configure(new RangeDecoratorConfig(6, 0, 31))).spreadHorizontally().applyChance(144));
                 }
 
                 if (config.generateLocalWaterLevels) {
