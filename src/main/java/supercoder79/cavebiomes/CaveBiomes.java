@@ -4,6 +4,8 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import supercoder79.cavebiomes.api.CaveBiomesAPI;
 import supercoder79.cavebiomes.command.*;
 import supercoder79.cavebiomes.config.ConfigData;
@@ -14,7 +16,9 @@ import supercoder79.cavebiomes.world.decorator.CaveDecorators;
 import supercoder79.cavebiomes.world.feature.CaveBiomesFeatures;
 import supercoder79.cavebiomes.world.layer.cave.*;
 
+
 public class CaveBiomes implements ModInitializer {
+	public static final Logger LOGGER = LogManager.getLogger("Cave Biomes");
 	public static final String VERSION = "0.6.0";
 
 	public static ConfigData CONFIG;
@@ -84,5 +88,7 @@ public class CaveBiomes implements ModInitializer {
 			MapWaterCommand.init();
 			NightVisionCommand.init();
 		}
+
+		LOGGER.info("Your caves are cavier!");
 	}
 }

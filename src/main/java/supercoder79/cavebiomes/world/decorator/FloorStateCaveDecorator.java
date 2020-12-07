@@ -4,6 +4,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ChunkRegion;
 import supercoder79.cavebiomes.api.CaveDecorator;
+import supercoder79.cavebiomes.world.noise.OpenSimplexNoise;
 
 import java.util.Random;
 
@@ -17,7 +18,7 @@ public class FloorStateCaveDecorator extends CaveDecorator {
     }
 
     @Override
-    public void decorate(ChunkRegion world, Random random, BlockPos pos) {
+    public void decorate(ChunkRegion world, Random random, OpenSimplexNoise noise, BlockPos pos) {
         if (world.getBlockState(pos.down()).isOpaque()) {
             if (random.nextInt(this.chance) == 0) {
                 world.setBlockState(pos.down(), this.state, 3);

@@ -3,8 +3,10 @@ package supercoder79.cavebiomes.world.decorator;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.VineBlock;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.ChunkRegion;
 import supercoder79.cavebiomes.api.CaveDecorator;
+import supercoder79.cavebiomes.world.noise.OpenSimplexNoise;
 
 import java.util.Random;
 
@@ -21,15 +23,24 @@ public class JungleCaveDecorator extends CaveDecorator {
     }
 
     @Override
-    public void decorate(ChunkRegion world, Random random, BlockPos pos) {
+    public void decorate(ChunkRegion world, Random random, OpenSimplexNoise noise, BlockPos pos) {
         if (this.grass) {
             //grass generation
-            if (world.getBlockState(pos.down()).isOpaque()) {
-                if (random.nextInt(3) == 0) {
-                    world.setBlockState(pos.down(), Blocks.DIRT.getDefaultState(), 3);
-                    if (random.nextInt(2) == 0) {
-                        world.setBlockState(pos, Blocks.GRASS.getDefaultState(), 3);
-                    }
+            for (Direction direction : Direction.values()) {
+                BlockPos local = pos.offset(direction);
+                if (!world.getBlockState(local).isOpaque()) {
+                    continue;
+                }
+
+                double dirtDensity = noise.sample(local, 32.0) * 0.7 + (random.nextDouble() * 0.95);
+                if (dirtDensity > 0.25) {
+                    world.setBlockState(local, Blocks.DIRT.getDefaultState(), 3);
+                }
+            }
+
+            if (world.getBlockState(pos).isAir() && world.getBlockState(pos.down()).isOf(Blocks.DIRT)) {
+                if (random.nextInt(3) != 0) {
+                    world.setBlockState(pos, Blocks.GRASS.getDefaultState(), 3);
                 }
             }
         }

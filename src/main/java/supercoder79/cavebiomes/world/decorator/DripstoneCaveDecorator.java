@@ -9,12 +9,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.ChunkRegion;
 import supercoder79.cavebiomes.api.CaveDecorator;
+import supercoder79.cavebiomes.world.noise.OpenSimplexNoise;
 
 import java.util.Random;
 
 public class DripstoneCaveDecorator extends CaveDecorator {
     @Override
-    public void decorate(ChunkRegion world, Random random, BlockPos pos) {
+    public void decorate(ChunkRegion world, Random random, OpenSimplexNoise noise, BlockPos pos) {
         // Try to set a block in every direction
         for (Direction direction : Direction.values()) {
             trySet(world, random, pos.offset(direction));

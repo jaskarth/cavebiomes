@@ -1,5 +1,7 @@
 package supercoder79.cavebiomes.world.noise;
 
+import net.minecraft.util.math.BlockPos;
+
 /*
  * OpenSimplex Noise in Java.
  * (Using implementation by Kurt Spencer)
@@ -201,6 +203,10 @@ public class OpenSimplexNoise {
         }
 
         return value / NORM_CONSTANT_2D;
+    }
+
+    public double sample(BlockPos pos, double scale) {
+        return sample(pos.getX() / scale, pos.getY() / scale, pos.getZ() / scale);
     }
 
     //3D OpenSimplex Noise.

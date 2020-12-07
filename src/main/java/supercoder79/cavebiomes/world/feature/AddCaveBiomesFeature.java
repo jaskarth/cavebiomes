@@ -20,6 +20,7 @@ import supercoder79.cavebiomes.CaveBiomes;
 import supercoder79.cavebiomes.api.CaveBiomesAPI;
 import supercoder79.cavebiomes.api.CaveDecorator;
 import supercoder79.cavebiomes.world.layer.LayerGenerator;
+import supercoder79.cavebiomes.world.noise.OpenSimplexNoise;
 
 import java.util.BitSet;
 import java.util.HashSet;
@@ -75,10 +76,12 @@ public class AddCaveBiomesFeature extends Feature<DefaultFeatureConfig> {
         Registry<Biome> biomes = world.toServerWorld().getServer().getRegistryManager().get(Registry.BIOME_KEY);
         CaveDecorator decorator = CaveBiomesAPI.getCaveDecoratorForBiome(biomes, biome);
 
+        OpenSimplexNoise noise = new OpenSimplexNoise(world.getSeed());
+
         // TODO: block based generation instead of chunk based
         for (BlockPos biomePos : upperPos) {
             random.setSeed((long)biomePos.getX() * 341873128712L + (long)biomePos.getZ() * 132897987541L + (long)biomePos.getY() * 3153265741L);
-            decorator.decorate((ChunkRegion) world, random, biomePos);
+            decorator.decorate((ChunkRegion) world, random, noise, biomePos);
         }
 
         //epic underground biome based decoration
@@ -94,7 +97,7 @@ public class AddCaveBiomesFeature extends Feature<DefaultFeatureConfig> {
         for (BlockPos layerPos : lowerPositions) {
             random.setSeed((long)layerPos.getX() * 341873128712L + (long)layerPos.getZ() * 132897987541L + (long)layerPos.getY() * 3153265741L);
 
-            caveBiomes[(layerPos.getX() & 15) * 16 + (layerPos.getZ() & 15)].decorate((ChunkRegion) world, random, layerPos);
+            caveBiomes[(layerPos.getX() & 15) * 16 + (layerPos.getZ() & 15)].decorate((ChunkRegion) world, random, noise, layerPos);
         }
 
         return false;
