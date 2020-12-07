@@ -43,7 +43,6 @@ public class CaveDecorators {
     // Temp minecraft stuff
     public static final CaveDecorator DRIPSTONE = new DripstoneCaveDecorator();
 
-    //TODO: big mushrooms
     //TODO: honey cave
     //TODO: emerald
 }
