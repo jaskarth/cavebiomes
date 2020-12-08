@@ -19,7 +19,7 @@ import supercoder79.cavebiomes.world.layer.cave.*;
 
 public class CaveBiomes implements ModInitializer {
 	public static final Logger LOGGER = LogManager.getLogger("Cave Biomes");
-	public static final String VERSION = "0.6.0";
+	public static final String VERSION = "0.6.1";
 
 	public static ConfigData CONFIG;
 
