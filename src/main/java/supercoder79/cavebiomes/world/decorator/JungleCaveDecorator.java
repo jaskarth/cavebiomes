@@ -1,5 +1,6 @@
 package supercoder79.cavebiomes.world.decorator;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.VineBlock;
 import net.minecraft.util.math.BlockPos;
@@ -28,7 +29,12 @@ public class JungleCaveDecorator extends CaveDecorator {
             //grass generation
             for (Direction direction : Direction.values()) {
                 BlockPos local = pos.offset(direction);
-                if (!world.getBlockState(local).isOpaque()) {
+                BlockState state = world.getBlockState(local);
+                if (state.isOf(Blocks.GRASS_BLOCK)) {
+                    continue;
+                }
+
+                if (!state.isOpaque()) {
                     continue;
                 }
 
