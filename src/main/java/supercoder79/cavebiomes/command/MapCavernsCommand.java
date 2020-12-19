@@ -34,8 +34,10 @@ public class MapCavernsCommand {
         BufferedImage img = new BufferedImage(1024, 1024, BufferedImage.TYPE_INT_RGB);
 
         long seed = source.getWorld().getSeed();
-        OctavePerlinNoiseSampler caveNoise = new OctavePerlinNoiseSampler(new ChunkRandom(seed), IntStream.rangeClosed(-5, 0));
-        OctavePerlinNoiseSampler offsetNoise = new OctavePerlinNoiseSampler(new ChunkRandom(seed - 576), IntStream.rangeClosed(-2, 0));
+        ChunkRandom chunkRandom = new ChunkRandom(seed);
+        OctavePerlinNoiseSampler caveNoise = new OctavePerlinNoiseSampler(chunkRandom, IntStream.rangeClosed(-5, 0));
+        OctavePerlinNoiseSampler offsetNoise = new OctavePerlinNoiseSampler(chunkRandom, IntStream.rangeClosed(-2, 0));
+        OctavePerlinNoiseSampler scaleNoise = new OctavePerlinNoiseSampler(chunkRandom, IntStream.rangeClosed(-0, 0));
 
         for (int x = -512; x < 512; x++) {
             if (x % 128 == 0) {
@@ -44,7 +46,7 @@ public class MapCavernsCommand {
 
             for (int z = -512; z < 512; z++) {
                 double[] buffer = new double[9];
-                PerlerpCarver.sampleNoiseColumn(buffer, x, z, caveNoise, offsetNoise);
+                PerlerpCarver.sampleNoiseColumn(buffer, x, z, caveNoise, offsetNoise, scaleNoise);
 
                 boolean isAir = false;
                 int sections = 0;

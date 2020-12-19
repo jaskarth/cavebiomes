@@ -6,6 +6,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.noise.OctavePerlinNoiseSampler;
+import net.minecraft.util.math.noise.PerlinNoiseSampler;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
@@ -25,6 +26,7 @@ public class PerlerpCarver extends BaseCarver {
     private long seed;
     private OctavePerlinNoiseSampler caveNoise;
     private OctavePerlinNoiseSampler offsetNoise;
+    private OctavePerlinNoiseSampler scaleNoise;
 
     public PerlerpCarver(Codec<ProbabilityConfig> configCodec) {
         super(configCodec);
@@ -49,8 +51,10 @@ public class PerlerpCarver extends BaseCarver {
         long seed = ((ServerWorld)((ProtoChunkAccessor)(chunk)).getField_27229()).getSeed();
 
         if (this.caveNoise == null || this.seed == seed) {
-            this.caveNoise = new OctavePerlinNoiseSampler(new ChunkRandom(seed), IntStream.rangeClosed(-5, 0));
-            this.offsetNoise = new OctavePerlinNoiseSampler(new ChunkRandom(seed - 576), IntStream.rangeClosed(-2, 0));
+            ChunkRandom chunkRandom = new ChunkRandom(seed);
+            this.caveNoise = new OctavePerlinNoiseSampler(chunkRandom, IntStream.rangeClosed(-5, 0));
+            this.offsetNoise = new OctavePerlinNoiseSampler(chunkRandom, IntStream.rangeClosed(-2, 0));
+            this.scaleNoise = new OctavePerlinNoiseSampler(chunkRandom, IntStream.rangeClosed(-0, 0));
             this.seed = seed;
         }
 
@@ -61,7 +65,7 @@ public class PerlerpCarver extends BaseCarver {
 
         for(int noiseZ = 0; noiseZ < 5; ++noiseZ) {
             noiseData[0][noiseZ] = new double[9];
-            sampleNoiseColumn(noiseData[0][noiseZ], chunkX * 4, chunkZ * 4 + noiseZ, this.caveNoise, this.offsetNoise);
+            sampleNoiseColumn(noiseData[0][noiseZ], chunkX * 4, chunkZ * 4 + noiseZ, this.caveNoise, this.offsetNoise, this.scaleNoise);
             noiseData[1][noiseZ] = new double[9];
         }
 
@@ -70,7 +74,7 @@ public class PerlerpCarver extends BaseCarver {
             // Initialize noise data on the x1 column
             int noiseZ;
             for (noiseZ = 0; noiseZ < 5; ++noiseZ) {
-                sampleNoiseColumn(noiseData[1][noiseZ], chunkX * 4 + noiseX + 1, chunkZ * 4 + noiseZ, this.caveNoise, this.offsetNoise);
+                sampleNoiseColumn(noiseData[1][noiseZ], chunkX * 4 + noiseX + 1, chunkZ * 4 + noiseZ, this.caveNoise, this.offsetNoise, this.scaleNoise);
             }
 
             // [0, 4] -> z noise chunks
@@ -164,31 +168,37 @@ public class PerlerpCarver extends BaseCarver {
         return true;
     }
 
-    public static void sampleNoiseColumn(double[] buffer, int x, int z, OctavePerlinNoiseSampler caveNoise, OctavePerlinNoiseSampler offsetNoise) {
+    public static void sampleNoiseColumn(double[] buffer, int x, int z, OctavePerlinNoiseSampler caveNoise, OctavePerlinNoiseSampler offsetNoise, OctavePerlinNoiseSampler scaleNoise) {
         double offset = offsetNoise.sample(x / 128.0, 5423.434, z / 128.0) * 5.45;
-        Random random = new Random((long)(x << 1) * 341873128712L + (long)(z << 1) * 132897987541L);
+        Random random = new Random(((long) x << 1) * 341873128712L + ((long) z << 1) * 132897987541L);
 
         // generate pillar
         if (random.nextInt(24) == 0) {
-            // density: 4 is a stalactite/stalagmite, 7 is pillar
-            offset += 4.0 + random.nextDouble() * 3;
+            // density: 4 is a stalactite/stalagmite, 10 is pillar
+            offset += 4.0 + random.nextDouble() * 6;
         }
 
         for (int y = 0; y < buffer.length; y++) {
-            buffer[y] = sampleNoise(caveNoise, x, y, z) + getFalloff(offset, y);
+            buffer[y] = sampleNoise(caveNoise, scaleNoise, x, y, z) + getFalloff(offset, y);
         }
     }
 
-    private static double sampleNoise(OctavePerlinNoiseSampler caveNoise, int x, int y, int z) {
+    private static double sampleNoise(OctavePerlinNoiseSampler caveNoise, OctavePerlinNoiseSampler scaleNoise, int x, int y, int z) {
         double noise = 0;
         double amplitude = 1;
+
         for (int i = 0; i < 6; i++) {
-            noise += caveNoise.sample(x * 18.42 * amplitude, y * 84.18 * amplitude, z * 18.42 * amplitude) / amplitude;
+            PerlinNoiseSampler sampler = caveNoise.getOctave(i);
+
+            noise += sampler.sample(x * 2.63 * amplitude, y * 12.18 * amplitude, z * 2.63 * amplitude, 0, 0) / amplitude;
 
             amplitude /= 2.0;
         }
 
         noise /= 1.25;
+
+        double scale = (scaleNoise.getOctave(0).sample(x / 96.0, y / 96.0, z / 96.0, 0, 0) + 0.2) * 24;
+        noise += Math.min(scale, 0);
 
         return noise;
     }
@@ -199,9 +209,9 @@ public class PerlerpCarver extends BaseCarver {
         double falloff = Math.max((falloffScale / y), 0); // lower bound
         falloff += Math.max((falloffScale / ((8) - y)), 0); // upper bound
 
-        double scaledY = y + 9.3;
+        double scaledY = y + 10.0;
 
-        falloff = (1.5 * falloff) - (0.0525 * scaledY * scaledY) - (-0.2 * y);
+        falloff = (1.5 * falloff) - (0.1 * scaledY * scaledY) - (-4.0 * y);
 
         return falloff;
     }
