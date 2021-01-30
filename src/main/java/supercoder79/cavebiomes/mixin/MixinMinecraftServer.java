@@ -16,6 +16,7 @@ import net.minecraft.world.SaveProperties;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.ProbabilityConfig;
+import net.minecraft.world.gen.carver.ConfiguredCarver;
 import net.minecraft.world.gen.decorator.Decorator;
 import net.minecraft.world.gen.decorator.NopeDecoratorConfig;
 import net.minecraft.world.gen.decorator.RangeDecoratorConfig;
@@ -30,7 +31,9 @@ import supercoder79.cavebiomes.CaveBiomes;
 import supercoder79.cavebiomes.config.ConfigData;
 import supercoder79.cavebiomes.world.carver.CarverHelper;
 import supercoder79.cavebiomes.world.carver.CaveBiomeCarvers;
+import supercoder79.cavebiomes.world.carver.ConfiguredCarvers;
 import supercoder79.cavebiomes.world.feature.CaveBiomesFeatures;
+import supercoder79.cavebiomes.world.feature.ConfiguredFeatures;
 
 import java.net.Proxy;
 
@@ -40,6 +43,8 @@ public class MixinMinecraftServer {
     @Inject(method = "<init>", at = @At("RETURN"))
     private void handleServerStart(Thread thread, DynamicRegistryManager.Impl manager, LevelStorage.Session session, SaveProperties saveProperties, ResourcePackManager resourcePackManager, Proxy proxy, DataFixer dataFixer, ServerResourceManager serverResourceManager, MinecraftSessionService minecraftSessionService, GameProfileRepository gameProfileRepository, UserCache userCache, WorldGenerationProgressListenerFactory worldGenerationProgressListenerFactory, CallbackInfo ci) {
         Registry<Biome> biomes = manager.get(Registry.BIOME_KEY);
+        Registry<ConfiguredCarver<?>> carvers = manager.get(Registry.CONFIGURED_CARVER_WORLDGEN);
+        Registry<ConfiguredFeature<?, ?>> features = manager.get(Registry.CONFIGURED_FEATURE_WORLDGEN);
         ConfigData config = CaveBiomes.CONFIG;
 
         //TODO: write an api for this
@@ -49,49 +54,25 @@ public class MixinMinecraftServer {
                 if (config.generateOreNodules) {
                     CaveBiomesFeatures.addFeature(biome,
                             GenerationStep.Feature.LAKES,
-                            CaveBiomesFeatures.ORE_NODULE.configure(FeatureConfig.DEFAULT).decorate(Decorator.NOPE.configure(NopeDecoratorConfig.INSTANCE)));
-                }
-
-                if (config.generateEmeraldGeodes) {
-                    CaveBiomesFeatures.addFeature(biome,
-                            GenerationStep.Feature.LAKES,
-                            Feature.GEODE.configure(
-                                    new GeodeFeatureConfig(
-                                            new GeodeLayerConfig(
-                                                    new SimpleBlockStateProvider(Blocks.AIR.getDefaultState()),
-                                                    new SimpleBlockStateProvider(Blocks.CALCITE.getDefaultState()),
-                                                    new SimpleBlockStateProvider(Blocks.EMERALD_ORE.getDefaultState()),
-                                                    new SimpleBlockStateProvider(Blocks.CALCITE.getDefaultState()),
-                                                    new SimpleBlockStateProvider(Blocks.CALCITE.getDefaultState()),
-                                                    ImmutableList.of(Blocks.EMERALD_ORE.getDefaultState())),
-                                            new GeodeLayerThicknessConfig(1.7D, 2.2D, 3.2D, 4.2D),
-                                            new GeodeCrackConfig(0.8D, 2.75D, 2),
-                                            0.125D, 0.1D, true,
-                                            6, 8, 4, 6,
-                                            2, 5, -24, 24, 0.045D))
-                                    .decorate(Decorator.RANGE.configure(new RangeDecoratorConfig(6, 0, 31))).spreadHorizontally().applyChance(144));
+                            features.get(ConfiguredFeatures.ORE_NODULE));
                 }
 
                 if (config.generateLocalWaterLevels) {
                     CaveBiomesFeatures.addFeature(biome,
                             GenerationStep.Feature.LAKES,
-                            CaveBiomesFeatures.LOCAL_WATER_LEVELS.configure(FeatureConfig.DEFAULT).decorate(Decorator.NOPE.configure(NopeDecoratorConfig.INSTANCE)));
+                            features.get(ConfiguredFeatures.LOCAL_WATER_LEVELS));
                 }
 
                 // Use step 2- better caves uses step 1
                 CaveBiomesFeatures.addFeature(biome,
                         GenerationStep.Feature.LAKES,
-                        CaveBiomesFeatures.CAVE_BIOMES.configure(FeatureConfig.DEFAULT).decorate(Decorator.NOPE.configure(NopeDecoratorConfig.INSTANCE)));
-
-                if (config.generateCaverns) {
-                    CarverHelper.addTo(biome, CaveBiomeCarvers.PERLERP.configure(new ProbabilityConfig(1)));
-                }
+                        features.get(ConfiguredFeatures.CAVE_BIOMES));
 
                 if (config.generateNewCaves && CarverHelper.shouldAdd(biome)) {
-                    CarverHelper.addTo(biome, CaveBiomeCarvers.ROOM.configure(new ProbabilityConfig(1 / 6.0f)));
-                    CarverHelper.addTo(biome, CaveBiomeCarvers.VERTICAL.configure(new ProbabilityConfig(1 / 6.0f)));
-                    CarverHelper.addTo(biome, CaveBiomeCarvers.HORIZONTAL.configure(new ProbabilityConfig(1 / 8.0f)));
-                    CarverHelper.addTo(biome, CaveBiomeCarvers.LAVA_ROOM.configure(new ProbabilityConfig(1 / 32.0f)));
+                    CarverHelper.addTo(biome, carvers.get(ConfiguredCarvers.ROOM));
+                    CarverHelper.addTo(biome, carvers.get(ConfiguredCarvers.VERTICAL));
+                    CarverHelper.addTo(biome, carvers.get(ConfiguredCarvers.HORIZONTAL));
+                    CarverHelper.addTo(biome, carvers.get(ConfiguredCarvers.LAVA_ROOM));
                 }
             }
 
@@ -99,11 +80,11 @@ public class MixinMinecraftServer {
                 if (CaveBiomesFeatures.OVERWORLD.test(biome)) {
                     CaveBiomesFeatures.addFeature(biome,
                             GenerationStep.Feature.VEGETAL_DECORATION,
-                            CaveBiomesFeatures.CAVERN_CHEST.configure(FeatureConfig.DEFAULT).spreadHorizontally().applyChance(config.cavernChestRarity));
+                            features.get(ConfiguredFeatures.CAVERN_CHEST));
 
                     CaveBiomesFeatures.addFeature(biome,
                             GenerationStep.Feature.VEGETAL_DECORATION,
-                            CaveBiomesFeatures.SPELUNKERS_CHEST.configure(FeatureConfig.DEFAULT).spreadHorizontally().applyChance(config.spelunkersChestRarity));
+                            features.get(ConfiguredFeatures.SPELUNKERS_CHEST));
                 }
             }
 
@@ -111,11 +92,11 @@ public class MixinMinecraftServer {
                 if (CaveBiomesFeatures.OVERWORLD.test(biome)) {
                     CaveBiomesFeatures.addFeature(biome,
                             GenerationStep.Feature.VEGETAL_DECORATION,
-                            CaveBiomesFeatures.CAVE_SPAWNER.configure(FeatureConfig.DEFAULT).spreadHorizontally().applyChance(config.normalSpawnerRarity));
+                            features.get(ConfiguredFeatures.CAVE_SPAWNER));
 
                     CaveBiomesFeatures.addFeature(biome,
                             GenerationStep.Feature.VEGETAL_DECORATION,
-                            CaveBiomesFeatures.RARE_CAVE_SPAWNER.configure(FeatureConfig.DEFAULT).spreadHorizontally().applyChance(config.rareSpawnerRarity));
+                            features.get(ConfiguredFeatures.RARE_CAVE_SPAWNER));
                 }
             }
 
@@ -123,7 +104,7 @@ public class MixinMinecraftServer {
                 if (CaveBiomesFeatures.NETHER.test(biome)) {
                     CaveBiomesFeatures.addFeature(biome,
                             GenerationStep.Feature.UNDERGROUND_DECORATION,
-                            CaveBiomesFeatures.NETHER_CHEST.configure(FeatureConfig.DEFAULT).spreadHorizontally().applyChance(config.netherChestRarity));
+                            features.get(ConfiguredFeatures.NETHER_CHEST));
                 }
             }
         }

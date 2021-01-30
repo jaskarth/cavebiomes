@@ -5,11 +5,9 @@
   "mixins": [
     "ConfiguredCarverAccessor",
     "GenerationSettingsAccessor",
-    "MixinMinecraftServer",
-    "ProtoChunkAccessor"
+    "MixinMinecraftServer"
   ],
   "client": [
-    "MixinMinecraftClient"
   ],
   "injectors": {
     "defaultRequire": 1

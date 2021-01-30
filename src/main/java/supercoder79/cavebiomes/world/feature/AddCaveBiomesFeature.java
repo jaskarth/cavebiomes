@@ -52,7 +52,7 @@ public class AddCaveBiomesFeature extends Feature<DefaultFeatureConfig> {
             for (int z = 0; z < 16; z++) {
                 mutable.setZ(pos.getZ() + z);
                 // TODO: no 0
-                for (int y = 0; y < world.getTopHeightLimit(); y++) {
+                for (int y = 0; y < 256; y++) {
                     mutable.setY(y);
 
                     int packed = x | z << 4 | y << 8;

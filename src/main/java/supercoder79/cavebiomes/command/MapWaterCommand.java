@@ -8,7 +8,6 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.noise.OctavePerlinNoiseSampler;
 import net.minecraft.world.gen.ChunkRandom;
-import supercoder79.cavebiomes.world.carver.PerlerpCarver;
 import supercoder79.cavebiomes.world.layer.CaveLayer;
 import supercoder79.cavebiomes.world.layer.ScaleCaveLayer;
 import supercoder79.cavebiomes.world.layer.SmoothLayer;

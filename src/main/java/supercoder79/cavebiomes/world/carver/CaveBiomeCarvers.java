@@ -8,5 +8,4 @@ public class CaveBiomeCarvers {
     public static final Carver<ProbabilityConfig> VERTICAL = new VerticalCarver(ProbabilityConfig.CODEC);
     public static final Carver<ProbabilityConfig> HORIZONTAL = new HorizontalCarver(ProbabilityConfig.CODEC);
     public static final Carver<ProbabilityConfig> LAVA_ROOM = new LavaRoomCarver(ProbabilityConfig.CODEC);
-    public static final Carver<ProbabilityConfig> PERLERP = new PerlerpCarver(ProbabilityConfig.CODEC);
 }

@@ -11,9 +11,11 @@ import supercoder79.cavebiomes.command.*;
 import supercoder79.cavebiomes.config.ConfigData;
 import supercoder79.cavebiomes.config.ConfigIO;
 import supercoder79.cavebiomes.world.carver.CaveBiomeCarvers;
+import supercoder79.cavebiomes.world.carver.ConfiguredCarvers;
 import supercoder79.cavebiomes.world.compat.VanillaCompat;
 import supercoder79.cavebiomes.world.decorator.CaveDecorators;
 import supercoder79.cavebiomes.world.feature.CaveBiomesFeatures;
+import supercoder79.cavebiomes.world.feature.ConfiguredFeatures;
 import supercoder79.cavebiomes.world.layer.cave.*;
 
 
@@ -57,14 +59,11 @@ public class CaveBiomes implements ModInitializer {
 		CaveBiomesAPI.registerCaveDecorator(CaveDecorators.LAPIS);
 		CaveBiomesAPI.registerCaveDecorator(CaveDecorators.DIAMOND);
 
-		// Temp minecraft cave decorators
-		CaveBiomesAPI.registerCaveDecorator(CaveDecorators.DRIPSTONE);
 
 		// Register cave layers
 		CaveBiomesAPI.registerLayerDispatcher(((dispatcher, seed) -> {
 			dispatcher.addBaseLayer(new StoneCaveLayer(seed, 200));
 			dispatcher.addBaseLayer(new RareCaveLayer(seed, 300));
-			dispatcher.addBaseLayer(new DripstoneCaveLayer(seed, 500));
 
 			dispatcher.addLayer(0, new SubBiomeCaveLayer(seed, 25));
 			dispatcher.addLayer(1, new OreCaveLayer(seed, 50));
@@ -75,20 +74,21 @@ public class CaveBiomes implements ModInitializer {
 		Registry.register(Registry.CARVER, new Identifier("cavebiomes", "vertical_carver"), CaveBiomeCarvers.VERTICAL);
 		Registry.register(Registry.CARVER, new Identifier("cavebiomes", "horizontal_carver"), CaveBiomeCarvers.HORIZONTAL);
 		Registry.register(Registry.CARVER, new Identifier("cavebiomes", "lava_room_carver"), CaveBiomeCarvers.LAVA_ROOM);
-		Registry.register(Registry.CARVER, new Identifier("cavebiomes", "perlerp_carver"), CaveBiomeCarvers.PERLERP);
+
+		ConfiguredCarvers.init();
 
 		// Add enabled chests and spawners
 		CaveBiomesFeatures.addEnabledFeatures(CONFIG);
+		ConfiguredFeatures.init(CONFIG);
 
 		// Development-only commands
 		if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
 			MapCaveBiomesCommand.init();
-			MapCavernsCommand.init();
 			MapOreNodulesCommand.init();
 			MapWaterCommand.init();
 			NightVisionCommand.init();
 		}
 
-		LOGGER.info("Your caves are cavier!");
+		LOGGER.info("[cave biomes] Your caves are cavier!");
 	}
 }
