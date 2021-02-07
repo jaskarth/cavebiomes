@@ -14,6 +14,7 @@ import net.minecraft.world.gen.ChunkRandom;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.util.FeatureContext;
 import supercoder79.cavebiomes.util.TreasureLootTables;
 
 import java.util.Random;
@@ -53,8 +54,13 @@ public class TreasureChestFeature extends Feature<DefaultFeatureConfig> {
 	}
 
 	@Override
-	public boolean generate(StructureWorldAccess world, ChunkGenerator generator, Random random, BlockPos pos, DefaultFeatureConfig config) {
-		((ChunkRandom) random).consume(this.consumption);
+	public boolean generate(FeatureContext<DefaultFeatureConfig> context) {
+		StructureWorldAccess world = context.getWorld();
+		BlockPos pos = context.getPos();
+		ChunkGenerator chunkGenerator = context.getGenerator();
+		Random random = context.getRandom();
+
+		((ChunkRandom) random).skip(this.consumption);
 		int y = random.nextInt(this.type.maxY - 5) + 5;
 		BlockPos.Mutable mutable = pos.mutableCopy();
 		mutable.setY(y);

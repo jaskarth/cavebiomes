@@ -18,6 +18,18 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 public final class CaveBiomesFeatures {
+	public static final AddCaveBiomesFeature CAVE_BIOMES = new AddCaveBiomesFeature();
+	public static final LocalWaterLevelsFeature LOCAL_WATER_LEVELS = new LocalWaterLevelsFeature();
+	public static final OreNoduleFeature ORE_NODULE = new OreNoduleFeature();
+
+	public static final TreasureChestFeature CAVERN_CHEST = new TreasureChestFeature(0, TreasureChestFeature.Type.CAVERN);
+	public static final TreasureChestFeature SPELUNKERS_CHEST = new TreasureChestFeature(1, TreasureChestFeature.Type.SPELUNKERS);
+
+	public static final TreasureChestFeature NETHER_CHEST = new TreasureChestFeature(2, TreasureChestFeature.Type.NETHER);
+
+	public static final MobSpawnerFeature CAVE_SPAWNER = new MobSpawnerFeature(3, 50, EntityType.ZOMBIE, EntityType.SPIDER);
+	public static final MobSpawnerFeature RARE_CAVE_SPAWNER = new MobSpawnerFeature(4, 35, EntityType.SKELETON, EntityType.SKELETON, EntityType.CAVE_SPIDER, EntityType.SPIDER, EntityType.SILVERFISH);
+
 	private CaveBiomesFeatures() {
 	}
 
@@ -33,6 +45,7 @@ public final class CaveBiomesFeatures {
 
 		registerFeature("cave_biomes", CAVE_BIOMES);
 		registerFeature("local_water_levels", LOCAL_WATER_LEVELS);
+		registerFeature("ore_nodule", ORE_NODULE);
 
 		// add generation
 	}
@@ -85,16 +98,4 @@ public final class CaveBiomesFeatures {
 		Biome.Category category = biome.getCategory();
 		return category == Biome.Category.NETHER;
 	};
-
-	public static final AddCaveBiomesFeature CAVE_BIOMES = new AddCaveBiomesFeature();
-	public static final LocalWaterLevelsFeature LOCAL_WATER_LEVELS = new LocalWaterLevelsFeature();
-	public static final OreNoduleFeature ORE_NODULE = new OreNoduleFeature();
-
-	public static final TreasureChestFeature CAVERN_CHEST = new TreasureChestFeature(0, TreasureChestFeature.Type.CAVERN);
-	public static final TreasureChestFeature SPELUNKERS_CHEST = new TreasureChestFeature(1, TreasureChestFeature.Type.SPELUNKERS);
-
-	public static final TreasureChestFeature NETHER_CHEST = new TreasureChestFeature(2, TreasureChestFeature.Type.NETHER);
-
-	public static final MobSpawnerFeature CAVE_SPAWNER = new MobSpawnerFeature(3, 50, EntityType.ZOMBIE, EntityType.SPIDER);
-	public static final MobSpawnerFeature RARE_CAVE_SPAWNER = new MobSpawnerFeature(4, 35, EntityType.SKELETON, EntityType.SKELETON, EntityType.CAVE_SPIDER, EntityType.SPIDER, EntityType.SILVERFISH);
 }

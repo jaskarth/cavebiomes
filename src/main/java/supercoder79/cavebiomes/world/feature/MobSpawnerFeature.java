@@ -11,6 +11,7 @@ import net.minecraft.world.gen.ChunkRandom;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.util.FeatureContext;
 
 import java.util.Random;
 
@@ -27,9 +28,12 @@ public class MobSpawnerFeature extends Feature<DefaultFeatureConfig> {
 		this.consumption = consumption;
 	}
 
-	@Override
-	public boolean generate(StructureWorldAccess world, ChunkGenerator generator, Random random, BlockPos pos, DefaultFeatureConfig config) {
-		((ChunkRandom) random).consume(this.consumption);
+	public boolean generate(FeatureContext<DefaultFeatureConfig> context) {
+		StructureWorldAccess world = context.getWorld();
+		BlockPos pos = context.getPos();
+		Random random = context.getRandom();
+
+		((ChunkRandom) random).skip(this.consumption);
 		int y = random.nextInt(this.maxY - 5) + 5;
 		BlockPos.Mutable mutable = pos.mutableCopy();
 		mutable.setY(y);

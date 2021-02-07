@@ -11,8 +11,10 @@ import supercoder79.cavebiomes.command.*;
 import supercoder79.cavebiomes.config.ConfigData;
 import supercoder79.cavebiomes.config.ConfigIO;
 import supercoder79.cavebiomes.world.carver.CaveBiomeCarvers;
+import supercoder79.cavebiomes.world.carver.CaveBiomesConfiguredCarvers;
 import supercoder79.cavebiomes.world.compat.VanillaCompat;
 import supercoder79.cavebiomes.world.decorator.CaveDecorators;
+import supercoder79.cavebiomes.world.feature.CaveBiomesConfiguredFeatures;
 import supercoder79.cavebiomes.world.feature.CaveBiomesFeatures;
 import supercoder79.cavebiomes.world.layer.cave.*;
 
@@ -77,6 +79,9 @@ public class CaveBiomes implements ModInitializer {
 		Registry.register(Registry.CARVER, new Identifier("cavebiomes", "lava_room_carver"), CaveBiomeCarvers.LAVA_ROOM);
 		Registry.register(Registry.CARVER, new Identifier("cavebiomes", "perlerp_carver"), CaveBiomeCarvers.PERLERP);
 
+		CaveBiomesConfiguredCarvers.init();
+		CaveBiomesConfiguredFeatures.init(CONFIG);
+
 		// Add enabled chests and spawners
 		CaveBiomesFeatures.addEnabledFeatures(CONFIG);
 
@@ -89,6 +94,6 @@ public class CaveBiomes implements ModInitializer {
 			NightVisionCommand.init();
 		}
 
-		LOGGER.info("Your caves are cavier!");
+		LOGGER.info("[cave biomes] Your caves are cavier!");
 	}
 }

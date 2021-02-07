@@ -16,6 +16,7 @@ import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.util.FeatureContext;
 import supercoder79.cavebiomes.CaveBiomes;
 import supercoder79.cavebiomes.api.CaveBiomesAPI;
 import supercoder79.cavebiomes.api.CaveDecorator;
@@ -34,7 +35,12 @@ public class AddCaveBiomesFeature extends Feature<DefaultFeatureConfig> {
     }
 
     @Override
-    public boolean generate(StructureWorldAccess world, ChunkGenerator chunkGenerator, Random random, BlockPos pos, DefaultFeatureConfig config) {
+    public boolean generate(FeatureContext<DefaultFeatureConfig> context) {
+        StructureWorldAccess world = context.getWorld();
+        BlockPos pos = context.getPos();
+        ChunkGenerator chunkGenerator = context.getGenerator();
+        Random random = context.getRandom();
+
         RegistryKey<World> key = world.toServerWorld().getRegistryKey();
         if (!CaveBiomes.CONFIG.whitelistedDimensions.contains(key.getValue().toString())) {
             return false;
@@ -52,7 +58,7 @@ public class AddCaveBiomesFeature extends Feature<DefaultFeatureConfig> {
             for (int z = 0; z < 16; z++) {
                 mutable.setZ(pos.getZ() + z);
                 // TODO: no 0
-                for (int y = 0; y < world.getTopHeightLimit(); y++) {
+                for (int y = world.getBottomY(); y < world.getTopY(); y++) {
                     mutable.setY(y);
 
                     int packed = x | z << 4 | y << 8;

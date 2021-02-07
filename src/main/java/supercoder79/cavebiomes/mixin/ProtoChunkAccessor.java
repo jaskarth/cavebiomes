@@ -7,6 +7,6 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(ProtoChunk.class)
 public interface ProtoChunkAccessor {
-    @Accessor(value = "field_27229")
-    HeightLimitView getField_27229();
+    @Accessor(value = "world")
+    HeightLimitView getWorld();
 }

@@ -16,7 +16,6 @@ import net.minecraft.world.gen.ChunkRandom;
 import net.minecraft.world.gen.ProbabilityConfig;
 import supercoder79.cavebiomes.mixin.ProtoChunkAccessor;
 
-import java.util.Arrays;
 import java.util.BitSet;
 import java.util.Random;
 import java.util.function.Function;
@@ -48,7 +47,7 @@ public class PerlerpCarver extends BaseCarver {
             }
         }
 
-        long seed = ((ServerWorld)((ProtoChunkAccessor)(chunk)).getField_27229()).getSeed();
+        long seed = ((ServerWorld)((ProtoChunkAccessor)(chunk)).getWorld()).getSeed();
 
         if (this.caveNoise == null || this.seed == seed) {
             ChunkRandom chunkRandom = new ChunkRandom(seed);
