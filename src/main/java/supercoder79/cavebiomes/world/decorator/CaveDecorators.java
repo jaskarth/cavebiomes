@@ -19,7 +19,7 @@ public class CaveDecorators {
     //lower
     public static final CaveDecorator LAVA = new FluidCaveDecorator(Blocks.LAVA.getDefaultState(), 3);
     public static final CaveDecorator WATER = new FluidCaveDecorator(Blocks.WATER.getDefaultState(), 2);
-    public static final CaveDecorator LUSH = new LushCaveDecorator();
+    public static final CaveDecorator OVERGROWN = new OvergrownCaveDecorator();
     public static final CaveDecorator MUSHROOM = new MushroomCaveDecorator();
     public static final CaveDecorator COBWEB = new CobwebCaveDecorator();
     public static final CaveDecorator ANDESITE = new SingleBlockStateCaveDecorator(Blocks.ANDESITE.getDefaultState());
@@ -42,6 +42,7 @@ public class CaveDecorators {
 
     // Temp minecraft stuff
     public static final CaveDecorator DRIPSTONE = new DripstoneCaveDecorator();
+    public static final CaveDecorator LUSH = new LushCaveDecorator();
 
     //TODO: honey cave
     //TODO: emerald

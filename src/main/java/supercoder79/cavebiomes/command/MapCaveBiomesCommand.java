@@ -34,7 +34,7 @@ public class MapCaveBiomesCommand {
         COLORS.put(CaveDecorators.NONE, 0xeeeeee);
         COLORS.put(CaveDecorators.WATER, 0x0033bb);
         COLORS.put(CaveDecorators.LAVA, 0xdd6600);
-        COLORS.put(CaveDecorators.LUSH, 0x00ff33);
+        COLORS.put(CaveDecorators.OVERGROWN, 0x00ff33);
         COLORS.put(CaveDecorators.OBSIDIAN, 0x333333);
         COLORS.put(CaveDecorators.MAGMA, 0xdd9900);
         COLORS.put(CaveDecorators.COBBLESTONE, 0x777777);
@@ -57,6 +57,7 @@ public class MapCaveBiomesCommand {
         COLORS.put(CaveDecorators.DIAMOND, 0x00ffff);
 
         COLORS.put(CaveDecorators.DRIPSTONE, 0x9c7a5d);
+        COLORS.put(CaveDecorators.LUSH, 0x5de378);
     }
 
     private static int execute(ServerCommandSource source) {

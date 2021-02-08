@@ -1,6 +1,7 @@
 package supercoder79.cavebiomes.world.feature;
 
 
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -57,7 +58,6 @@ public class AddCaveBiomesFeature extends Feature<DefaultFeatureConfig> {
             mutable.setX(pos.getX() + x);
             for (int z = 0; z < 16; z++) {
                 mutable.setZ(pos.getZ() + z);
-                // TODO: no 0
                 for (int y = world.getBottomY(); y < world.getTopY(); y++) {
                     mutable.setY(y);
 

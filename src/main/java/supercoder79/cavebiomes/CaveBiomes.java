@@ -34,7 +34,7 @@ public class CaveBiomes implements ModInitializer {
 		// Base cave decorators
 		CaveBiomesAPI.registerBaseCaveDecorator(CaveDecorators.WATER);
 		CaveBiomesAPI.registerBaseCaveDecorator(CaveDecorators.LAVA);
-		CaveBiomesAPI.registerBaseCaveDecorator(CaveDecorators.LUSH);
+		CaveBiomesAPI.registerBaseCaveDecorator(CaveDecorators.OVERGROWN);
 		CaveBiomesAPI.registerBaseCaveDecorator(CaveDecorators.OBSIDIAN);
 		CaveBiomesAPI.registerBaseCaveDecorator(CaveDecorators.MAGMA);
 		CaveBiomesAPI.registerBaseCaveDecorator(CaveDecorators.COBBLESTONE);
@@ -61,12 +61,13 @@ public class CaveBiomes implements ModInitializer {
 
 		// Temp minecraft cave decorators
 		CaveBiomesAPI.registerCaveDecorator(CaveDecorators.DRIPSTONE);
+		CaveBiomesAPI.registerCaveDecorator(CaveDecorators.LUSH);
 
 		// Register cave layers
 		CaveBiomesAPI.registerLayerDispatcher(((dispatcher, seed) -> {
 			dispatcher.addBaseLayer(new StoneCaveLayer(seed, 200));
 			dispatcher.addBaseLayer(new RareCaveLayer(seed, 300));
-			dispatcher.addBaseLayer(new DripstoneCaveLayer(seed, 500));
+			dispatcher.addBaseLayer(new LargeCaveLayer(seed, 500));
 
 			dispatcher.addLayer(0, new SubBiomeCaveLayer(seed, 25));
 			dispatcher.addLayer(1, new OreCaveLayer(seed, 50));

@@ -8,6 +8,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.ChunkRegion;
+import supercoder79.cavebiomes.api.CaveDecorator;
+import supercoder79.cavebiomes.world.layer.LayerGenerator;
 
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -53,6 +55,9 @@ public class FloodFill {
                 world.setBlockState(filledPos, Blocks.WATER.getDefaultState(), 2);
                 world.getFluidTickScheduler().schedule(filledPos, Fluids.WATER, 0);
             }
+
+            // Spawn entities
+            LayerGenerator.getDecorator(world.getSeed(), startPos.getX(), startPos.getZ()).spawn(world, random, startPos, CaveDecorator.SpawnContext.LOCAL_WATER_LEVEL_POOL);
 
             // An assortment of debug features
 //            System.out.println("Flooded filled at " + pos + " with " + filled.size() + " blocks in " + (System.currentTimeMillis() - start) + " ms");
