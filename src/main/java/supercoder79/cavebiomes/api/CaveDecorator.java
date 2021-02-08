@@ -13,6 +13,10 @@ public abstract class CaveDecorator {
 
     }
 
+    public boolean overrideUpper() {
+        return false;
+    }
+
     public enum SpawnContext {
         LOCAL_WATER_LEVEL_POOL(true),
         LOCAL_WATER_LEVEL_AREA(true);

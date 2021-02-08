@@ -3,6 +3,7 @@ package supercoder79.cavebiomes.util;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockBox;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -11,10 +12,7 @@ import net.minecraft.world.ChunkRegion;
 import supercoder79.cavebiomes.api.CaveDecorator;
 import supercoder79.cavebiomes.world.layer.LayerGenerator;
 
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 // Code used from TFC, created by AlcatrazEscapee. Used with permission!
 // The code has been modified slightly to work better in caves.
@@ -52,7 +50,14 @@ public class FloodFill {
             }
 
             for (BlockPos filledPos : filled) {
-                world.setBlockState(filledPos, Blocks.WATER.getDefaultState(), 2);
+                BlockState here = world.getBlockState(filledPos);
+                // Waterlog block if possible
+                if (here.contains(Properties.WATERLOGGED)) {
+                    world.setBlockState(filledPos, here.with(Properties.WATERLOGGED, true), 2);
+                } else {
+                    world.setBlockState(filledPos, Blocks.WATER.getDefaultState(), 2);
+                }
+
                 world.getFluidTickScheduler().schedule(filledPos, Fluids.WATER, 0);
             }
 

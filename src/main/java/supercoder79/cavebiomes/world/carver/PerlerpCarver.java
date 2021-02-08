@@ -1,6 +1,7 @@
 package supercoder79.cavebiomes.world.carver;
 
 import com.mojang.serialization.Codec;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
@@ -147,7 +148,12 @@ public class PerlerpCarver extends BaseCarver {
 
                                 if (density < 0.0) {
                                     // TODO no new
-                                    chunk.setBlockState(new BlockPos(localX, realY, localZ), Blocks.CAVE_AIR.getDefaultState(), false);
+                                    BlockState state = Blocks.CAVE_AIR.getDefaultState();
+                                    if (realY < 11) {
+                                        state = Blocks.LAVA.getDefaultState();
+                                    }
+
+                                    chunk.setBlockState(new BlockPos(localX, realY, localZ), state, false);
 
                                     int i = localX | localZ << 4 | realY << 8;
                                     carvingMask.set(i);

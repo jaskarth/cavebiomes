@@ -84,19 +84,18 @@ public class AddCaveBiomesFeature extends Feature<DefaultFeatureConfig> {
 
         OpenSimplexNoise noise = new OpenSimplexNoise(world.getSeed());
 
-        // TODO: block based generation instead of chunk based
-        for (BlockPos biomePos : upperPos) {
-            random.setSeed((long)biomePos.getX() * 341873128712L + (long)biomePos.getZ() * 132897987541L + (long)biomePos.getY() * 3153265741L);
-            decorator.decorate((ChunkRegion) world, random, noise, biomePos);
-        }
-
         //epic underground biome based decoration
         Set<BlockPos> lowerPositions = positions.stream().filter(p -> p.getY() <= threshold).collect(Collectors.toSet());
 
         CaveDecorator[] caveBiomes = new CaveDecorator[256];
+        BitSet overrides = new BitSet(256);
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
-                caveBiomes[x * 16 + z] = LayerGenerator.getDecorator(world.getSeed(), chunkPos.x * 16 + x, chunkPos.z * 16 + z);
+                CaveDecorator lower = LayerGenerator.getDecorator(world.getSeed(), chunkPos.x * 16 + x, chunkPos.z * 16 + z);
+                caveBiomes[x * 16 + z] = lower;
+                if (lower.overrideUpper()) {
+                    overrides.set(z | x << 4);
+                }
             }
         }
 
@@ -104,6 +103,21 @@ public class AddCaveBiomesFeature extends Feature<DefaultFeatureConfig> {
             random.setSeed((long)layerPos.getX() * 341873128712L + (long)layerPos.getZ() * 132897987541L + (long)layerPos.getY() * 3153265741L);
 
             caveBiomes[(layerPos.getX() & 15) * 16 + (layerPos.getZ() & 15)].decorate((ChunkRegion) world, random, noise, layerPos);
+        }
+
+        // TODO: block based generation instead of chunk based
+        for (BlockPos biomePos : upperPos) {
+            int localX = biomePos.getX() & 15;
+            int localZ = biomePos.getZ() & 15;
+
+            random.setSeed((long)biomePos.getX() * 341873128712L + (long)biomePos.getZ() * 132897987541L + (long)biomePos.getY() * 3153265741L);
+
+            // If we have an override, generate that
+            if (overrides.get(localZ | localX << 4)) {
+                caveBiomes[localX * 16 + localZ].decorate((ChunkRegion) world, random, noise, biomePos);
+            } else {
+                decorator.decorate((ChunkRegion) world, random, noise, biomePos);
+            }
         }
 
         return false;
