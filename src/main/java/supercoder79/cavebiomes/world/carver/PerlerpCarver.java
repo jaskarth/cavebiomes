@@ -202,7 +202,7 @@ public class PerlerpCarver extends BaseCarver {
 
         noise /= 1.25;
 
-        double scale = (scaleNoise.getOctave(0).sample(x / 96.0, y / 96.0, z / 96.0, 0, 0) + 0.2) * 24;
+        double scale = (scaleNoise.getOctave(0).sample(x / 96.0, y / 96.0, z / 96.0, 0, 0) + 0.2) * 30;
         noise += Math.min(scale, 0);
 
         return noise;

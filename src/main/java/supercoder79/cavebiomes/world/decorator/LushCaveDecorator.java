@@ -246,7 +246,7 @@ public class LushCaveDecorator extends CaveDecorator {
         if (world.getBlockState(pos.down()).isOf(Blocks.MOSS_BLOCK)) {
             if (random.nextInt(4) == 0 && world.getBlockState(pos.up()).isAir()) {
                 world.setBlockState(pos, Blocks.TALL_GRASS.getDefaultState().with(TallPlantBlock.HALF, DoubleBlockHalf.LOWER), 3);
-                world.setBlockState(pos, Blocks.TALL_GRASS.getDefaultState().with(TallPlantBlock.HALF, DoubleBlockHalf.UPPER), 3);
+                world.setBlockState(pos.up(), Blocks.TALL_GRASS.getDefaultState().with(TallPlantBlock.HALF, DoubleBlockHalf.UPPER), 3);
             } else {
                 world.setBlockState(pos, Blocks.GRASS.getDefaultState(), 3);
             }

@@ -1,10 +1,13 @@
 package supercoder79.cavebiomes.command;
 
+import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
+import net.minecraft.command.argument.Vec2ArgumentType;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.LiteralText;
+import net.minecraft.util.math.Vec2f;
 import supercoder79.cavebiomes.api.CaveDecorator;
 import supercoder79.cavebiomes.world.decorator.CaveDecorators;
 import supercoder79.cavebiomes.world.layer.LayerGenerator;
@@ -23,9 +26,13 @@ public class MapCaveBiomesCommand {
     public static void init() {
         CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
             LiteralArgumentBuilder<ServerCommandSource> builder = CommandManager.literal("mapcavebiomes")
-                    .requires(source -> source.hasPermissionLevel(2));
-
-            builder.executes(context -> execute(context.getSource()));
+                    .requires(source -> source.hasPermissionLevel(2))
+                    .executes(context -> execute(context.getSource(), 0, 0))
+                    .then(CommandManager.argument("pos", Vec2ArgumentType.vec2())
+                    .executes(context -> {
+                        Vec2f vec = Vec2ArgumentType.getVec2(context, "pos");
+                        return execute(context.getSource(), (int) vec.x, (int) vec.y);
+                    }));
 
             dispatcher.register(builder);
 
@@ -60,7 +67,7 @@ public class MapCaveBiomesCommand {
         COLORS.put(CaveDecorators.LUSH, 0x5de378);
     }
 
-    private static int execute(ServerCommandSource source) {
+    private static int execute(ServerCommandSource source, int xOffset, int zOffset) {
         BufferedImage img = new BufferedImage(2048, 2048, BufferedImage.TYPE_INT_RGB);
 
         long seed = source.getWorld().getSeed();
@@ -71,7 +78,7 @@ public class MapCaveBiomesCommand {
             }
 
             for (int z = -1024; z < 1024; z++) {
-                CaveDecorator decorator = LayerGenerator.getDecorator(seed, x, z);
+                CaveDecorator decorator = LayerGenerator.getDecorator(seed, x + xOffset, z + zOffset);
                 int color = COLORS.getOrDefault(decorator, 0xFFFFFF);
 
                 img.setRGB(x + 1024, z + 1024, color);
