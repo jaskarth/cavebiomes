@@ -7,7 +7,7 @@ import supercoder79.cavebiomes.world.noise.OpenSimplexNoise;
 import java.util.Random;
 
 public abstract class CaveDecorator {
-    public abstract void decorate(ChunkRegion world, Random random, OpenSimplexNoise noise, BlockPos pos);
+    public abstract void decorate(ChunkRegion world, Random random, OpenSimplexNoise noise, BlockPos pos, DecorationContext context);
 
     public void spawn(ChunkRegion world, Random random, BlockPos pos, SpawnContext context) {
 
@@ -15,6 +15,12 @@ public abstract class CaveDecorator {
 
     public boolean overrideUpper() {
         return false;
+    }
+
+    public enum DecorationContext {
+        AIR,
+        WATER,
+        LAVA
     }
 
     public enum SpawnContext {

@@ -12,7 +12,11 @@ import java.util.Random;
 
 public class MushroomCaveDecorator extends CaveDecorator {
     @Override
-    public void decorate(ChunkRegion world, Random random, OpenSimplexNoise noise, BlockPos pos) {
+    public void decorate(ChunkRegion world, Random random, OpenSimplexNoise noise, BlockPos pos, DecorationContext context) {
+        if (context != DecorationContext.AIR) {
+            return;
+        }
+
         for (Direction direction : Direction.values()) {
             BlockPos local = pos.offset(direction);
             BlockState state = world.getBlockState(local);

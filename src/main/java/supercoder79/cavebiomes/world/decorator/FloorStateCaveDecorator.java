@@ -18,7 +18,11 @@ public class FloorStateCaveDecorator extends CaveDecorator {
     }
 
     @Override
-    public void decorate(ChunkRegion world, Random random, OpenSimplexNoise noise, BlockPos pos) {
+    public void decorate(ChunkRegion world, Random random, OpenSimplexNoise noise, BlockPos pos, DecorationContext context) {
+        if (context != DecorationContext.AIR) {
+            return;
+        }
+
         if (world.getBlockState(pos.down()).isOpaque()) {
             if (random.nextInt(this.chance) == 0) {
                 world.setBlockState(pos.down(), this.state, 3);

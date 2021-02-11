@@ -1,7 +1,7 @@
 package supercoder79.cavebiomes.world.feature;
 
 
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -51,7 +51,7 @@ public class AddCaveBiomesFeature extends Feature<DefaultFeatureConfig> {
         Chunk chunk = world.getChunk(chunkPos.x, chunkPos.z);
 
         BitSet mask = ((ProtoChunk)chunk).getCarvingMask(GenerationStep.Carver.AIR);
-        Set<BlockPos> positions = new HashSet<>();
+        Set<PosEntry> positions = new HashSet<>();
 
         BlockPos.Mutable mutable = pos.mutableCopy();
         for (int x = 0; x < 16; x++) {
@@ -64,9 +64,20 @@ public class AddCaveBiomesFeature extends Feature<DefaultFeatureConfig> {
                     int packed = x | z << 4 | y << 8;
 
                     if (mask.get(packed)) {
-                        if (world.getBlockState(mutable).isOf(Blocks.CAVE_AIR)) {
-                            positions.add(mutable.toImmutable());
+                        BlockState state = world.getBlockState(mutable);
+                        CaveDecorator.DecorationContext type;
+
+                        if (state.isOf(Blocks.CAVE_AIR)) {
+                            type = CaveDecorator.DecorationContext.AIR;
+                        } else if (state.isOf(Blocks.WATER)) {
+                            type = CaveDecorator.DecorationContext.WATER;
+                        } else if (state.isOf(Blocks.LAVA)) {
+                            type = CaveDecorator.DecorationContext.LAVA;
+                        } else {
+                            continue; // Not valid block, move to next
                         }
+
+                        positions.add(new PosEntry(mutable.toImmutable(), type));
                     }
                 }
             }
@@ -77,7 +88,7 @@ public class AddCaveBiomesFeature extends Feature<DefaultFeatureConfig> {
         Biome biome = chunkGenerator.getBiomeSource().getBiomeForNoiseGen(chunkPos.x << 2, 0, chunkPos.z << 2);
 
         //regular biome based decoration
-        Set<BlockPos> upperPos = positions.stream().filter(p -> p.getY() > threshold).collect(Collectors.toSet());
+        Set<PosEntry> upperPositions = positions.stream().filter(p -> p.pos.getY() > threshold).collect(Collectors.toSet());
 
         Registry<Biome> biomes = world.toServerWorld().getServer().getRegistryManager().get(Registry.BIOME_KEY);
         CaveDecorator decorator = CaveBiomesAPI.getCaveDecoratorForBiome(biomes, biome);
@@ -85,7 +96,7 @@ public class AddCaveBiomesFeature extends Feature<DefaultFeatureConfig> {
         OpenSimplexNoise noise = new OpenSimplexNoise(world.getSeed());
 
         //epic underground biome based decoration
-        Set<BlockPos> lowerPositions = positions.stream().filter(p -> p.getY() <= threshold).collect(Collectors.toSet());
+        Set<PosEntry> lowerPositions = positions.stream().filter(p -> p.pos.getY() <= threshold).collect(Collectors.toSet());
 
         CaveDecorator[] caveBiomes = new CaveDecorator[256];
         BitSet overrides = new BitSet(256);
@@ -99,14 +110,16 @@ public class AddCaveBiomesFeature extends Feature<DefaultFeatureConfig> {
             }
         }
 
-        for (BlockPos layerPos : lowerPositions) {
+        for (PosEntry entry : lowerPositions) {
+            BlockPos layerPos = entry.pos;
             random.setSeed((long)layerPos.getX() * 341873128712L + (long)layerPos.getZ() * 132897987541L + (long)layerPos.getY() * 3153265741L);
 
-            caveBiomes[(layerPos.getX() & 15) * 16 + (layerPos.getZ() & 15)].decorate((ChunkRegion) world, random, noise, layerPos);
+            caveBiomes[(layerPos.getX() & 15) * 16 + (layerPos.getZ() & 15)].decorate((ChunkRegion) world, random, noise, layerPos, entry.context);
         }
 
         // TODO: block based generation instead of chunk based
-        for (BlockPos biomePos : upperPos) {
+        for (PosEntry entry : upperPositions) {
+            BlockPos biomePos = entry.pos;
             int localX = biomePos.getX() & 15;
             int localZ = biomePos.getZ() & 15;
 
@@ -114,12 +127,22 @@ public class AddCaveBiomesFeature extends Feature<DefaultFeatureConfig> {
 
             // If we have an override, generate that
             if (overrides.get(localZ | localX << 4)) {
-                caveBiomes[localX * 16 + localZ].decorate((ChunkRegion) world, random, noise, biomePos);
+                caveBiomes[localX * 16 + localZ].decorate((ChunkRegion) world, random, noise, biomePos, entry.context);
             } else {
-                decorator.decorate((ChunkRegion) world, random, noise, biomePos);
+                decorator.decorate((ChunkRegion) world, random, noise, biomePos, entry.context);
             }
         }
 
         return false;
+    }
+
+    private static class PosEntry {
+        private final BlockPos pos;
+        private final CaveDecorator.DecorationContext context;
+
+        private PosEntry(BlockPos pos, CaveDecorator.DecorationContext context) {
+            this.pos = pos;
+            this.context = context;
+        }
     }
 }

@@ -9,6 +9,6 @@ import java.util.Random;
 
 public class NoOpCaveDecorator extends CaveDecorator {
     @Override
-    public void decorate(ChunkRegion world, Random random, OpenSimplexNoise noise, BlockPos pos) {
+    public void decorate(ChunkRegion world, Random random, OpenSimplexNoise noise, BlockPos pos, DecorationContext context) {
     }
 }

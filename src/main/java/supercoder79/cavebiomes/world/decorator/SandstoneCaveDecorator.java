@@ -12,7 +12,11 @@ import java.util.Random;
 
 public class SandstoneCaveDecorator extends CaveDecorator {
     @Override
-    public void decorate(ChunkRegion world, Random random, OpenSimplexNoise noise, BlockPos pos) {
+    public void decorate(ChunkRegion world, Random random, OpenSimplexNoise noise, BlockPos pos, DecorationContext context) {
+        if (context != DecorationContext.AIR) {
+            return;
+        }
+
         // Set sandstone
         for (Direction direction : Direction.values()) {
             trySet(world, random, pos.offset(direction));

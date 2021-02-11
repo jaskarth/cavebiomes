@@ -16,7 +16,11 @@ import java.util.Random;
 
 public class LushCaveDecorator extends CaveDecorator {
     @Override
-    public void decorate(ChunkRegion world, Random random, OpenSimplexNoise noise, BlockPos pos) {
+    public void decorate(ChunkRegion world, Random random, OpenSimplexNoise noise, BlockPos pos, DecorationContext context) {
+        if (context != DecorationContext.AIR) {
+            return;
+        }
+
         // Set Moss and clay
         double density = noise.sample(pos, 44.0);
         setBlocksAround(world, random, pos, 0.20 + Math.abs(density / 2.5), Blocks.MOSS_BLOCK.getDefaultState());

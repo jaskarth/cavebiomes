@@ -14,7 +14,11 @@ import java.util.Random;
 
 public class OvergrownCaveDecorator extends CaveDecorator {
     @Override
-    public void decorate(ChunkRegion world, Random random, OpenSimplexNoise noise, BlockPos pos) {
+    public void decorate(ChunkRegion world, Random random, OpenSimplexNoise noise, BlockPos pos, DecorationContext context) {
+        if (context != DecorationContext.AIR) {
+            return;
+        }
+
         // Try to set a dirt block in every direction
         for (Direction direction : Direction.values()) {
             trySet(world, random, pos.offset(direction));

@@ -24,7 +24,11 @@ public class JungleCaveDecorator extends CaveDecorator {
     }
 
     @Override
-    public void decorate(ChunkRegion world, Random random, OpenSimplexNoise noise, BlockPos pos) {
+    public void decorate(ChunkRegion world, Random random, OpenSimplexNoise noise, BlockPos pos, DecorationContext context) {
+        if (context != DecorationContext.AIR) {
+            return;
+        }
+
         if (this.grass) {
             //grass generation
             for (Direction direction : Direction.values()) {

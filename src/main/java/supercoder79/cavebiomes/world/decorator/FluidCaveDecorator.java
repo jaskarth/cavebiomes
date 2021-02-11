@@ -18,7 +18,11 @@ public class FluidCaveDecorator extends CaveDecorator {
     }
 
     @Override
-    public void decorate(ChunkRegion world, Random random, OpenSimplexNoise noise, BlockPos pos) {
+    public void decorate(ChunkRegion world, Random random, OpenSimplexNoise noise, BlockPos pos, DecorationContext context) {
+        if (context != DecorationContext.AIR) {
+            return;
+        }
+
         if (random.nextInt(chance) == 0) {
             if (world.getBlockState(pos.down()).isOpaque() && world.getBlockState(pos).isAir()) {
                 if (shouldSpawn(world, pos)) {
