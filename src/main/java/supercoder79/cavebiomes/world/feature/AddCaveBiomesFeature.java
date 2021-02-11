@@ -60,24 +60,31 @@ public class AddCaveBiomesFeature extends Feature<DefaultFeatureConfig> {
                 mutable.setZ(pos.getZ() + z);
                 for (int y = world.getBottomY(); y < world.getTopY(); y++) {
                     mutable.setY(y);
+                    boolean generate = false;
+                    BlockState state = world.getBlockState(mutable);
 
                     int packed = x | z << 4 | y << 8;
-
-                    if (mask.get(packed)) {
-                        BlockState state = world.getBlockState(mutable);
-                        CaveDecorator.DecorationContext type;
-
-                        if (state.isOf(Blocks.CAVE_AIR)) {
-                            type = CaveDecorator.DecorationContext.AIR;
-                        } else if (state.isOf(Blocks.WATER)) {
-                            type = CaveDecorator.DecorationContext.WATER;
-                        } else if (state.isOf(Blocks.LAVA)) {
-                            type = CaveDecorator.DecorationContext.LAVA;
-                        } else {
-                            continue; // Not valid block, move to next
+                    // Check cave mask for initial check
+                    if (packed > 0) {
+                        if (mask.get(packed)) {
+                            if (state.isOf(Blocks.CAVE_AIR)) {
+                                generate = true;
+                            }
                         }
+                    }
 
-                        positions.add(new PosEntry(mutable.toImmutable(), type));
+                    // If we're not in the cave mask, check if we're below sea level and air, noise cave
+                    if (!generate) {
+                        if (y < chunkGenerator.getSeaLevel()) {
+                            if (state.isAir()) {
+                                generate = true;
+                            }
+                        }
+                    }
+
+                    // If generate, add position for chunk generation
+                    if (generate) {
+                        positions.add(new PosEntry(mutable.toImmutable(), CaveDecorator.DecorationContext.AIR));
                     }
                 }
             }

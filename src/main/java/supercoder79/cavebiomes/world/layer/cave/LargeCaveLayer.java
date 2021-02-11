@@ -13,8 +13,8 @@ public class LargeCaveLayer extends SamplingCaveLayer {
     @Override
     protected int operate(LayerRandom random, int x, int z, int sample) {
         random.setPosSeed(x >> 1, z >> 1, this.salt);
-        if (random.nextInt(6) == 0) {
-            return random.nextBoolean() ? CaveBiomesAPI.indexOf(CaveDecorators.DRIPSTONE) : CaveBiomesAPI.indexOf(CaveDecorators.LUSH);
+        if (random.nextInt(1) == 0) {
+            return CaveBiomesAPI.indexOf(CaveDecorators.LUSH);
         }
 
         return sample;

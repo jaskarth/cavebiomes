@@ -53,9 +53,9 @@ public class MixinMinecraftServer {
 
             if (CaveBiomesFeatures.OVERWORLD.test(biome)) {
                 if (config.generateOreNodules) {
-                    CaveBiomesFeatures.addFeature(biome,
-                            GenerationStep.Feature.LAKES,
-                            features.get(CaveBiomesConfiguredFeatures.ORE_NODULE));
+//                    CaveBiomesFeatures.addFeature(biome,
+//                            GenerationStep.Feature.LAKES,
+//                            features.get(CaveBiomesConfiguredFeatures.ORE_NODULE));
                 }
 
                 if (config.generateEmeraldGeodes) {
@@ -65,9 +65,9 @@ public class MixinMinecraftServer {
                 }
 
                 if (config.generateLocalWaterLevels) {
-                    CaveBiomesFeatures.addFeature(biome,
-                            GenerationStep.Feature.LAKES,
-                            features.get(CaveBiomesConfiguredFeatures.LOCAL_WATER_LEVELS));
+//                    CaveBiomesFeatures.addFeature(biome,
+//                            GenerationStep.Feature.LAKES,
+//                            features.get(CaveBiomesConfiguredFeatures.LOCAL_WATER_LEVELS));
                 }
 
                 // Use step 2- better caves uses step 1
@@ -76,14 +76,14 @@ public class MixinMinecraftServer {
                         features.get(CaveBiomesConfiguredFeatures.CAVE_BIOMES));
 
                 if (config.generateCaverns) {
-                    CarverHelper.addTo(biome, carvers.get(CaveBiomesConfiguredCarvers.PERLERP));
+//                    CarverHelper.addTo(biome, carvers.get(CaveBiomesConfiguredCarvers.PERLERP));
                 }
 
                 if (config.generateNewCaves && CarverHelper.shouldAdd(biome)) {
-                    CarverHelper.addTo(biome, carvers.get(CaveBiomesConfiguredCarvers.ROOM));
-                    CarverHelper.addTo(biome, carvers.get(CaveBiomesConfiguredCarvers.VERTICAL));
-                    CarverHelper.addTo(biome, carvers.get(CaveBiomesConfiguredCarvers.HORIZONTAL));
-                    CarverHelper.addTo(biome, carvers.get(CaveBiomesConfiguredCarvers.LAVA_ROOM));
+//                    CarverHelper.addTo(biome, carvers.get(CaveBiomesConfiguredCarvers.ROOM));
+//                    CarverHelper.addTo(biome, carvers.get(CaveBiomesConfiguredCarvers.VERTICAL));
+//                    CarverHelper.addTo(biome, carvers.get(CaveBiomesConfiguredCarvers.HORIZONTAL));
+//                    CarverHelper.addTo(biome, carvers.get(CaveBiomesConfiguredCarvers.LAVA_ROOM));
                 }
             }
 

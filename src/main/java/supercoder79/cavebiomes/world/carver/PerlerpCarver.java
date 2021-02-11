@@ -79,7 +79,7 @@ public class PerlerpCarver extends BaseCarver {
 
             // [0, 4] -> z noise chunks
             for (noiseZ = 0; noiseZ < 4; ++noiseZ) {
-                ChunkSection section = ((ProtoChunk)chunk).getSection(15);
+                ChunkSection section = ((ProtoChunk)chunk).method_33729(15);
 //                section.lock();
 
                 // [0, 32] -> y noise chunks
@@ -102,7 +102,7 @@ public class PerlerpCarver extends BaseCarver {
                         int sectionY = realY >> 4;
                         if (section.getYOffset() >> 4 != sectionY) {
 //                            section.unlock();
-                            section = ((ProtoChunk)chunk).getSection(sectionY);
+                            section = ((ProtoChunk)chunk).method_33729(sectionY);
 //                            section.lock();
                         }
 
