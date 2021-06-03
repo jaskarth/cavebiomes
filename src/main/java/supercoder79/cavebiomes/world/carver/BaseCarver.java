@@ -1,14 +1,13 @@
 package supercoder79.cavebiomes.world.carver;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.world.gen.ProbabilityConfig;
 import net.minecraft.world.gen.carver.Carver;
 
 import java.util.Random;
 
-public abstract class BaseCarver extends Carver<ProbabilityConfig> {
-    public BaseCarver(Codec<ProbabilityConfig> configCodec) {
-        super(configCodec, 256);
+public abstract class BaseCarver extends Carver<SimpleCarverConfig> {
+    public BaseCarver(Codec<SimpleCarverConfig> configCodec) {
+        super(configCodec);
     }
 
     protected int getCaveY(Random random) {
@@ -16,7 +15,7 @@ public abstract class BaseCarver extends Carver<ProbabilityConfig> {
     }
 
     @Override
-    public boolean shouldCarve(Random random, int chunkX, int chunkZ, ProbabilityConfig config) {
+    public boolean shouldCarve(SimpleCarverConfig config, Random random) {
         return random.nextFloat() <= config.probability;
     }
 }

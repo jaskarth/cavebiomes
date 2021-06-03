@@ -2,14 +2,18 @@ package supercoder79.cavebiomes.world.feature;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Blocks;
+import net.minecraft.tag.BlockTags;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.world.gen.YOffset;
 import net.minecraft.world.gen.decorator.Decorator;
 import net.minecraft.world.gen.decorator.NopeDecoratorConfig;
 import net.minecraft.world.gen.decorator.RangeDecoratorConfig;
 import net.minecraft.world.gen.feature.*;
+import net.minecraft.world.gen.heightprovider.UniformHeightProvider;
 import net.minecraft.world.gen.stateprovider.SimpleBlockStateProvider;
 import supercoder79.cavebiomes.config.ConfigData;
 
@@ -50,13 +54,14 @@ public class CaveBiomesConfiguredFeatures {
                             new SimpleBlockStateProvider(Blocks.EMERALD_ORE.getDefaultState()),
                             new SimpleBlockStateProvider(Blocks.CALCITE.getDefaultState()),
                             new SimpleBlockStateProvider(Blocks.CALCITE.getDefaultState()),
-                            ImmutableList.of(Blocks.EMERALD_ORE.getDefaultState())),
+                            ImmutableList.of(Blocks.EMERALD_ORE.getDefaultState()), BlockTags.FEATURES_CANNOT_REPLACE.getId(),
+                            BlockTags.GEODE_INVALID_BLOCKS.getId()),
                     new GeodeLayerThicknessConfig(1.7D, 2.2D, 3.2D, 4.2D),
                     new GeodeCrackConfig(0.8D, 2.75D, 2),
                     0.125D, 0.1D, true,
-                    6, 8, 4, 6,
-                    2, 5, -24, 24, 0.045D))
-            .decorate(Decorator.RANGE.configure(new RangeDecoratorConfig(6, 0, 31)))
+                    UniformIntProvider.create(6, 8), UniformIntProvider.create(4, 6),
+                    UniformIntProvider.create(2, 4), -16, 16, 0.045D, 1))
+            .decorate(Decorator.RANGE.configure(new RangeDecoratorConfig(UniformHeightProvider.create(YOffset.fixed(8), YOffset.fixed(32)))))
             .spreadHorizontally()
             .applyChance(144);
 }

@@ -12,7 +12,10 @@ import net.minecraft.world.ChunkRegion;
 import supercoder79.cavebiomes.api.CaveDecorator;
 import supercoder79.cavebiomes.world.layer.LayerGenerator;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Random;
+import java.util.Set;
 
 // Code used from TFC, created by AlcatrazEscapee. Used with permission!
 // The code has been modified slightly to work better in caves.

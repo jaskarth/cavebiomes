@@ -2,29 +2,31 @@ package supercoder79.cavebiomes.world.carver;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.gen.ProbabilityConfig;
+import net.minecraft.world.gen.carver.CarverContext;
+import net.minecraft.world.gen.chunk.AquiferSampler;
 
 import java.util.BitSet;
 import java.util.Random;
 import java.util.function.Function;
 
 public class VerticalCarver extends BaseCarver {
-    public VerticalCarver(Codec<ProbabilityConfig> configCodec) {
+    public VerticalCarver(Codec<SimpleCarverConfig> configCodec) {
         super(configCodec);
     }
 
     @Override
-    public boolean carve(Chunk chunk, Function<BlockPos, Biome> posToBiome, Random random, int seaLevel, int chunkX, int chunkZ, int mainChunkX, int mainChunkZ, BitSet carvingMask, ProbabilityConfig carverConfig) {
-        double x = (chunkX * 16 + random.nextInt(16));
+    public boolean carve(CarverContext context, SimpleCarverConfig config, Chunk chunk, Function<BlockPos, Biome> posToBiome, Random random, AquiferSampler aquiferSampler, ChunkPos pos, BitSet carvingMask) {
+        double x = (pos.x * 16 + random.nextInt(16));
         double y = this.getCaveY(random);
-        double z = (chunkZ * 16 + random.nextInt(16));
+        double z = (pos.z * 16 + random.nextInt(16));
         float yaw = 1.5f + 3.5F + random.nextFloat() * 2.0F; // Base val: 1.5
         float pitch = yaw * 0.75f;
         for (int i = 0; i < random.nextInt(4) + 4; i++) {
-            this.carveRegion(chunk, posToBiome, random.nextLong(), seaLevel, mainChunkX, mainChunkZ, x + 1.0D, y, z, yaw, pitch, carvingMask);
+            this.carveRegion(context, config, chunk, posToBiome, random.nextLong(), aquiferSampler, x + 1.0D, y, z, yaw, pitch, carvingMask, this::isPositionExcluded);
 
             float pitchChange = MathHelper.cos(pitch) * 2;
             x += MathHelper.cos(yaw) * pitchChange;
@@ -38,8 +40,7 @@ public class VerticalCarver extends BaseCarver {
         return true;
     }
 
-    @Override
-    protected boolean isPositionExcluded(double scaledRelativeX, double scaledRelativeY, double scaledRelativeZ, int y) {
+    protected boolean isPositionExcluded(CarverContext context, double scaledRelativeX, double scaledRelativeY, double scaledRelativeZ, int y) {
         return scaledRelativeX * scaledRelativeX + scaledRelativeY * scaledRelativeY + scaledRelativeZ * scaledRelativeZ >= 0.8D;
     }
 }

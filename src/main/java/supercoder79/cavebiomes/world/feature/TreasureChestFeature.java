@@ -56,7 +56,7 @@ public class TreasureChestFeature extends Feature<DefaultFeatureConfig> {
 	@Override
 	public boolean generate(FeatureContext<DefaultFeatureConfig> context) {
 		StructureWorldAccess world = context.getWorld();
-		BlockPos pos = context.getPos();
+		BlockPos pos = context.getOrigin();
 		ChunkGenerator chunkGenerator = context.getGenerator();
 		Random random = context.getRandom();
 

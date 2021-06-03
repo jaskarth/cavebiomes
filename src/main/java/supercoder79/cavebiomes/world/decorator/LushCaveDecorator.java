@@ -1,6 +1,9 @@
 package supercoder79.cavebiomes.world.decorator;
 
-import net.minecraft.block.*;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.TallPlantBlock;
+import net.minecraft.block.VineBlock;
 import net.minecraft.block.enums.DoubleBlockHalf;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
@@ -186,12 +189,12 @@ public class LushCaveDecorator extends CaveDecorator {
 
             // If we detect stone below, place head and return
             if (!world.getBlockState(local.down()).isAir() || height == i) {
-                world.setBlockState(local, Blocks.CAVE_VINES_HEAD.getDefaultState().with(Properties.BERRIES, random.nextInt(glowBerryChance) == 0), 3);
+                world.setBlockState(local, Blocks.CAVE_VINES.getDefaultState().with(Properties.BERRIES, random.nextInt(glowBerryChance) == 0), 3);
                 return;
             }
 
             if (world.getBlockState(local).isAir()) {
-                world.setBlockState(local, Blocks.CAVE_VINES_BODY.getDefaultState().with(Properties.BERRIES, random.nextInt(glowBerryChance) == 0), 3);
+                world.setBlockState(local, Blocks.CAVE_VINES_PLANT.getDefaultState().with(Properties.BERRIES, random.nextInt(glowBerryChance) == 0), 3);
             }
         }
     }

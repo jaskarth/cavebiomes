@@ -1,10 +1,8 @@
 package supercoder79.cavebiomes.mixin;
 
-import com.google.common.collect.ImmutableList;
 import com.mojang.authlib.GameProfileRepository;
 import com.mojang.authlib.minecraft.MinecraftSessionService;
 import com.mojang.datafixers.DataFixer;
-import net.minecraft.block.Blocks;
 import net.minecraft.resource.ResourcePackManager;
 import net.minecraft.resource.ServerResourceManager;
 import net.minecraft.server.MinecraftServer;
@@ -15,14 +13,8 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.world.SaveProperties;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStep;
-import net.minecraft.world.gen.ProbabilityConfig;
 import net.minecraft.world.gen.carver.ConfiguredCarver;
-import net.minecraft.world.gen.carver.ConfiguredCarvers;
-import net.minecraft.world.gen.decorator.Decorator;
-import net.minecraft.world.gen.decorator.NopeDecoratorConfig;
-import net.minecraft.world.gen.decorator.RangeDecoratorConfig;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.stateprovider.SimpleBlockStateProvider;
+import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.level.storage.LevelStorage;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -31,7 +23,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import supercoder79.cavebiomes.CaveBiomes;
 import supercoder79.cavebiomes.config.ConfigData;
 import supercoder79.cavebiomes.world.carver.CarverHelper;
-import supercoder79.cavebiomes.world.carver.CaveBiomeCarvers;
 import supercoder79.cavebiomes.world.carver.CaveBiomesConfiguredCarvers;
 import supercoder79.cavebiomes.world.feature.CaveBiomesConfiguredFeatures;
 import supercoder79.cavebiomes.world.feature.CaveBiomesFeatures;
@@ -44,8 +35,8 @@ public class MixinMinecraftServer {
     @Inject(method = "<init>", at = @At("RETURN"))
     private void handleServerStart(Thread thread, DynamicRegistryManager.Impl manager, LevelStorage.Session session, SaveProperties saveProperties, ResourcePackManager resourcePackManager, Proxy proxy, DataFixer dataFixer, ServerResourceManager serverResourceManager, MinecraftSessionService minecraftSessionService, GameProfileRepository gameProfileRepository, UserCache userCache, WorldGenerationProgressListenerFactory worldGenerationProgressListenerFactory, CallbackInfo ci) {
         Registry<Biome> biomes = manager.get(Registry.BIOME_KEY);
-        Registry<ConfiguredCarver<?>> carvers = manager.get(Registry.CONFIGURED_CARVER_WORLDGEN);
-        Registry<ConfiguredFeature<?, ?>> features = manager.get(Registry.CONFIGURED_FEATURE_WORLDGEN);
+        Registry<ConfiguredCarver<?>> carvers = manager.get(Registry.CONFIGURED_CARVER_KEY);
+        Registry<ConfiguredFeature<?, ?>> features = manager.get(Registry.CONFIGURED_FEATURE_KEY);
         ConfigData config = CaveBiomes.CONFIG;
 
         //TODO: write an api for this
@@ -53,9 +44,9 @@ public class MixinMinecraftServer {
 
             if (CaveBiomesFeatures.OVERWORLD.test(biome)) {
                 if (config.generateOreNodules) {
-//                    CaveBiomesFeatures.addFeature(biome,
-//                            GenerationStep.Feature.LAKES,
-//                            features.get(CaveBiomesConfiguredFeatures.ORE_NODULE));
+                    CaveBiomesFeatures.addFeature(biome,
+                            GenerationStep.Feature.LAKES,
+                            features.get(CaveBiomesConfiguredFeatures.ORE_NODULE));
                 }
 
                 if (config.generateEmeraldGeodes) {
@@ -65,9 +56,9 @@ public class MixinMinecraftServer {
                 }
 
                 if (config.generateLocalWaterLevels) {
-//                    CaveBiomesFeatures.addFeature(biome,
-//                            GenerationStep.Feature.LAKES,
-//                            features.get(CaveBiomesConfiguredFeatures.LOCAL_WATER_LEVELS));
+                    CaveBiomesFeatures.addFeature(biome,
+                            GenerationStep.Feature.LAKES,
+                            features.get(CaveBiomesConfiguredFeatures.LOCAL_WATER_LEVELS));
                 }
 
                 // Use step 2- better caves uses step 1
@@ -76,14 +67,14 @@ public class MixinMinecraftServer {
                         features.get(CaveBiomesConfiguredFeatures.CAVE_BIOMES));
 
                 if (config.generateCaverns) {
-//                    CarverHelper.addTo(biome, carvers.get(CaveBiomesConfiguredCarvers.PERLERP));
+                    CarverHelper.addTo(biome, carvers.get(CaveBiomesConfiguredCarvers.PERLERP));
                 }
 
                 if (config.generateNewCaves && CarverHelper.shouldAdd(biome)) {
-//                    CarverHelper.addTo(biome, carvers.get(CaveBiomesConfiguredCarvers.ROOM));
-//                    CarverHelper.addTo(biome, carvers.get(CaveBiomesConfiguredCarvers.VERTICAL));
-//                    CarverHelper.addTo(biome, carvers.get(CaveBiomesConfiguredCarvers.HORIZONTAL));
-//                    CarverHelper.addTo(biome, carvers.get(CaveBiomesConfiguredCarvers.LAVA_ROOM));
+                    CarverHelper.addTo(biome, carvers.get(CaveBiomesConfiguredCarvers.ROOM));
+                    CarverHelper.addTo(biome, carvers.get(CaveBiomesConfiguredCarvers.VERTICAL));
+                    CarverHelper.addTo(biome, carvers.get(CaveBiomesConfiguredCarvers.HORIZONTAL));
+                    CarverHelper.addTo(biome, carvers.get(CaveBiomesConfiguredCarvers.LAVA_ROOM));
                 }
             }
 

@@ -4,7 +4,6 @@ import supercoder79.cavebiomes.CaveBiomes;
 import supercoder79.cavebiomes.api.CaveBiomesAPI;
 import supercoder79.cavebiomes.util.LayerRandom;
 import supercoder79.cavebiomes.world.decorator.CaveDecorators;
-import supercoder79.cavebiomes.world.layer.CaveLayer;
 import supercoder79.cavebiomes.world.layer.SamplingCaveLayer;
 
 public class RareCaveLayer extends SamplingCaveLayer {

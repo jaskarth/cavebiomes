@@ -10,14 +10,12 @@ import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkRandom;
-import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.util.FeatureContext;
 import supercoder79.cavebiomes.CaveBiomes;
 import supercoder79.cavebiomes.util.FloodFill;
 import supercoder79.cavebiomes.world.layer.WaterGenerator;
-import supercoder79.cavebiomes.world.layer.water.WaterBorderLayer;
 
 import java.util.Random;
 
@@ -29,7 +27,7 @@ public class LocalWaterLevelsFeature extends Feature<DefaultFeatureConfig> {
     @Override
     public boolean generate(FeatureContext<DefaultFeatureConfig> context) {
         StructureWorldAccess world = context.getWorld();
-        BlockPos pos = context.getPos();
+        BlockPos pos = context.getOrigin();
         Random random = context.getRandom();
 
         RegistryKey<World> key = world.toServerWorld().getRegistryKey();

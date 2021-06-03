@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '0.5-SNAPSHOT'
+    id 'fabric-loom' version '0.8-SNAPSHOT'
     id 'maven-publish'
 }
 
@@ -11,7 +11,7 @@ version = project.mod_version
 group = project.maven_group
 
 repositories {
-    maven { url = "https://jitpack.io" }
+    maven { url = "https://maven.gegy.dev" }
 }
 
 minecraft {
@@ -20,29 +20,20 @@ minecraft {
 dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-    modCompile "net.fabricmc:fabric-loader:${project.loader_version}"
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-    modCompile "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-    modRuntime ("com.github.SuperCoder7979:databreaker:0.2.6") {
+    modRuntime ("supercoder79:databreaker:0.2.7") {
         exclude module : "fabric-loader"
     }
-//
-//    modRuntime ("com.github.jellysquid3:sodium-fabric:2af6510d167f99f2dd68b2b5c46df01415c6169d")
-//    modRuntime ("com.github.jellysquid3:phosphor-fabric:685f1fa60800bbbbe4784ed1906c5f66e130c584")
-//	modRuntime ("com.github.jellysquid3:lithium-fabric:f11bf948620d023e7df7b92ed8963c0f8f40d1f8")
 }
 
 processResources {
     inputs.property "version", project.version
 
-    from(sourceSets.main.resources.srcDirs) {
-        include "fabric.mod.json"
+    filesMatching("fabric.mod.json") {
         expand "version": project.version
-    }
-
-    from(sourceSets.main.resources.srcDirs) {
-        exclude "fabric.mod.json"
     }
 }
 

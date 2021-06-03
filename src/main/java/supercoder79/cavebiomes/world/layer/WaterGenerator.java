@@ -1,11 +1,7 @@
 package supercoder79.cavebiomes.world.layer;
 
-import supercoder79.cavebiomes.api.CaveBiomesAPI;
-import supercoder79.cavebiomes.api.CaveDecorator;
 import supercoder79.cavebiomes.world.layer.water.WaterBorderLayer;
 import supercoder79.cavebiomes.world.layer.water.WaterInitLayer;
-
-import java.util.List;
 
 public class WaterGenerator {
     public static final int BORDER_BITS = (255 << 8);

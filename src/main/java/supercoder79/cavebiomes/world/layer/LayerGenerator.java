@@ -4,7 +4,7 @@ import supercoder79.cavebiomes.CaveBiomes;
 import supercoder79.cavebiomes.api.CaveBiomesAPI;
 import supercoder79.cavebiomes.api.CaveDecorator;
 import supercoder79.cavebiomes.impl.CaveBiomesImpl;
-import supercoder79.cavebiomes.world.layer.cave.*;
+import supercoder79.cavebiomes.world.layer.cave.BaseCavesLayer;
 
 import java.util.ArrayList;
 import java.util.List;

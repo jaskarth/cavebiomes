@@ -7,8 +7,6 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.Heightmap;
-import net.minecraft.world.chunk.ChunkStatus;
 import supercoder79.cavebiomes.world.noise.OpenSimplexNoise;
 
 import javax.imageio.ImageIO;
@@ -16,7 +14,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.concurrent.ExecutionException;
 
 public class MapOreNodulesCommand {
     public static void init() {

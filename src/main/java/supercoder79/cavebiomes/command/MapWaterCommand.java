@@ -5,23 +5,13 @@ import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.LiteralText;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.noise.OctavePerlinNoiseSampler;
-import net.minecraft.world.gen.ChunkRandom;
-import supercoder79.cavebiomes.world.carver.PerlerpCarver;
-import supercoder79.cavebiomes.world.layer.CaveLayer;
-import supercoder79.cavebiomes.world.layer.ScaleCaveLayer;
-import supercoder79.cavebiomes.world.layer.SmoothLayer;
 import supercoder79.cavebiomes.world.layer.WaterGenerator;
-import supercoder79.cavebiomes.world.layer.water.WaterBorderLayer;
-import supercoder79.cavebiomes.world.layer.water.WaterInitLayer;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.stream.IntStream;
 
 public class MapWaterCommand {
     public static void init() {

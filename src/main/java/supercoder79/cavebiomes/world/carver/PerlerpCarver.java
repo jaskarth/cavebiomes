@@ -5,6 +5,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.noise.OctavePerlinNoiseSampler;
 import net.minecraft.util.math.noise.PerlinNoiseSampler;
@@ -14,7 +15,8 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkSection;
 import net.minecraft.world.chunk.ProtoChunk;
 import net.minecraft.world.gen.ChunkRandom;
-import net.minecraft.world.gen.ProbabilityConfig;
+import net.minecraft.world.gen.carver.CarverContext;
+import net.minecraft.world.gen.chunk.AquiferSampler;
 import supercoder79.cavebiomes.mixin.ProtoChunkAccessor;
 
 import java.util.BitSet;
@@ -28,13 +30,13 @@ public class PerlerpCarver extends BaseCarver {
     private OctavePerlinNoiseSampler offsetNoise;
     private OctavePerlinNoiseSampler scaleNoise;
 
-    public PerlerpCarver(Codec<ProbabilityConfig> configCodec) {
+    public PerlerpCarver(Codec<SimpleCarverConfig> configCodec) {
         super(configCodec);
     }
 
     @Override
-    public boolean carve(Chunk chunk, Function<BlockPos, Biome> posToBiome, Random random, int seaLevel, int chunkX, int chunkZ, int mainChunkX, int mainChunkZ, BitSet carvingMask, ProbabilityConfig carverConfig) {
-        if (!(mainChunkX == chunkX && mainChunkZ == chunkZ)) {
+    public boolean carve(CarverContext context, SimpleCarverConfig config, Chunk chunk, Function<BlockPos, Biome> posToBiome, Random random, AquiferSampler aquiferSampler, ChunkPos pos, BitSet carvingMask) {
+        if (!(chunk.getPos().equals(pos))) {
             return false;
         }
 
@@ -58,14 +60,14 @@ public class PerlerpCarver extends BaseCarver {
             this.seed = seed;
         }
 
-        int chunkStartX = chunkX << 4;
-        int chunkStartZ = chunkZ << 4;
+        int chunkStartX = pos.x << 4;
+        int chunkStartZ = pos.z << 4;
 
         double[][][] noiseData = new double[2][5][9];
 
         for(int noiseZ = 0; noiseZ < 5; ++noiseZ) {
             noiseData[0][noiseZ] = new double[9];
-            sampleNoiseColumn(noiseData[0][noiseZ], chunkX * 4, chunkZ * 4 + noiseZ, this.caveNoise, this.offsetNoise, this.scaleNoise);
+            sampleNoiseColumn(noiseData[0][noiseZ], pos.x * 4, pos.z * 4 + noiseZ, this.caveNoise, this.offsetNoise, this.scaleNoise);
             noiseData[1][noiseZ] = new double[9];
         }
 
@@ -74,12 +76,12 @@ public class PerlerpCarver extends BaseCarver {
             // Initialize noise data on the x1 column
             int noiseZ;
             for (noiseZ = 0; noiseZ < 5; ++noiseZ) {
-                sampleNoiseColumn(noiseData[1][noiseZ], chunkX * 4 + noiseX + 1, chunkZ * 4 + noiseZ, this.caveNoise, this.offsetNoise, this.scaleNoise);
+                sampleNoiseColumn(noiseData[1][noiseZ], pos.x * 4 + noiseX + 1, pos.z * 4 + noiseZ, this.caveNoise, this.offsetNoise, this.scaleNoise);
             }
 
             // [0, 4] -> z noise chunks
             for (noiseZ = 0; noiseZ < 4; ++noiseZ) {
-                ChunkSection section = ((ProtoChunk)chunk).method_33729(15);
+                ChunkSection section = ((ProtoChunk)chunk).getSection(15);
 //                section.lock();
 
                 // [0, 32] -> y noise chunks
@@ -102,7 +104,7 @@ public class PerlerpCarver extends BaseCarver {
                         int sectionY = realY >> 4;
                         if (section.getYOffset() >> 4 != sectionY) {
 //                            section.unlock();
-                            section = ((ProtoChunk)chunk).method_33729(sectionY);
+                            section = ((ProtoChunk)chunk).getSection(sectionY);
 //                            section.lock();
                         }
 
@@ -219,10 +221,5 @@ public class PerlerpCarver extends BaseCarver {
         falloff = (1.5 * falloff) - (0.1 * scaledY * scaledY) - (-4.0 * y);
 
         return falloff;
-    }
-
-    @Override
-    protected boolean isPositionExcluded(double scaledRelativeX, double scaledRelativeY, double scaledRelativeZ, int y) {
-        return false;
     }
 }
